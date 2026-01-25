@@ -1,0 +1,24 @@
+{
+  "name": "@repo/common",
+  "version": "1.0.0",
+  "exports": {
+    "./types": "./src/types/types.ts",
+    "./schemas": "./src/schemas/RoomSchema.ts",
+    "./env": "./src/schemas/env.ts",
+    "./config": "./src/configs/configs.ts",
+    "./queryCacheKeys": "./src/cacheKeys/keys.ts",
+    "./apiUrls": "./src/apiUrls/urls.ts"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "zod": "^4.1.12",
+    "dotenv": "^17.2.3"
+  }
+}

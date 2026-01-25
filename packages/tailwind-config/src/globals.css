@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  /* Font sizes */
+  --text-2xs: 0.5rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+
+  /* Colors */
+  --color-primary: rgb(var(--primary));
+  --color-primary-foreground: rgb(var(--primary-foreground));
+  --color-secondary: rgb(var(--secondary));
+  --color-secondary-foreground: rgb(var(--secondary-foreground));
+  --color-card: rgb(var(--card));
+  --color-card-foreground: rgb(var(--card-foreground));
+  --color-tertiary: rgb(var(--tertiary));
+  --color-muted: rgb(var(--muted));
+  --color-muted-foreground: rgb(var(--muted-foreground));
+  --color-accent: rgb(var(--accent));
+  --color-accent-foreground: rgb(var(--accent-foreground));
+  --color-success: rgb(var(--success));
+  --color-error: rgb(var(--error));
+  --color-info: rgb(var(--info));
+  --color-warning: rgb(var(--warning));
+  --color-background: rgb(var(--background));
+  --color-foreground: rgb(var(--foreground));
+
+  --color-offWhite: #eff3f6;
+  --color-extraLightGray: #dee2e6;
+  --color-lightGray: #ced4da;
+  --color-heading: #848484;
+  --color-subHeading: #848484;
+  --color-body: #606060;
+  --color-gray: #adb5bd;
+  --color-lightGray: #ced4da;
+  --color-darkGray: #6c757d;
+  --color-body: #495057;
+  --color-heading: #212529;
+
+  /* Shadows */
+  --shadow-type1: 0px 2px 6px 0px #366eab26;
+  --shadow-type2: 0px -6px 20px 0px #0000001a;
+  --shadow-elevation:
+    rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+    rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+  --shadow-type3: 0px 0px 6px 0px #00000024;
+  --shadow-type4: 0px 1px 14px 0px #0000001f;
+  --shadow-type5: 0px 0px 20px 0px #bfbfbf99;
+
+  /* Font */
+
+  --font-inter: "Inter";
+  --font-instrumentSerif: "Instrument Serif";
+}
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  body {
+    @apply font-inter;
+  }
+  ::selection {
+    background: var(--color-body);
+    color: var(--color-offWhite);
+  }
+}

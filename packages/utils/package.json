@@ -1,0 +1,19 @@
+{
+  "name": "@repo/utils",
+  "version": "1.0.0",
+  "main": "index.js",
+  "exports": {
+    ".": "./cn.ts"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.4.0"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "@repo/ui",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./uiStyles.css": "./dist/uiStyles.css",
+    "./*": "./src/*.tsx"
+  },
+  "scripts": {
+    "build:ui": "npx @tailwindcss/cli -i ./src/uiStyles.css -o ./dist/uiStyles.css",
+    "dev": "npx @tailwindcss/cli -i ./src/uiStyles.css -o ./dist/uiStyles.css --watch",
+    "generate:component": "turbo gen react-component",
+    "check-types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "react-hook-form": "^7.65.0",
+    "@repo/typescript-config": "*",
+    "@repo/tailwind-config": "*",
+    "@types/node": "^22.15.3",
+    "@types/react": "19.1.0",
+    "@types/react-dom": "19.1.1",
+    "typescript": "5.9.2"
+  },
+  "dependencies": {
+    "@repo/utils": "*",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  }
+}

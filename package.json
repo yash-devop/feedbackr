@@ -1,0 +1,29 @@
+{
+  "name": "turbo-vite-express-prisma-starter",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "check-types": "turbo run check-types",
+    "compose:up": "docker compose --env-file .env up -d",
+    "compose:exec": "docker exec -it <yourDatabaseName> bash",
+    "compose:down": "docker compose down",
+    "compose:erase": "docker compose down -v",
+    "prisma:format": "npx prisma format --schema=<prismaSchemaPath>"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.8",
+    "typescript": "5.9.2"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "npm@10.9.2",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

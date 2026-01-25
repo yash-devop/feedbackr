@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/components/layouts/pagelayout.tsx","./src/context/contextprovider.tsx","./src/features/index.tsx","./src/lib/utils.ts","./src/lib/axios/client.ts","./src/pages/landingpage.tsx","./src/pages/index.tsx","./src/router/routerbase.tsx","./src/utils/debounce.ts"],"version":"5.9.3"}

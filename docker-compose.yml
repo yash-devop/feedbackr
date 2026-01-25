@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  yourserviceName:
+    image: postgres
+    ports:
+      - port:port
+    container_name: your_container_name
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - "yourvolumename:/var/lib/postgresql/data"
+
+  # ...same for more services
+
+volumes:
+  sameVolumeName:
+    external: false
