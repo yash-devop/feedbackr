@@ -15,15 +15,15 @@ datasource db {
 }
 
 model User {
-  id                String              @id
-  name              String
-  email             String
-  emailVerified     Boolean             @default(false)
-  image             String?
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @default(now()) @updatedAt
-  sessions          Session[]
-  accounts          Account[]
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @updatedAt
+  sessions      Session[]
+  accounts      Account[]
 
   @@unique([email])
   @@map("user")
@@ -74,10 +74,37 @@ model Verification {
   @@map("verification")
 }
 
+enum FeedbackStatus {
+  RESOLVED
+  REJECTED
+  INVALID
+}
 
+model Feedback {
+  id            String         @id
+  url           String
+  screenshotUrl String
+  message       String?
+  email         String
+  status        FeedbackStatus
+  clientContext Json
+  debugContext  Json
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 
-/*
-  User ,Session schema is ready
-  
-  REST YOUR SCHEMA below
-*/
+  domainId String
+  domain   Domain @relation(fields: [domainId], references: [id])
+
+  @@map("feedback")
+}
+
+model Domain {
+  id        String   @id
+  name      String
+  url       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  feedbackId String
+  feedback   Feedback[]
+}
