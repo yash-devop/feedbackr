@@ -1,8 +1,6 @@
-// prisma orm
+import { PrismaClient } from "@prismaGenerated/src/generatedClient/prisma/client.js";
+import * as Prisma from "@prismaGenerated/src/generatedClient/prisma/client.js";
 
-// import { PrismaClient } from "../../../prisma/src/generatedClient/prisma/client.js";
-// import * as Prisma from "../../../prisma/src/generatedClient/prisma/client.js";
+export const prisma = new PrismaClient();
 
-// export const prisma = new PrismaClient();
-
-// export { Prisma };
+export { Prisma };

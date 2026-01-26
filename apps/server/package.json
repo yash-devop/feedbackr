@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsup --watch --onSuccess \"nodemon dist/index.js\"",
-    "prisma:format": "npx prisma format --schema=<prisma Schema path>"
+    "prisma:format": "npx prisma format --schema=./prisma/schemas/schema.prisma",
+    "prisma:generate": "npx prisma generate --config=`./apps/server/prisma.config.ts`"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +25,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",
+    "better-auth": "^1.4.17",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",

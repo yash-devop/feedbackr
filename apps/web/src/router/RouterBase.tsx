@@ -1,5 +1,5 @@
 import { PageLayout } from "@/components/Layouts/PageLayout.tsx";
-import { LandingPage } from "@/pages/LandingPage.tsx";
+import { LoginPage } from "@/pages/LoginPage.tsx";
 import { createBrowserRouter } from "react-router";
 export const Router = createBrowserRouter([
   {
@@ -9,7 +9,7 @@ export const Router = createBrowserRouter([
       {
         // path: "/",
         index: true,
-        element: <LandingPage />,
+        element: <LoginPage />,
       },
     ],
   },

@@ -3,7 +3,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@prismaGenerated/*": ["./prisma/*"] // for prisma generated imports....
     }
   },
   "allowImportingTsExtensions": true
