@@ -11,7 +11,12 @@
     "compose:exec": "docker exec -it <yourDatabaseName> bash",
     "compose:down": "docker compose down",
     "compose:erase": "docker compose down -v",
-    "prisma:format": "npx prisma format --schema=<prismaSchemaPath>"
+    "prisma:format": "npx prisma format --schema=./apps/server/prisma/schemas/schema.prisma",
+    "prisma:generate": "npx prisma generate --config=./apps/server/prisma.config.ts"
+  },
+  "peerDependencies": {
+    "prisma": "^6.19.0",
+    "@prisma/client": "^6.19.0"
   },
   "devDependencies": {
     "prettier": "^3.6.2",
