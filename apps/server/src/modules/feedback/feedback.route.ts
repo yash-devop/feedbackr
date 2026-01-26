@@ -4,4 +4,5 @@ import { responseMiddleware } from "@/middlewares/response.middleware.js";
 
 export const FeedbackRouter = Router();
 
-FeedbackRouter.get("/", responseMiddleware, FeedBackController.getFeedback);
+FeedbackRouter.use(responseMiddleware);
+FeedbackRouter.get("/", FeedBackController.getFeedback);
