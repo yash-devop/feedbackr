@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
 import { corsConfig } from "./config/config.js";
-import { authMiddleware } from "./middlewares/middleware.js";
+import { authMiddleware } from "./middlewares/auth.middleware.js";
 import { FeedbackRouter } from "./modules/feedback/feedback.route.js";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/better-auth/auth.js";
