@@ -1,9 +1,5 @@
-// import { PrismaClient } from "../../../prisma/src/generatedClient/prisma/client.js";
-
-// const prisma = new PrismaClient();
-
 const FeedBackController = {
-  login: async () => {
+  getFeedback: async () => {
     // your api related calls.
   },
 };

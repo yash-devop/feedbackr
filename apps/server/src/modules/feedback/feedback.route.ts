@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { FeedBackController } from "./feedback.controller.js";
 
-export const YourRouter = Router();
+export const FeedbackRouter = Router();
 
-YourRouter.post("/signin", FeedBackController.login);
+FeedbackRouter.post("/signin", FeedBackController.get);

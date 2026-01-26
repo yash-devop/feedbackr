@@ -1,8 +1,8 @@
-const AuthService = {
+const FeedbackService = {
   login: () => {
     // your api related calls.
   },
   // ...more like this
 };
 
-export { AuthService };
+export { FeedbackService };
