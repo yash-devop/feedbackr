@@ -14,8 +14,7 @@ export const authMiddleware = async (
     });
 
     if (!session) {
-      res.status(401).json({ message: "Unauthorized Access" });
-      return;
+      return res.status(401).json({ message: "Unauthorized Access" });
     }
     req.user = session.user;
     req.session = session.session;
@@ -23,6 +22,6 @@ export const authMiddleware = async (
   } catch (err) {
     const error = err as Error;
     console.error("Auth Middleware Error:", error);
-    res.status(500).json({ message: "Unexpected error" });
+    return res.status(500).json({ message: "Unexpected error" });
   }
 };
