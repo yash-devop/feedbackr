@@ -9,7 +9,8 @@ import { type Session, User } from "better-auth";
 declare global {
   namespace Express {
     interface Request {
-      // if you want to extend Request
+      user: User;
+      session: Session;
     }
   }
 }
