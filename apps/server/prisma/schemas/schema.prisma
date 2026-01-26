@@ -107,4 +107,6 @@ model Domain {
 
   feedbackId String
   feedback   Feedback[]
+
+  @@map("domain")
 }
