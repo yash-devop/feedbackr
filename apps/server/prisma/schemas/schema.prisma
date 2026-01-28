@@ -98,10 +98,18 @@ model Feedback {
   @@map("feedback")
 }
 
+
+enum DOMAIN_STATUS {
+  ACTIVE
+  PAUSED
+  INACTIVE
+}
 model Domain {
   id        String   @id
+  clientId  String   @unique
   name      String
   url       String
+  status    DOMAIN_STATUS
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

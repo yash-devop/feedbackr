@@ -12,7 +12,9 @@
     "compose:down": "docker compose down",
     "compose:erase": "docker compose down -v",
     "prisma:format": "npx prisma format --schema=./apps/server/prisma/schemas/schema.prisma",
-    "prisma:generate": "npx prisma generate --config=./apps/server/prisma.config.ts"
+    "prisma:generate": "npx prisma generate --config=./apps/server/prisma.config.ts",
+    "prisma:migrate": "npx prisma migrate dev --config=./apps/server/prisma.config.ts",
+    "prisma:dev": "npx prisma db push --config=./apps/server/prisma.config.ts"
   },
   "peerDependencies": {
     "prisma": "^6.19.0",
