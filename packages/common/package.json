@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "exports": {
     "./types": "./src/types/types.ts",
-    "./schemas": "./src/schemas/RoomSchema.ts",
+    "./schemas": "./src/schemas/schema.ts",
     "./env": "./src/schemas/env.ts",
     "./config": "./src/configs/configs.ts",
     "./queryCacheKeys": "./src/cacheKeys/keys.ts",
