@@ -1,13 +1,16 @@
+import { createFeedbackSchema } from "@repo/common/schemas";
 import { Request, Response } from "express";
+import { FeedbackService } from "./feedback.service.js";
 
 const FeedBackController = {
-  getFeedback: async (req: Request, res: Response) => {
-    const user = req.user;
+  createFeedback: async (req: Request, res: Response) => {
+    const parsedPayload = createFeedbackSchema.parse(req.body);
+    const newFeedback = await FeedbackService.createFeedback(parsedPayload);
 
-    res.jsonSuccess<typeof user>({
+    res.jsonSuccess({
+      data: newFeedback,
       status: 200,
-      data: user,
-      message: "Feedback Data",
+      message: "Feedback created successfully",
     });
   },
 };
