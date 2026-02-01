@@ -1,21 +1,6 @@
+import { TError, TSuccess } from "@repo/common/types";
 import { NextFunction, Request, Response } from "express";
 
-export interface TSuccess<T> {
-  data: T;
-  message: string;
-  status: number;
-  meta?: T;
-}
-
-export interface TError {
-  status: number;
-  error: {
-    code: string;
-    message: string;
-    cause?: string;
-  };
-  meta: any;
-}
 export const responseMiddleware = (
   req: Request,
   res: Response,
