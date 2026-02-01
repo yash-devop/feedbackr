@@ -33,7 +33,7 @@ export const errorMiddleware = (
         code: "VALIDATION_ERROR",
         message: "Invalid request payload",
       },
-      meta: err,
+      meta: JSON.parse(err.message),
     });
   }
 
