@@ -76,22 +76,24 @@ model Verification {
 }
 
 enum FeedbackStatus {
+  PENDING
   RESOLVED
   REJECTED
   INVALID
 }
 
 model Feedback {
-  id            String         @id
+  id            String         @id @default(cuid())
   url           String
   screenshotUrl String
   message       String?
   email         String
-  status        FeedbackStatus
-  clientContext Json
-  debugContext  Json
+  status        FeedbackStatus  @default(PENDING)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
+
+  clientContext Json
+  debugContext  Json
 
   domainId String
   domain   Domain @relation(fields: [domainId], references: [id])
