@@ -15,15 +15,16 @@ datasource db {
 }
 
 model User {
-  id            String    @id
-  name          String
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now()) @updatedAt
-  sessions      Session[]
-  accounts      Account[]
+  id               String             @id
+  name             String
+  email            String
+  emailVerified    Boolean            @default(false)
+  image            String?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @default(now()) @updatedAt
+  sessions         Session[]
+  accounts         Account[]
+  domainWhitelists Domain_Whitelist[]
 
   @@unique([email])
   @@map("user")
@@ -112,9 +113,20 @@ model Domain {
   status       DOMAIN_STATUS
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
-
-  feedbackId String
-  feedback   Feedback[]
+  feedback     Feedback[]
 
   @@map("domain")
+}
+
+model Domain_Whitelist {
+  id        String   @id @default(cuid())
+  name      String
+  url       String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("domain_whitelist")
 }
