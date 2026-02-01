@@ -9,7 +9,8 @@
     "prisma:format": "npx prisma format --schema=./prisma/schemas/schema.prisma",
     "prisma:generate": "npx prisma generate --config=`./apps/server/prisma.config.ts`",
     "prisma:migrate": "npx prisma migrate dev --config=./apps/server/prisma.config.ts",
-    "prisma:dev": "npx prisma db push --config=./apps/server/prisma.config.ts"
+    "prisma:dev": "npx prisma db push --config=./apps/server/prisma.config.ts",
+    "prisma:reset": "npx prisma migrate reset --config=./apps/server/prisma.config.ts"
   },
   "keywords": [],
   "author": "",
