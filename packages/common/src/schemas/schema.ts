@@ -16,7 +16,6 @@ export const createFeedbackSchema = z.object({
     .optional(),
 });
 
-export type TcreateFeedbackPayload = z.infer<typeof createFeedbackSchema>;
 export const DomainSchema = z.object({
   name: z.string(),
   url: z.hostname(),
@@ -28,3 +27,6 @@ export const DomainSchema = z.object({
   //   return false;
   // }),
 });
+
+export type TcreateFeedbackPayload = z.infer<typeof createFeedbackSchema>;
+export type TDomainPayload = z.infer<typeof DomainSchema>;
