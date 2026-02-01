@@ -88,7 +88,7 @@ model Feedback {
   screenshotUrl String
   message       String?
   email         String
-  status        FeedbackStatus  @default(PENDING)
+  status        FeedbackStatus @default(PENDING)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 
