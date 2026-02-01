@@ -3,12 +3,11 @@
 import z from "zod";
 
 export const createFeedbackSchema = z.object({
-  domainId: z.string(),
-  url: z.string(),
+  domainId: z.string().nonempty(),
+  url: z.string().nonempty(),
   screenshotUrl: z.string(),
   message: z.string().optional(),
   email: z.email(),
-
   clientContext: z
     .record(z.union([z.string(), z.number(), z.symbol()]), z.any())
     .optional(),
