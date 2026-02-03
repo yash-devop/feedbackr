@@ -94,4 +94,27 @@ export const UserDomainService = {
 
     return updateOperation;
   },
+  deleteDomain: async ({ domainId }: { domainId: string }) => {
+    const existingDomain = await prisma.domain.findUnique({
+      where: {
+        id: domainId,
+      },
+    });
+
+    if (!existingDomain) {
+      throw new AppError(
+        "Domain Doesn't exist. Please check domain id or try to make request with a valid user id.",
+      );
+    }
+    const deletedDomain = await prisma.domain.delete({
+      where: {
+        id: domainId,
+      },
+      select: {
+        name: true,
+      },
+    });
+
+    return deletedDomain;
+  },
 };

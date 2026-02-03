@@ -57,4 +57,14 @@ export const UserDomainController = {
       status: 200,
     });
   },
+  deleteDomain: async (req: Request, res: Response) => {
+    const { domainId } = req.params as { domainId: string };
+
+    const domain = await UserDomainService.deleteDomain({ domainId });
+    return res.jsonSuccess({
+      data: domain.name,
+      message: `${domain.name} is successfully deleted.`,
+      status: 200,
+    });
+  },
 };
