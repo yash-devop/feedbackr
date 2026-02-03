@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-
 export interface TSuccess<T> {
   data: T;
   message: string;
@@ -16,6 +15,7 @@ export interface TError {
   };
   meta: any;
 }
+
 export const responseMiddleware = (
   req: Request,
   res: Response,

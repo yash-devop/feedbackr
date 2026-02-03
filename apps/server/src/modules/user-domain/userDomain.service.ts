@@ -1,0 +1,97 @@
+import { prisma, Prisma as PrismaTypes } from "@/lib/prisma-orm/prisma.js";
+import { AppError } from "@/middlewares/error.middleware.js";
+import { TDomainPayload } from "@repo/common/schemas";
+
+import { ServiceResponse } from "@repo/common/types";
+import { generateApiKey, hashFunction } from "@repo/utils";
+export const UserDomainService = {
+  createDomain: async (
+    { name, url }: TDomainPayload,
+    userId: string,
+  ): Promise<ServiceResponse> => {
+    const isDomainPresent = await prisma.domain.findFirst({
+      where: {
+        url,
+      },
+    });
+
+    if (isDomainPresent?.id) {
+      throw new AppError(
+        "Domain already present. Try with different domain.",
+        409,
+        "ALREADY_PRESENT",
+      );
+    }
+
+    const clientId = generateApiKey();
+    const hashedClientId = hashFunction(clientId);
+
+    console.log("userId", userId);
+    const domainCreated = await prisma.domain.create({
+      data: {
+        name,
+        clientId: hashedClientId,
+        status: "ACTIVE",
+        url,
+        userId,
+      },
+    });
+
+    return {
+      data: {
+        clientId,
+      },
+      message: "Domain Created Successfully",
+      status: 200,
+    };
+  },
+  getDomains: async (userId: string) => {
+    return await prisma.domain.findMany({
+      where: {
+        userId,
+      },
+    });
+  },
+  getDomain: async (domainId: string) => {
+    return await prisma.domain.findUnique({
+      where: {
+        id: domainId,
+      },
+    });
+  },
+  updateDomainStatus: async ({
+    status,
+    domainId,
+  }: {
+    status: PrismaTypes.DOMAIN_STATUS;
+    domainId: string;
+  }) => {
+    const existingDomain = await prisma.domain.findUnique({
+      where: {
+        id: domainId,
+      },
+    });
+
+    if (!existingDomain) {
+      throw new AppError(
+        "Domain Doesn't exist. Please check domain id or try to make request with a valid user id.",
+      );
+    }
+
+    const updateOperation = await prisma.domain.update({
+      data: {
+        status,
+      },
+      where: {
+        id: domainId,
+      },
+      select: {
+        status: true,
+        name: true,
+        updatedAt: true,
+      },
+    });
+
+    return updateOperation;
+  },
+};

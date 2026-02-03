@@ -1,8 +1,12 @@
 // Common for all
 
-export type TDummy = {
-  name: string;
-};
-export interface IDummy {
-  name: string;
+import { ErrorCodes } from "../errorCodes";
+
+// export type
+
+export interface ServiceResponse {
+  message: string;
+  status: number;
+  data?: any;
 }
+export type TErrorCode = (typeof ErrorCodes)[number];

@@ -23,4 +23,17 @@ export const createFeedbackSchema = z.object({
     .optional(),
 });
 
+export const DomainSchema = z.object({
+  name: z.string(),
+  url: z.hostname(),
+  // publicApiKey: z.string(),
+  // status: z.string().refine((status) => {
+  //   if (["ACTIVE", "PAUSED", "INACTIVE"].includes(status)) {
+  //     return true;
+  //   }
+  //   return false;
+  // }),
+});
+
 export type TcreateFeedbackPayload = z.infer<typeof createFeedbackSchema>;
+export type TDomainPayload = z.infer<typeof DomainSchema>;

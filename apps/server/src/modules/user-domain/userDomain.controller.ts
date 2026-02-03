@@ -1,0 +1,60 @@
+import { DomainSchema } from "@repo/common/schemas";
+import { Request, Response } from "express";
+import { UserDomainService } from "./userDomain.service.js";
+
+export const UserDomainController = {
+  createDomain: async (req: Request, res: Response) => {
+    const domainPayload = DomainSchema.parse(req.body);
+    const userId = req.session.userId;
+    const domain = await UserDomainService.createDomain(domainPayload, userId);
+
+    return res.jsonSuccess({
+      data: domain.data,
+      message: domain.message,
+      status: domain.status,
+    });
+  },
+  getDomainsList: async (req: Request, res: Response) => {
+    const userId = req.session.userId;
+    const domains = await UserDomainService.getDomains(userId);
+
+    return res.jsonSuccess({
+      data: domains,
+      message: `Domains fetched successfully !`,
+      status: 200,
+    });
+  },
+  getDomain: async (req: Request, res: Response) => {
+    const { domainId } = req.params as { domainId: string };
+
+    const domain = await UserDomainService.getDomains(domainId);
+
+    return res.jsonSuccess({
+      data: domain,
+      message: `Domain fetched successfully !`,
+      status: 200,
+    });
+  },
+  updateDomainStatus: async (req: Request, res: Response) => {
+    const status = req.body.status;
+
+    const { domainId } = req.params as { domainId: string };
+
+    console.log("domainId", domainId);
+
+    if (!domainId) {
+      throw new Error("DomainID is required");
+    }
+
+    const currentStatus = await UserDomainService.updateDomainStatus({
+      status,
+      domainId,
+    });
+
+    return res.jsonSuccess({
+      data: currentStatus,
+      message: `Status changed for Domain ${currentStatus.name}`,
+      status: 200,
+    });
+  },
+};
