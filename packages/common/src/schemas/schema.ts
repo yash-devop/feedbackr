@@ -5,7 +5,14 @@ import z from "zod";
 export const createFeedbackSchema = z.object({
   domainId: z.string().nonempty(),
   url: z.string().nonempty(),
-  screenshotUrl: z.string(),
+  images: z
+    .array(
+      z.object({
+        url: z.url(),
+        key: z.string(),
+      }),
+    )
+    .optional(),
   message: z.string().optional(),
   email: z.email(),
   clientContext: z
