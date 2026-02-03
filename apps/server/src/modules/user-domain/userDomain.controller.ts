@@ -27,7 +27,7 @@ export const UserDomainController = {
   getDomain: async (req: Request, res: Response) => {
     const { domainId } = req.params as { domainId: string };
 
-    const domain = await UserDomainService.getDomains(domainId);
+    const domain = await UserDomainService.getDomain(domainId);
 
     return res.jsonSuccess({
       data: domain,
