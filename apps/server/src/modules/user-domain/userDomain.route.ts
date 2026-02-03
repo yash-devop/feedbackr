@@ -6,3 +6,4 @@ UserDomainRouter.post("/", UserDomainController.createDomain);
 UserDomainRouter.get("/", UserDomainController.getDomainsList);
 UserDomainRouter.get("/:domainId", UserDomainController.getDomain);
 UserDomainRouter.patch("/:domainId", UserDomainController.updateDomainStatus);
+UserDomainRouter.delete("/:domainId", UserDomainController.deleteDomain);

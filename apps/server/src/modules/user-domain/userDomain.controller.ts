@@ -27,7 +27,7 @@ export const UserDomainController = {
   getDomain: async (req: Request, res: Response) => {
     const { domainId } = req.params as { domainId: string };
 
-    const domain = await UserDomainService.getDomains(domainId);
+    const domain = await UserDomainService.getDomain(domainId);
 
     return res.jsonSuccess({
       data: domain,
@@ -54,6 +54,16 @@ export const UserDomainController = {
     return res.jsonSuccess({
       data: currentStatus,
       message: `Status changed for Domain ${currentStatus.name}`,
+      status: 200,
+    });
+  },
+  deleteDomain: async (req: Request, res: Response) => {
+    const { domainId } = req.params as { domainId: string };
+
+    const domain = await UserDomainService.deleteDomain({ domainId });
+    return res.jsonSuccess({
+      data: domain.name,
+      message: `${domain.name} is successfully deleted.`,
       status: 200,
     });
   },
