@@ -34,7 +34,11 @@ const FeedBackController = {
       };
 
       const parsedPayload = createFeedbackSchema.parse(finalPayload);
-      const newFeedback = await FeedbackService?.createFeedback(parsedPayload);
+
+      const newFeedback = await FeedbackService?.createFeedback({
+        data: parsedPayload,
+        domainId: req?.domain?.id,
+      });
 
       res.jsonSuccess({
         data: newFeedback,
@@ -51,9 +55,15 @@ const FeedBackController = {
   },
 
   getFeedback: async (req: Request, res: Response) => {
-    try {
-      // wip
-    } catch (error) {}
+    const { domainId } = req?.params as { domainId: string };
+
+    const feedbacksResponse = await FeedbackService.getFeedbacks(domainId);
+
+    res.jsonSuccess({
+      data: feedbacksResponse,
+      status: 200,
+      message: "Feedbacks fetched successfully",
+    });
   },
 };
 

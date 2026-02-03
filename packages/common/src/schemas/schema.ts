@@ -3,7 +3,6 @@
 import z from "zod";
 
 export const createFeedbackSchema = z.object({
-  domainId: z.string().nonempty(),
   url: z.string().nonempty(),
   images: z
     .array(

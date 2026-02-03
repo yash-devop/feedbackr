@@ -2,11 +2,17 @@ import { prisma } from "@/lib/prisma-orm/prisma.js";
 import { TcreateFeedbackPayload } from "@repo/common/schemas";
 
 const FeedbackService = {
-  createFeedback: async (data: TcreateFeedbackPayload) => {
+  createFeedback: async ({
+    data,
+    domainId,
+  }: {
+    data: TcreateFeedbackPayload;
+    domainId: string;
+  }) => {
     try {
       return await prisma.feedback.create({
         data: {
-          domainId: data.domainId,
+          domainId: domainId,
           url: data.url,
           message: data.message,
           email: data.email,
@@ -24,6 +30,17 @@ const FeedbackService = {
     } catch (error) {
       throw error;
     }
+  },
+  getFeedbacks: async (domainId: string) => {
+    return await prisma.feedback.findMany({
+      where: {
+        domainId,
+      },
+      include: {
+        images: true,
+        domain: { select: { name: true, status: true } },
+      },
+    });
   },
 };
 
