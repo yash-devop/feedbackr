@@ -134,4 +134,6 @@ model Media {
   feedback   Feedback @relation(fields: [feedbackId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
+
+  @@map("media")
 }
