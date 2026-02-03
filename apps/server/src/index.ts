@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(responseMiddleware);
 
 app.all("/api/auth/*splat", toNodeHandler(auth));
-app.use("/api/feedback", authMiddleware, FeedbackRouter);
+app.use("/api/feedback", FeedbackRouter);
 
 app.use(errorMiddleware);
 

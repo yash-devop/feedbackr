@@ -84,10 +84,9 @@ enum FeedbackStatus {
 model Feedback {
   id            String         @id @default(cuid())
   url           String
-  screenshotUrl String
   message       String?
   email         String
-  status        FeedbackStatus  @default(PENDING)
+  status        FeedbackStatus @default(PENDING)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 
@@ -95,7 +94,8 @@ model Feedback {
   debugContext  Json
 
   domainId String
-  domain   Domain @relation(fields: [domainId], references: [id])
+  domain   Domain  @relation(fields: [domainId], references: [id])
+  images   Media[]
 
   @@map("feedback")
 }
@@ -111,4 +111,17 @@ model Domain {
   feedback   Feedback[]
 
   @@map("domain")
+}
+
+model Media {
+  id   String  @id @default(cuid())
+  url  String
+  key  String
+  name String?
+  size Int?
+
+  feedbackId String
+  feedback   Feedback @relation(fields: [feedbackId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
 }

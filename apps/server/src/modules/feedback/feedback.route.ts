@@ -1,7 +1,15 @@
 import { Router } from "express";
+import multer from "multer";
 import { FeedBackController } from "./feedback.controller.js";
-import { responseMiddleware } from "@/middlewares/response.middleware.js";
+import { multerUploadInstance } from "@/lib/multer/multer.js";
+import { authMiddleware } from "@/middlewares/auth.middleware.js";
 
 export const FeedbackRouter = Router();
 
-FeedbackRouter.post("/", FeedBackController.createFeedback);
+FeedbackRouter.post(
+  "/",
+  multerUploadInstance.array("images"),
+  FeedBackController.createFeedback,
+);
+
+FeedbackRouter.get("/", authMiddleware, FeedBackController.getFeedback);
