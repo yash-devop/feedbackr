@@ -1,5 +1,7 @@
 // Common for all
 
+import { ErrorCodes } from "../errorCodes";
+
 // export type
 
 export interface ServiceResponse {
@@ -7,19 +9,4 @@ export interface ServiceResponse {
   status: number;
   data?: any;
 }
-export interface TSuccess<T> {
-  data: T;
-  message: string;
-  status: number;
-  meta?: T;
-}
-
-export interface TError {
-  status: number;
-  error: {
-    code: string;
-    message: string;
-    cause?: string;
-  };
-  meta: any;
-}
+export type TErrorCode = (typeof ErrorCodes)[number];

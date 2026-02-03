@@ -1,16 +1,17 @@
 import { Prisma } from "@/lib/prisma-orm/prisma.js";
+import { TErrorCode } from "@repo/common/types";
 import { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
 
 export class AppError extends Error {
   status: number;
-  code: string;
+  code: TErrorCode;
   meta?: any;
 
   constructor(
     message: string,
     status = 500,
-    code = "INTERNAL_ERROR",
+    code: TErrorCode = "INTERNAL_ERROR",
     meta?: any,
   ) {
     super(message);
@@ -26,6 +27,7 @@ export const errorMiddleware = (
   res: Response,
   next: NextFunction,
 ) => {
+  console.log("err", err);
   if (err instanceof ZodError) {
     return res.jsonFail({
       status: 400,
