@@ -9,6 +9,7 @@ import { errorMiddleware } from "./middlewares/error.middleware.js";
 import { responseMiddleware } from "./middlewares/response.middleware.js";
 import { FeedbackRouter } from "./modules/feedback/feedback.route.js";
 import { UserDomainRouter } from "./modules/user-domain/userDomain.route.js";
+import { domainMiddleware } from "./middlewares/domain.middleware.js";
 
 export const app = express();
 
@@ -18,7 +19,7 @@ app.use(express.json());
 app.use(responseMiddleware);
 
 app.all("/api/auth/*splat", toNodeHandler(auth));
-app.use("/api/feedback", authMiddleware, FeedbackRouter);
+app.use("/api/feedback", domainMiddleware, FeedbackRouter);
 app.use("/api/domain", authMiddleware, UserDomainRouter);
 
 app.use(errorMiddleware);
