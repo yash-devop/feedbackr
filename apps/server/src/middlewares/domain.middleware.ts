@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma-orm/prisma.js";
 import { NextFunction, Request, Response } from "express";
 import { AppError } from "./error.middleware.js";
-import { hashFunction } from "@repo/utils";
+import { hashFunction } from "@repo/utils/server";
 export const domainMiddleware = async (
   req: Request,
   res: Response,
