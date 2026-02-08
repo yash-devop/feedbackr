@@ -3,7 +3,7 @@ import { AppError } from "@/middlewares/error.middleware.js";
 import { TDomainPayload } from "@repo/common/schemas";
 
 import { ServiceResponse } from "@repo/common/types";
-import { generateApiKey, hashFunction } from "@repo/utils";
+import { generateApiKey, hashFunction } from "@repo/utils/server";
 export const UserDomainService = {
   createDomain: async (
     { name, url }: TDomainPayload,
