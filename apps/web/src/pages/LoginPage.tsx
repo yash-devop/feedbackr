@@ -1,8 +1,8 @@
 import { authClient } from "@/lib/better-auth/client.ts";
-import { Button } from "@repo/ui/uicomponents";
+import { Button } from "@repo/ui";
+import { Github, Google } from "@repo/ui/icons";
 // import { Button } from "@repo/ui/components/ui/button";
 
-import { Google, Github } from "@repo/ui/icons";
 export const LoginPage = () => {
   return (
     <div className="h-screen w-full flex items-center justify-center">

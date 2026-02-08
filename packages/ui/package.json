@@ -4,6 +4,7 @@
   "private": true,
   "exports": {
     ".": "./src/index.ts",
+    "./icons": "./src/icons/index.ts",
     "./uiStyles.css": "./src/uiStyles.css",
     "./*": "./src/*"
   },
