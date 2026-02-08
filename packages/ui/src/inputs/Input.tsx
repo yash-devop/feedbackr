@@ -1,4 +1,4 @@
-import { cn } from "@repo/utils";
+import { cn } from "@repo/utils/client";
 import { type FieldError } from "react-hook-form";
 type TInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   name: string;

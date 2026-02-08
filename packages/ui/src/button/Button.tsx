@@ -1,4 +1,4 @@
-import { cn } from "@repo/utils";
+import { cn } from "@repo/utils/client";
 import React, { HTMLAttributes, ReactNode } from "react";
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
