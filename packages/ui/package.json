@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./uiStyles.css": "./dist/uiStyles.css",
-    "./*": "./src/*.tsx"
+    ".": "./src/index.ts",
+    "./uiStyles.css": "./src/uiStyles.css",
+    "./*": "./src/*"
   },
   "scripts": {
     "build:ui": "npx @tailwindcss/cli -i ./src/uiStyles.css -o ./dist/uiStyles.css",
