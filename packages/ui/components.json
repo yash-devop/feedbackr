@@ -14,9 +14,8 @@
     "components": "@repo/ui/components",
     "utils": "@repo/utils/client",
     "ui": "@repo/ui/components/ui",
-    "lib": "@repo/ui/lib",
+    "lib": "@repo/utils/client",
     "hooks": "@repo/ui/hooks"
   },
   "iconLibrary": "lucide"
 }
-  
