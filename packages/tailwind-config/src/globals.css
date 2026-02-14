@@ -67,8 +67,4 @@
   body {
     @apply font-inter;
   }
-  ::selection {
-    background: var(--color-body);
-    color: var(--color-offWhite);
-  }
 }

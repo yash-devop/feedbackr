@@ -4,11 +4,11 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarHeader,
-} from "@repo/ui/";
+} from "@repo/ui";
 
 export function AppSidebar() {
   return (
-    <Sidebar className="">
+    <Sidebar className="w-[250px]">
       <SidebarHeader />
       <SidebarContent>
         <SidebarGroup>hello</SidebarGroup>

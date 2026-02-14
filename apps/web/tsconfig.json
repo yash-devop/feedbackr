@@ -5,8 +5,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@repo/ui/*": ["../../packages/ui/src/*"]
+      "@/*": ["./src/*"]
+      // "@repo/ui/*": ["../../packages/ui/src/*"]
     },
     "noEmit": true,
     "jsx": "react-jsx",
