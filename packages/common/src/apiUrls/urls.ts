@@ -11,4 +11,6 @@
  * CREATE_GITHUB_APP_INSTALLATION: "/integration/github/install"
  * GET_USER_PROFILE: "/user/profile"
  */
-export const API_URLS: { [key: string]: string } = {};
+export const API_URLS = {
+    "GET_FEEBACKS" : "/feedback"
+} as const;
