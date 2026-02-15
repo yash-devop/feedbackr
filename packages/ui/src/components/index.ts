@@ -5,3 +5,5 @@ export * from "./ui/separator";
 export * from "./ui/sheet";
 export * from "./ui/skeleton";
 export * from "./ui/tooltip";
+export * from "./ui/spinner";
+export * from "./ui/avatar";

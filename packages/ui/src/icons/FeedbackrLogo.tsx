@@ -1,0 +1,17 @@
+import { cn } from "@repo/utils/client";
+
+export const FeedbackrLogo = ({ className }: { className?: string }) => {
+  return (
+    <svg
+      fill="none"
+      viewBox="0 0 48 48"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("size-12", className)}
+    >
+      <path
+        d="m0 24c0 6.6274 5.37258 12 12 12v-12c0 6.6274 5.3726 12 12 12v-12c0 6.6274 5.3726 12 12 12s12-5.3726 12-12-5.3726-12-12-12-12 5.3726-12 12v-12c-6.6274 0-12 5.3726-12 12v-12c-6.62742 0-12 5.3726-12 12z"
+        fill="#0A0D12"
+      />
+    </svg>
+  );
+};

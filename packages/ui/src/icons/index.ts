@@ -1,4 +1,5 @@
 import { Google } from "./Google";
 import { Github } from "./Github";
+import { FeedbackrLogo } from "./FeedbackrLogo";
 
-export { Google, Github };
+export { Google, Github, FeedbackrLogo };

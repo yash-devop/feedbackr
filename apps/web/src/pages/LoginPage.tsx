@@ -1,31 +1,28 @@
-import { authClient } from "@/lib/better-auth/client.ts";
-import { Button } from "@repo/ui";
-import { Github, Google } from "@repo/ui/icons";
-// import { Button } from "@repo/ui/components/ui/button";
+import { SocialAuthSection } from "@/features/auth/components/SocialAuthSection.tsx";
+import { useAuth } from "@/features/auth/hooks.ts";
+import { FeedbackrLogo } from "@repo/ui/icons";
+import { Navigate, useLocation } from "react-router";
 
 export const LoginPage = () => {
+  const { userSession } = useAuth();
+  const location = useLocation();
+
+  if (location.pathname === "/login" && userSession.data?.session) {
+    return <Navigate to={"/dashboard/home"} />;
+  }
   return (
     <div className="h-screen w-full flex items-center justify-center">
       <div
-        className="w-1/2
-      h-full border border-neutral-300 shadow-2xl shadow-neutral-700"
+        className="w-full lg:w-1/2
+      h-full border border-neutral-300 shadow-2xl shadow-neutral-700 px-4 md:px-0"
       >
-        <div className="flex flex-col w-full h-full max-w-[460px] pt-44 mx-auto">
-          <p className="font-semibold text-md tracking-tighter select-none cursor-pointer">
-            Feedbackr.
-          </p>
-          <h2 className="text-3xl font-semibold pt-2">Sign up</h2>
-          <div>
-            <Button>
-              <Google className="size-7" />
-            </Button>
-            <Button>
-              <Github className="size-7" />
-            </Button>
-          </div>
+        <div className="flex flex-col justify-center w-full h-full max-w-[460px] mx-auto pb-10">
+          <FeedbackrLogo />
+          <h2 className="text-3xl font-semibold pt-1.5">Sign up</h2>
+          <SocialAuthSection />
         </div>
       </div>
-      <div className="w-1/2 h-full relative overflow-hidden">
+      <div className="hidden lg:block w-1/2 h-full relative overflow-hidden">
         <div className="w-[1200px] 2xl:w-[1700px] h-[800px] flex items-center justify-center relative -z-10">
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="size-[900px] rounded-full bg-linear-to-r from-primary via-blue-500 to-blue-500 blur-[130px]" />
@@ -39,31 +36,5 @@ export const LoginPage = () => {
         </div>
       </div>
     </div>
-    // <div>
-    //   <p>Landing</p>
-    //   <button
-    //     onClick={() =>
-    //       authClient.signIn.social({
-    //         provider: "github",
-    //         callbackURL: "http://localhost:5173/",
-    //         errorCallbackURL: "http://localhost:5173/error",
-    //       })
-    //     }
-    //   >
-    //     sign in
-    //   </button>
-    //   <Button
-    //     className="ml-10"
-    //     onClick={() =>
-    //       authClient.signIn.social({
-    //         provider: "google",
-    //         callbackURL: "http://localhost:5173/",
-    //         errorCallbackURL: "http://localhost:5173/error",
-    //       })
-    //     }
-    //   >
-    //     sign in
-    //   </Button>
-    // </div>
   );
 };
