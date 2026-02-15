@@ -7,3 +7,5 @@ export * from "./ui/skeleton";
 export * from "./ui/tooltip";
 export * from "./ui/spinner";
 export * from "./ui/avatar";
+export * from "./ui/card";
+export * from "./ui/badge";
