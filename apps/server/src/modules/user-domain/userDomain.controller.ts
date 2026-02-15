@@ -67,4 +67,15 @@ export const UserDomainController = {
       status: 200,
     });
   },
+  checkUserHasDomain: async (req: Request, res: Response) => {
+    const { hasDomains, length } = await UserDomainService.checkUserHasDomain({
+      userId: req.user.id,
+    });
+
+    return res.jsonSuccess({
+      data: { hasDomains, length: length },
+      message: `${req.user.name} has total ${length} domains`,
+      status: 200,
+    });
+  },
 };
