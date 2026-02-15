@@ -2,6 +2,7 @@ import { createFeedbackSchema } from "@repo/common/schemas";
 import { Request, Response } from "express";
 import { FeedbackService } from "./feedback.service.js";
 import MediaService from "../media/media.service.js";
+import { AppError } from "@/middlewares/error.middleware.js";
 
 const FeedBackController = {
   createFeedback: async (req: Request, res: Response) => {
@@ -55,8 +56,8 @@ const FeedBackController = {
   },
 
   getFeedbacks: async (req: Request, res: Response) => {
-    const { domainId } = req?.params as { domainId: string };
-
+    const { domainId } = req?.query as { domainId: string };
+    if (!domainId) throw new AppError("Domain Id not found", 404, "NOT_FOUND");
     const feedbacksResponse = await FeedbackService.getFeedbacks(domainId);
 
     res.jsonSuccess({

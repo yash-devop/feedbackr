@@ -9,4 +9,9 @@ export interface ServiceResponse {
   status: number;
   data?: any;
 }
+
+export interface ApiResponse<T> {
+  data: T;
+  message: string;
+}
 export type TErrorCode = (typeof ErrorCodes)[number];

@@ -128,6 +128,7 @@ export const UserDomainService = {
     const hasDomains = domainsLength > 0 ? true : false;
 
     return {
+      domains,
       hasDomains,
       length: domainsLength,
     };
