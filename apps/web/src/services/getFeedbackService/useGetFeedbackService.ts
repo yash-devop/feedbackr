@@ -4,10 +4,11 @@ import { API_URLS } from "@repo/common/apiUrls";
 import { handleGlobalGetRequestQuery } from "@/utils/httpFuntions.ts";
 import { IFeedbackResponse } from "./useGetFeedbackService.types.ts";
 
-const useGetFeedbackService = ({ domainId }: { domainId: string }) => {
+const useGetFeedbackService = ({ domainId }: { domainId?: string }) => {
   const getFeedbackService = useQuery<IFeedbackResponse>({
     queryKey: [CACHE_KEYS?.GET_FEEDBACKS, domainId],
     queryFn: () => handleGlobalGetRequestQuery({ url: API_URLS?.GET_FEEBACKS }),
+    // enabled: !!domainId,
   });
 
   return {

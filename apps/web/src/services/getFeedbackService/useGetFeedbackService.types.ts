@@ -12,12 +12,14 @@ interface IDomain {
   status: string;
 }
 
+type TFeedbackStatus = "PENDING" | "RESOLVED" | "REJECTED" | "INVALID";
+
 interface IFeedback {
   id: string;
   url: string;
   message: string;
   email: string;
-  status: string;
+  status: TFeedbackStatus;
   createdAt: string;
   updatedAt: string;
   clientContext: IClientContext;
@@ -38,4 +40,5 @@ export type {
   IDomain,
   IFeedback,
   IFeedbackResponse,
+  TFeedbackStatus
 };
