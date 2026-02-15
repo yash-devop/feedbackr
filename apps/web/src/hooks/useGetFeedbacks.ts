@@ -6,7 +6,7 @@ const useGetFeedbacks = () => {
   const { domainId } = useParams();
   const {
     services: { getFeedbackService },
-  } = useGetFeedbackService({ domainId });
+  } = useGetFeedbackService({ domainId: domainId ?? "" });
 
   const feedbackDataArray = getFeedbackService?.data?.data || [];
 
