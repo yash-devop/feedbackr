@@ -5,6 +5,8 @@ import Dashboard from "@/pages/Dashboard/Dashboard.tsx";
 import { LoginPage } from "@/pages/LoginPage.tsx";
 import { createBrowserRouter } from "react-router";
 import { ProtectedRoute } from "./ProtectedRoute.tsx";
+import { AuthCallbackPage } from "@/pages/AuthCallbackPage.tsx";
+import { OnboardingCreateDomainPage } from "@/pages/OnboardingCreateDomainPage.tsx";
 export const Router = createBrowserRouter([
   {
     path: "/",
@@ -13,6 +15,14 @@ export const Router = createBrowserRouter([
       {
         path: "/login",
         element: <LoginPage />,
+      },
+      {
+        path: "/auth/callback",
+        element: <AuthCallbackPage />,
+      },
+      {
+        path: "/onboarding/create-domain",
+        element: <OnboardingCreateDomainPage />,
       },
       {
         path: "/dashboard",

@@ -117,4 +117,18 @@ export const UserDomainService = {
 
     return deletedDomain;
   },
+  checkUserHasDomain: async ({ userId }: { userId: string }) => {
+    const domains = await prisma.domain.findMany({
+      where: {
+        userId,
+      },
+    });
+    const domainsLength = domains.length;
+    const hasDomains = domainsLength > 0 ? true : false;
+
+    return {
+      hasDomains,
+      length: domainsLength,
+    };
+  },
 };

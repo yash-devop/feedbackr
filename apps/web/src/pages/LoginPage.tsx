@@ -18,7 +18,15 @@ export const LoginPage = () => {
       >
         <div className="flex flex-col justify-center w-full h-full max-w-[460px] mx-auto pb-10">
           <FeedbackrLogo />
-          <h2 className="text-3xl font-semibold pt-1.5">Sign up</h2>
+          <div className="flex flex-col gap-2">
+            <h2 className="text-3xl font-semibold pt-1.5">
+              Sign up with Feedbackr.
+            </h2>
+            <p className="text-xl font-semibold pt-1.5 text-neutral-500">
+              "A unified platform to collect feedback and manage your product
+              infrastructure."
+            </p>
+          </div>
           <SocialAuthSection />
         </div>
       </div>
