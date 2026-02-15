@@ -23,7 +23,13 @@ export const createFeedbackSchema = z.object({
 });
 
 export const DomainSchema = z.object({
-  name: z.string(),
+  name: z.string().refine(
+    (data) => {
+      if (data.length > 0) return true;
+      return false;
+    },
+    { error: "Name of domain is required" },
+  ),
   url: z.hostname(),
   // publicApiKey: z.string(),
   // status: z.string().refine((status) => {

@@ -1,0 +1,55 @@
+import { IDomainResponse } from "@/services/getDomainService/useGetDomainService.types.ts";
+import { handleGlobalPostRequest } from "@/utils/httpFuntions.ts";
+import { TDomainPayload } from "@repo/common/schemas";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
+
+export const useDomain = () => {
+  const navigate = useNavigate();
+  const createDomainMutation = useMutation<
+    IDomainResponse,
+    AxiosError<{
+      error: {
+        message: string;
+        code: string;
+      };
+    }>,
+    TDomainPayload
+  >({
+    mutationFn: async (data) => {
+      return handleGlobalPostRequest<Promise<IDomainResponse>>({
+        url: "/domain",
+        data,
+      });
+    },
+    onError: (err) => {
+      const apiError = err?.response?.data?.error.message;
+      toast.error(err?.message, {
+        description: apiError,
+        richColors: true,
+      });
+    },
+    onSuccess: (data) => {
+      toast.success(data?.message, {
+        richColors: true,
+      });
+
+      return navigate(`/dashboard/${data.data.domainId}`);
+    },
+  });
+
+  const createDomainHandler = (data: TDomainPayload) => {
+    createDomainMutation.mutate(data);
+  };
+
+  return {
+    mutations: {
+      createDomainMutation,
+    },
+    handler: {
+      createDomainHandler,
+    },
+  };
+};
