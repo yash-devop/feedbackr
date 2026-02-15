@@ -20,7 +20,7 @@ app.use(responseMiddleware);
 
 app.all("/api/auth/*splat", toNodeHandler(auth));
 
-app.use("/api/feedback", domainMiddleware, FeedbackRouter);
+app.use("/api/feedback", FeedbackRouter);
 app.use("/api/domain", authMiddleware, UserDomainRouter);
 
 app.use(errorMiddleware);

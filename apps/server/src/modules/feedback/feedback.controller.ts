@@ -54,7 +54,7 @@ const FeedBackController = {
     }
   },
 
-  getFeedback: async (req: Request, res: Response) => {
+  getFeedbacks: async (req: Request, res: Response) => {
     const { domainId } = req?.params as { domainId: string };
 
     const feedbacksResponse = await FeedbackService.getFeedbacks(domainId);
