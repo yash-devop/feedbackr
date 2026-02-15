@@ -1,6 +1,5 @@
-import { Button, Input, Label } from "@repo/ui";
+import { CreateDomainForm } from "@/features/onboarding/components/CreateDomainForm.tsx";
 import { FeedbackrLogo } from "@repo/ui/icons";
-
 export const OnboardingCreateDomainPage = () => {
   return (
     <>
@@ -15,17 +14,7 @@ export const OnboardingCreateDomainPage = () => {
                 managing everything in one place. You can change this later.
               </p>
             </div>
-            <form className="flex flex-col gap-7 w-full">
-              <div className="flex flex-col gap-y-1.5">
-                <Label>Name of the domain</Label>
-                <Input placeholder="Eg: Example" className="" />
-              </div>
-              <div className="flex flex-col gap-y-1.5">
-                <Label>Domain URL</Label>
-                <Input placeholder="Eg: app.example.com" className="" />
-              </div>
-              <Button>Proceed</Button>
-            </form>
+            <CreateDomainForm />
           </div>
         </div>
       </div>

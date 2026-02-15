@@ -40,6 +40,7 @@ export const UserDomainService = {
     return {
       data: {
         clientId,
+        domainId: domainCreated.id,
       },
       message: "Domain Created Successfully",
       status: 200,
