@@ -3,10 +3,11 @@ import { SocialProvider } from "better-auth";
 
 export const useAuth = () => {
   const signIn = async (provider: SocialProvider) => {
+    const URL = `http://localhost:5173`;
     const data = await authClient.signIn.social({
       provider,
-      callbackURL: `http://localhost:5173/dashboard/home`,
-      errorCallbackURL: "http://localhost:5173/login",
+      callbackURL: `${URL}/auth/callback`,
+      errorCallbackURL: `${URL}/login`,
     });
     return data;
   };

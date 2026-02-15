@@ -8,3 +8,4 @@ export * from "./ui/tooltip";
 export * from "./ui/spinner";
 export * from "./ui/avatar";
 export * from "./ui/dropdown-menu";
+export * from "./ui/label";
