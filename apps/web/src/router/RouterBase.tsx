@@ -3,22 +3,22 @@ import { PageLayout } from "@/components/Layouts/PageLayout.tsx";
 import MainPagesLayout from "@/components/MainPagesLayout.tsx";
 import { LoginPage } from "@/pages/LoginPage.tsx";
 import { createBrowserRouter } from "react-router";
+import { ProtectedRoute } from "./ProtectedRoute.tsx";
 export const Router = createBrowserRouter([
   {
     path: "/",
     element: <PageLayout />,
     children: [
       {
-        // path: "/",
-        index: true,
+        path: "/login",
         element: <LoginPage />,
       },
       {
         path: "/dashboard",
-        element: <DashboardLayout />,
+        element: <ProtectedRoute />,
         children: [
           {
-            path: "/dashboard/1",
+            path: "/dashboard/home",
             element: <MainPagesLayout />,
             children: [
               {
