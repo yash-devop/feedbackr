@@ -1,6 +1,7 @@
 import DashboardLayout from "@/components/Layouts/DashboardLayout.tsx";
 import { PageLayout } from "@/components/Layouts/PageLayout.tsx";
 import MainPagesLayout from "@/components/MainPagesLayout.tsx";
+import Dashboard from "@/pages/Dashboard/Dashboard.tsx";
 import { LoginPage } from "@/pages/LoginPage.tsx";
 import { createBrowserRouter } from "react-router";
 import { ProtectedRoute } from "./ProtectedRoute.tsx";
@@ -19,19 +20,7 @@ export const Router = createBrowserRouter([
         children: [
           {
             path: "/dashboard/home",
-            element: <MainPagesLayout />,
-            children: [
-              {
-                index: true,
-                element: (
-                  <p className="">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Autem itaque nisi cupiditate fugit dignissimos unde ipsum
-                    doloribus, ad aliquid error!
-                  </p>
-                ),
-              },
-            ],
+            element: <Dashboard />,
           },
         ],
       },
