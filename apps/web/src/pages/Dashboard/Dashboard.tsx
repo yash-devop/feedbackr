@@ -5,9 +5,12 @@ import { MostFeedbackPagesCard } from "./components/MostFeedbackPagesCard.tsx";
 import { BrowserStats } from "./components/BrowserStatsCard.tsx";
 import { RecentFeedbacks } from "./components/RecentFeedbacks.tsx";
 import useGetFeedbackService from "@/services/getFeedbackService/useGetFeedbackService.ts";
+import useGetFeedbacks from "@/hooks/useGetFeedbacks.ts";
 
 export default function Dashboard() {
-  const { services } = useGetFeedbackService({ domainId: "123" });
+  const {
+    data: { feedbackMetricData },
+  } = useGetFeedbacks();
   return (
     <MainPagesLayout>
       <div className=" px-8 pt-2 space-y-8">
@@ -21,25 +24,29 @@ export default function Dashboard() {
           </p>
         </div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <MetricCard title="Total Feedback" value={3} icon={Inbox} />
+          <MetricCard
+            title="Total Feedback"
+            value={feedbackMetricData?.TOTAL}
+            icon={Inbox}
+          />
 
           <MetricCard
             title="Pending"
-            value={2}
+            value={feedbackMetricData?.PENDING}
             icon={Clock}
             iconClassName="text-amber-600 bg-amber-50"
           />
 
           <MetricCard
-            title="In Progress"
-            value={0}
+            title="Invalid"
+            value={feedbackMetricData?.INVALID}
             icon={CircleDashed}
             iconClassName="text-blue-600 bg-blue-50"
           />
 
           <MetricCard
             title="Resolved"
-            value={1}
+            value={feedbackMetricData?.RESOLVED}
             icon={CheckCircle2}
             iconClassName="text-emerald-600 bg-emerald-50"
           />
