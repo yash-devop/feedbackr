@@ -6,11 +6,35 @@ import { BrowserStats } from "./components/BrowserStatsCard.tsx";
 import { RecentFeedbacks } from "./components/RecentFeedbacks.tsx";
 import useGetFeedbackService from "@/services/getFeedbackService/useGetFeedbackService.ts";
 import useGetFeedbacks from "@/hooks/useGetFeedbacks.ts";
+import { useNavigate, useParams } from "react-router";
+import useGetDomainService from "@/services/getDomainService/useGetDomainService.ts";
+import { useEffect } from "react";
+import { Spinner } from "@repo/ui";
+import PageLoader from "@/components/Loaders/PageLoader.tsx";
 
 export default function Dashboard() {
+  const { domainId } = useParams();
+  const navigate = useNavigate();
   const {
+    services: { getFeedbackService },
     data: { feedbackMetricData },
   } = useGetFeedbacks();
+  const {
+    services: { getDomainService },
+  } = useGetDomainService();
+
+  useEffect(() => {
+    if (
+      !getDomainService?.data?.data?.find((domain) => domain?.id === domainId)
+    ) {
+      const newDomainId = getDomainService?.data?.data?.[0]?.id?.toString();
+      navigate(`/dashboard/${newDomainId}`);
+    }
+  }, [domainId, getDomainService?.isLoading]);
+
+  if (getDomainService?.isLoading || getFeedbackService?.isLoading)
+    return <PageLoader />;
+
   return (
     <MainPagesLayout>
       <div className=" px-8 pt-2 space-y-8">
