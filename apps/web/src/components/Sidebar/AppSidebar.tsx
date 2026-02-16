@@ -30,6 +30,7 @@ import {
   ChevronDown,
   Flag,
   Globe,
+  LayoutDashboard,
   LogOut,
   Plus,
   Settings2,
@@ -54,6 +55,11 @@ export function AppSidebar() {
   const DASHBOARD_ROUTE = `/dashboard/${domainId}`;
 
   const ROUTES = [
+    {
+      name: "Dashboard",
+      href: DASHBOARD_ROUTE,
+      icon: LayoutDashboard,
+    },
     {
       name: "Feedbacks",
       href: `${DASHBOARD_ROUTE}/feedbacks`,
@@ -174,9 +180,17 @@ export function AppSidebar() {
             <SidebarMenu className="space-y-1.5">
               {ROUTES.map((route) => {
                 const Icon = route.icon;
+                const isActive = location.pathname === route.href;
                 return (
                   <SidebarMenuItem key={route.href}>
-                    <SidebarMenuButton asChild>
+                    <SidebarMenuButton
+                      asChild
+                      className={
+                        isActive
+                          ? "bg-neutral-200 rounded-md text-neutral-700 hover:bg-neutral-300/70 hover:text-neutral-700 font-medium"
+                          : "hover:bg-neutral-300/50"
+                      }
+                    >
                       <Link to={route.href}>
                         <Icon className="size-4" />
                         <span>{route.name}</span>
