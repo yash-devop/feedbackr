@@ -24,9 +24,8 @@ const Domains = () => {
     <MainPagesLayout>
       <TopbarContainer title="Domains">
         <TopbarGroup>
-          <Button variant={"ghost"}>
-            <Plus />
-            Create Domain
+          <Button variant="default" size="sm">
+            <Plus className="size-4" /> Add Domain
           </Button>
         </TopbarGroup>
       </TopbarContainer>
