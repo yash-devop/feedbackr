@@ -14,19 +14,23 @@ export default function Dashboard() {
   const { domainId } = useParams();
   const navigate = useNavigate();
   const {
-    services: { getFeedbackService },
-    data: { feedbackMetricData },
-  } = useGetFeedbacks();
-  const {
     services: { getDomainService },
   } = useGetDomainService();
 
+  const {
+    services: { getFeedbackService },
+    data: { feedbackMetricData },
+  } = useGetFeedbacks();
+
   useEffect(() => {
+    if (!domainId || getDomainService.isLoading) return;
     if (
-      !getDomainService?.data?.data?.find((domain) => domain?.id === domainId)
+      !getDomainService?.data?.data?.some((domain) => domain?.id === domainId)
     ) {
       const newDomainId = getDomainService?.data?.data?.[0]?.id?.toString();
-      navigate(`/dashboard/${newDomainId}`);
+      if (newDomainId) {
+        navigate(`/dashboard/${newDomainId}`);
+      }
     }
   }, [domainId, getDomainService?.isLoading]);
 
