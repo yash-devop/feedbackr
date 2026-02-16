@@ -1,7 +1,7 @@
-import DashboardLayout from "@/components/Layouts/DashboardLayout.tsx";
 import { PageLayout } from "@/components/Layouts/PageLayout.tsx";
-import MainPagesLayout from "@/components/MainPagesLayout.tsx";
 import Dashboard from "@/pages/Dashboard/Dashboard.tsx";
+import { IndividualFeedbackPage } from "@/pages/Feedback/IndividualFeedbackPage.tsx";
+import { FeedbacksPage } from "@/pages/Feedbacks/FeedbacksPage.tsx";
 import { LoginPage } from "@/pages/LoginPage.tsx";
 import { createBrowserRouter } from "react-router";
 import { ProtectedRoute } from "./ProtectedRoute.tsx";
@@ -36,6 +36,14 @@ export const Router = createBrowserRouter([
           {
             path: "/dashboard/:domainId/domains",
             element: <Domains />,
+          },
+          {
+            path: "/dashboard/:domainId/feedbacks",
+            element: <FeedbacksPage />,
+          },
+          {
+            path: "/dashboard/:domainId/feedbacks/:feedbackId",
+            element: <IndividualFeedbackPage />,
           },
         ],
       },

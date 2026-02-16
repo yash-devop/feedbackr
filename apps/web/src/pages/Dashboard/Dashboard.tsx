@@ -9,6 +9,11 @@ import { useNavigate, useParams } from "react-router";
 import useGetDomainService from "@/services/getDomainService/useGetDomainService.ts";
 import { useEffect } from "react";
 import PageLoader from "@/components/Loaders/PageLoader.tsx";
+import {
+  TopbarContainer,
+  TopbarGroup,
+} from "@/components/Layouts/TopbarLayout.tsx";
+import { Button } from "@repo/ui";
 
 export default function Dashboard() {
   const { domainId } = useParams();
@@ -39,6 +44,13 @@ export default function Dashboard() {
 
   return (
     <MainPagesLayout>
+      <TopbarContainer title="Feedbacks">
+        <TopbarGroup>
+          <Button>Add domain</Button>
+          <Button>Add domain</Button>
+        </TopbarGroup>
+      </TopbarContainer>
+
       <div className="space-y-8">
         <div className="space-y-1">
           <h1 className="text-3xl font-bold tracking-tight text-slate-900">
