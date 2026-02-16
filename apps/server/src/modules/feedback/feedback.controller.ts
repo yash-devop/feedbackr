@@ -66,6 +66,21 @@ const FeedBackController = {
       message: "Feedbacks fetched successfully",
     });
   },
+
+  getFeedback: async (req: Request, res: Response) => {
+    const { domainId } = req?.query as { domainId: string };
+    if (!domainId) throw new AppError("Domain Id not found", 404, "NOT_FOUND");
+    const { feedbackId } = req?.params as { feedbackId: string };
+    const feedbackResponse = await FeedbackService.getFeedback({
+      domainId,
+      feedbackId,
+    });
+    res.jsonSuccess({
+      data: feedbackResponse,
+      status: 200,
+      message: "Feedbacks fetched successfully",
+    });
+  },
 };
 
 export { FeedBackController };

@@ -13,3 +13,4 @@ FeedbackRouter.post(
   FeedBackController.createFeedback,
 );
 FeedbackRouter.get("/", authMiddleware, FeedBackController.getFeedbacks);
+FeedbackRouter.get("/:feedbackId", authMiddleware, FeedBackController.getFeedback);
