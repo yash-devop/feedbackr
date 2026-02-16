@@ -15,7 +15,7 @@ export const CopyButton = ({ value }: { value: string }) => {
 
   return (
     <Button
-      variant="outline"
+      variant="ghost"
       size="icon-sm"
       className="h-6 w-6 ml-1 text-muted-foreground hover:text-foreground cursor-pointer"
       onClick={handleCopy}
