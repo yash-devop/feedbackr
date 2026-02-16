@@ -13,3 +13,5 @@ export * from "./ui/dropdown-menu";
 export * from "./ui/label";
 export * from "./ui/table";
 export * from "./ui/input-group";
+export * from "./ui/data-table";
+export * from "./ui/copy-button";

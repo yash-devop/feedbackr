@@ -1,9 +1,9 @@
-import { Button } from "@repo/ui";
+import { Button } from "./button";
 import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-const CopyButton = ({ value }: { value: string }) => {
+export const CopyButton = ({ value }: { value: string }) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -15,9 +15,9 @@ const CopyButton = ({ value }: { value: string }) => {
 
   return (
     <Button
-      variant="ghost"
-      size="icon"
-      className="h-6 w-6 ml-1 text-muted-foreground hover:text-foreground "
+      variant="outline"
+      size="icon-sm"
+      className="h-6 w-6 ml-1 text-muted-foreground hover:text-foreground cursor-pointer"
       onClick={handleCopy}
     >
       {copied ? (
@@ -28,5 +28,3 @@ const CopyButton = ({ value }: { value: string }) => {
     </Button>
   );
 };
-
-export default CopyButton;

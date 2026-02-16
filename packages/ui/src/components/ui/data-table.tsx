@@ -76,7 +76,7 @@ export function DataTable<TData, TValue>({
               colSpan={columns.length}
               className="h-24 text-center text-muted-foreground text-xs"
             >
-              No domains found.
+              No data found.
             </TableCell>
           </TableRow>
         )}

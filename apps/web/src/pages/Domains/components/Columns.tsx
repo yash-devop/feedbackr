@@ -1,22 +1,19 @@
-import { ColumnDef } from "@tanstack/react-table";
-import {
-  ArrowRight,
-  Edit2,
-  ExternalLink,
-  CheckCircle2,
-  XCircle,
-  AlertCircle,
-  Clock,
-  DotSquare,
-  Ellipsis,
-} from "lucide-react";
 import {
   ApiDomainStatus,
   IDomainType,
 } from "@/services/getDomainService/useGetDomainService.types.ts";
-import CopyButton from "./CopyButton.tsx";
-import { Button } from "@repo/ui";
+import { Button, CopyButton } from "@repo/ui";
+import { ColumnDef } from "@tanstack/react-table";
 import { formatDistanceToNow } from "date-fns";
+import {
+  AlertCircle,
+  ArrowRight,
+  CheckCircle2,
+  Clock,
+  Ellipsis,
+  ExternalLink,
+  XCircle,
+} from "lucide-react";
 
 export const columns: ColumnDef<IDomainType>[] = [
   {
@@ -161,16 +158,16 @@ export const columns: ColumnDef<IDomainType>[] = [
       return (
         <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <Button
-            variant="ghost"
-            className="h-7 px-2 text-[11px] text-muted-foreground hover:text-foreground"
+            variant="outline"
+            className="h-7 px-2 cursor-pointer  text-[11px] text-muted-foreground hover:text-foreground"
           >
             View
             <ArrowRight className="size-3.5 ml-1" />
           </Button>
           <Button
-            variant="ghost"
+            variant="outline"
             size="icon"
-            className="h-7 w-7 text-muted-foreground hover:text-foreground"
+            className="h-7 w-7 cursor-pointer text-muted-foreground hover:text-foreground"
           >
             <Ellipsis className="size-3.5" />
           </Button>

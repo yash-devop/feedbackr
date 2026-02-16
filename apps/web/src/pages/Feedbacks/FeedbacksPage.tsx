@@ -3,22 +3,52 @@ import {
   TopbarContainer,
   TopbarGroup,
 } from "@/components/Layouts/TopbarLayout.tsx";
+import PageLoader from "@/components/Loaders/PageLoader.tsx";
 import MainPagesLayout from "@/components/MainPagesLayout.tsx";
-import { cn } from "@/lib/utils.ts";
+import useGetFeedbackService from "@/services/getFeedbackService/useGetFeedbackService.ts";
 import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
+  DataTable,
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
 } from "@repo/ui";
-import { Funnel, SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
+import { useParams } from "react-router";
+import { columns } from "./components/Columns.tsx";
 
 export const FeedbacksPage = () => {
-  const filterOptions = ["pending", "resolved", "done"] as const;
+  // const filterOptions = ["pending", "resolved", "done"] as const;
+
+  const params = useParams<{ domainId: string }>();
+  const {
+    services: { getFeedbackService },
+  } = useGetFeedbackService({
+    domainId: params.domainId ?? "",
+  });
+
+  const feedbackData = getFeedbackService?.data?.data || [];
+
+  if (getFeedbackService?.isLoading) return <PageLoader />;
+
+  const dummyData = [
+    {
+      id: "1",
+      email: "yashkamble.dev@gmail.com",
+      message:
+        "Sir, This window is throwing unexpected error message everytime i visit it. How can you guys never ever checked this page ? This is soo frustrating man !",
+      clientContext: { os: "windows", browser: "chrome" },
+      createdAt: "2026-02-05T09:23:41.321Z",
+      updatedAt: "2026-02-14T17:52:10.874Z",
+      debugContext: { logs: [] },
+      images: [
+        "https://unsplash.com/photos/athletes-resting-on-a-track-after-training-D43JYb0yTKU",
+      ],
+      status: "PENDING",
+      domainId: "",
+      url: "https://unsplash.com/",
+      domain: { name: "", status: "" },
+    },
+  ];
   return (
     <>
       <MainPagesLayout>
@@ -33,7 +63,7 @@ export const FeedbacksPage = () => {
                 <SearchIcon />
               </InputGroupAddon>
             </InputGroup>
-            <DropdownMenu>
+            {/* <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant={"outline"}
@@ -62,10 +92,20 @@ export const FeedbacksPage = () => {
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
-            </DropdownMenu>
+            </DropdownMenu> */}
           </TopbarGroup>
         </TopbarContainer>
-        <SectionLayout>NEWWWW</SectionLayout>
+        <SectionLayout>
+          <div className="space-y-8">
+            <div className="border border-border rounded-md">
+              <DataTable
+                columns={columns}
+                data={feedbackData}
+                // data={feedbackData}
+              />
+            </div>
+          </div>
+        </SectionLayout>
       </MainPagesLayout>
     </>
   );
