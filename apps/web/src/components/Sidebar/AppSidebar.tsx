@@ -26,7 +26,14 @@ import {
   SidebarTrigger,
 } from "@repo/ui";
 import { FeedbackrLogo } from "@repo/ui/icons";
-import { ChevronDown, Flag, Globe, LogOut, Settings2 } from "lucide-react";
+import {
+  ChevronDown,
+  Flag,
+  Globe,
+  LogOut,
+  Plus,
+  Settings2,
+} from "lucide-react";
 import { useNavigate, useParams } from "react-router";
 
 export function AppSidebar() {
@@ -99,7 +106,17 @@ export function AppSidebar() {
             className="w-[270px] border-border"
           >
             <DropdownMenuGroup>
-              {/* TODOS: create seperate sections */}
+              {/* <DropdownMenuLabel
+                asChild
+                className="text-xs text-foreground/70 pb-2.5"
+              >
+                <div
+                  data-section="domain"
+                  className="flex items-center justify-between gap-x-2  text-neutral-400 font-normal"
+                >
+                  <p className="uppercase">Domains</p>
+                </div>
+              </DropdownMenuLabel> */}
               {domains.map((itemUnit, idx) => {
                 const isActive = params.domainId === itemUnit.id;
                 return (
@@ -127,23 +144,25 @@ export function AppSidebar() {
                   </>
                 );
               })}
-              {/* <DropdownMenuSeparator />
-
-              <DropdownMenuLabel asChild className="text-xs text-foreground/70">
-                <div
-                  data-section="domain"
-                  className="flex items-center justify-between gap-x-2  text-neutral-400 font-normal"
-                >
-                  <p>My Domains</p>
-                  <Badge
-                    variant={"outline"}
-                    className="border-dashed font-medium capitalize text-primary"
-                  >
-                    3
-                  </Badge>
-                </div>
-              </DropdownMenuLabel> */}
             </DropdownMenuGroup>
+            <DropdownMenuSeparator className="p-0" />
+            <DropdownMenuItem
+              asChild
+              className={cn(
+                `focus:bg-neutral-200 text-neutral-700! hover:bg-muted! hover:text-neutral-700! font-medium group  cursor-pointer`,
+              )}
+              onClick={() => {
+                alert("yes");
+              }}
+            >
+              <div
+                data-section="domain"
+                className="flex items-center justify-center gap-x-1  text-neutral-400 font-normal"
+              >
+                <Plus size={18} className="mb-px" />
+                <p className="text-xs">Create a domain</p>
+              </div>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarHeader>
