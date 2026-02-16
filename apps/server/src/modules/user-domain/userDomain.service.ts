@@ -51,6 +51,11 @@ export const UserDomainService = {
       where: {
         userId,
       },
+      include: {
+        _count: {
+          select: { feedback: true },
+        },
+      },
     });
   },
   getDomain: async (domainId: string) => {

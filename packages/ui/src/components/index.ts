@@ -11,3 +11,4 @@ export * from "./ui/card";
 export * from "./ui/badge";
 export * from "./ui/dropdown-menu";
 export * from "./ui/label";
+export * from "./ui/table";

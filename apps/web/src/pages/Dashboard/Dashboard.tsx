@@ -1,14 +1,14 @@
-import PageLoader from "@/components/Loaders/PageLoader.tsx";
 import MainPagesLayout from "@/components/MainPagesLayout.tsx";
-import useGetFeedbacks from "@/hooks/useGetFeedbacks.ts";
-import useGetDomainService from "@/services/getDomainService/useGetDomainService.ts";
-import { CheckCircle2, CircleDashed, Clock, Inbox } from "lucide-react";
-import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router";
-import { BrowserStats } from "./components/BrowserStatsCard.tsx";
 import { MetricCard } from "./components/MetricCard.tsx";
+import { CheckCircle2, CircleDashed, Clock, Inbox } from "lucide-react";
 import { MostFeedbackPagesCard } from "./components/MostFeedbackPagesCard.tsx";
+import { BrowserStats } from "./components/BrowserStatsCard.tsx";
 import { RecentFeedbacks } from "./components/RecentFeedbacks.tsx";
+import useGetFeedbacks from "@/hooks/useGetFeedbacks.ts";
+import { useNavigate, useParams } from "react-router";
+import useGetDomainService from "@/services/getDomainService/useGetDomainService.ts";
+import { useEffect } from "react";
+import PageLoader from "@/components/Loaders/PageLoader.tsx";
 
 export default function Dashboard() {
   const { domainId } = useParams();
@@ -39,7 +39,7 @@ export default function Dashboard() {
 
   return (
     <MainPagesLayout>
-      <div className=" px-8 pt-2 space-y-8">
+      <div className="space-y-8">
         <div className="space-y-1">
           <h1 className="text-3xl font-bold tracking-tight text-slate-900">
             Dashboard
