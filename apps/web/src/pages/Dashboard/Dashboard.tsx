@@ -14,6 +14,7 @@ import {
   TopbarGroup,
 } from "@/components/Layouts/TopbarLayout.tsx";
 import { Button } from "@repo/ui";
+import { SectionLayout } from "@/components/Layouts/SectionLayout.tsx";
 
 export default function Dashboard() {
   const { domainId } = useParams();
@@ -44,14 +45,14 @@ export default function Dashboard() {
 
   return (
     <MainPagesLayout>
-      <TopbarContainer title="Feedbacks">
+      <TopbarContainer title="Dashboard">
         <TopbarGroup>
           <Button>Add domain</Button>
           <Button>Add domain</Button>
         </TopbarGroup>
       </TopbarContainer>
 
-      <div className="space-y-8">
+      <SectionLayout>
         <div className="space-y-1">
           <h1 className="text-3xl font-bold tracking-tight text-slate-900">
             Dashboard
@@ -94,7 +95,8 @@ export default function Dashboard() {
           <BrowserStats />
         </div>
         <RecentFeedbacks />
-      </div>
+      </SectionLayout>
     </MainPagesLayout>
   );
 }
+//  px-6 py-4
