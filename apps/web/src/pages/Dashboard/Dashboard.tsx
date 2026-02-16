@@ -4,12 +4,10 @@ import { CheckCircle2, CircleDashed, Clock, Inbox } from "lucide-react";
 import { MostFeedbackPagesCard } from "./components/MostFeedbackPagesCard.tsx";
 import { BrowserStats } from "./components/BrowserStatsCard.tsx";
 import { RecentFeedbacks } from "./components/RecentFeedbacks.tsx";
-import useGetFeedbackService from "@/services/getFeedbackService/useGetFeedbackService.ts";
 import useGetFeedbacks from "@/hooks/useGetFeedbacks.ts";
 import { useNavigate, useParams } from "react-router";
 import useGetDomainService from "@/services/getDomainService/useGetDomainService.ts";
 import { useEffect } from "react";
-import { Spinner } from "@repo/ui";
 import PageLoader from "@/components/Loaders/PageLoader.tsx";
 
 export default function Dashboard() {
@@ -37,7 +35,7 @@ export default function Dashboard() {
 
   return (
     <MainPagesLayout>
-      <div className=" px-8 pt-2 space-y-8">
+      <div className="space-y-8">
         <div className="space-y-1">
           <h1 className="text-3xl font-bold tracking-tight text-slate-900">
             Dashboard
