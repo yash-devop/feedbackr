@@ -42,6 +42,24 @@ const FeedbackService = {
       },
     });
   },
+  getFeedback: async ({
+    feedbackId,
+    domainId,
+  }: {
+    feedbackId: string;
+    domainId: string;
+  }) => {
+    return await prisma?.feedback?.findFirst({
+      where: {
+        domainId: domainId,
+        id: feedbackId,
+      },
+      include: {
+        images: true,
+        domain: { select: { name: true, status: true } },
+      },
+    });
+  },
 };
 
 export { FeedbackService };
