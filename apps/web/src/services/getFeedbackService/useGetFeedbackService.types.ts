@@ -29,7 +29,7 @@ interface IFeedback {
   domain: IDomain;
 }
 
-interface IFeedbackResponse {
+interface IFeedbacksResponse {
   data: IFeedback[];
   message: string;
 }
@@ -39,6 +39,6 @@ export type {
   IDebugContext,
   IDomain,
   IFeedback,
-  IFeedbackResponse,
-  TFeedbackStatus
+  IFeedbacksResponse,
+  TFeedbackStatus,
 };
