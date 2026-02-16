@@ -1,34 +1,36 @@
-import MainPagesLayout from "@/components/MainPagesLayout.tsx";
-import { MetricCard } from "./components/MetricCard.tsx";
-import { CheckCircle2, CircleDashed, Clock, Inbox } from "lucide-react";
-import { MostFeedbackPagesCard } from "./components/MostFeedbackPagesCard.tsx";
-import { BrowserStats } from "./components/BrowserStatsCard.tsx";
-import { RecentFeedbacks } from "./components/RecentFeedbacks.tsx";
-import useGetFeedbackService from "@/services/getFeedbackService/useGetFeedbackService.ts";
-import useGetFeedbacks from "@/hooks/useGetFeedbacks.ts";
-import { useNavigate, useParams } from "react-router";
-import useGetDomainService from "@/services/getDomainService/useGetDomainService.ts";
-import { useEffect } from "react";
-import { Spinner } from "@repo/ui";
 import PageLoader from "@/components/Loaders/PageLoader.tsx";
+import MainPagesLayout from "@/components/MainPagesLayout.tsx";
+import useGetFeedbacks from "@/hooks/useGetFeedbacks.ts";
+import useGetDomainService from "@/services/getDomainService/useGetDomainService.ts";
+import { CheckCircle2, CircleDashed, Clock, Inbox } from "lucide-react";
+import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router";
+import { BrowserStats } from "./components/BrowserStatsCard.tsx";
+import { MetricCard } from "./components/MetricCard.tsx";
+import { MostFeedbackPagesCard } from "./components/MostFeedbackPagesCard.tsx";
+import { RecentFeedbacks } from "./components/RecentFeedbacks.tsx";
 
 export default function Dashboard() {
   const { domainId } = useParams();
   const navigate = useNavigate();
   const {
-    services: { getFeedbackService },
-    data: { feedbackMetricData },
-  } = useGetFeedbacks();
-  const {
     services: { getDomainService },
   } = useGetDomainService();
 
+  const {
+    services: { getFeedbackService },
+    data: { feedbackMetricData },
+  } = useGetFeedbacks();
+
   useEffect(() => {
+    if (!domainId || getDomainService.isLoading) return;
     if (
-      !getDomainService?.data?.data?.find((domain) => domain?.id === domainId)
+      !getDomainService?.data?.data?.some((domain) => domain?.id === domainId)
     ) {
       const newDomainId = getDomainService?.data?.data?.[0]?.id?.toString();
-      navigate(`/dashboard/${newDomainId}`);
+      if (newDomainId) {
+        navigate(`/dashboard/${newDomainId}`);
+      }
     }
   }, [domainId, getDomainService?.isLoading]);
 
