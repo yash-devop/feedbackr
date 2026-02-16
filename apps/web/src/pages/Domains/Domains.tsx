@@ -2,7 +2,6 @@ import PageLoader from "@/components/Loaders/PageLoader.tsx";
 import MainPagesLayout from "@/components/MainPagesLayout.tsx";
 import useGetDomainService from "@/services/getDomainService/useGetDomainService.ts";
 import { columns } from "./components/Columns.tsx";
-import { Button, Table } from "@repo/ui";
 import { DataTable } from "./components/DataTable.tsx";
 import { Plus } from "lucide-react";
 import { SectionLayout } from "@/components/Layouts/SectionLayout.tsx";
@@ -10,6 +9,7 @@ import {
   TopbarContainer,
   TopbarGroup,
 } from "@/components/Layouts/TopbarLayout.tsx";
+import { Button } from "@repo/ui";
 
 const Domains = () => {
   const {
