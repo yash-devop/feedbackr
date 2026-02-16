@@ -18,8 +18,13 @@ export const UserDomainController = {
     const userId = req.session.userId;
     const domains = await UserDomainService.getDomains(userId);
 
+    const data = domains?.map((domain) => {
+      const { _count, ...restData } = domain;
+      return { ...restData, feedbacksCount: _count?.feedback };
+    });
+
     return res.jsonSuccess({
-      data: domains,
+      data: data,
       message: `Domains fetched successfully !`,
       status: 200,
     });
