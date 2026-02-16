@@ -24,28 +24,13 @@ const Domains = () => {
     <MainPagesLayout>
       <TopbarContainer title="Domains">
         <TopbarGroup>
-          <Button>
-            <Plus />
-            Create Domain
+          <Button variant="default" size="sm">
+            <Plus className="size-4" /> Add Domain
           </Button>
         </TopbarGroup>
       </TopbarContainer>
       <SectionLayout>
         <div className="space-y-8">
-          <div className="space-y-1 flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight text-slate-900">
-                Registered Domains
-              </h1>
-              <p className="text-muted-foreground">
-                Manage domains collecting feedback
-              </p>
-            </div>
-            <Button variant="outline">
-              <Plus className="size-4" /> Add Domain
-            </Button>
-          </div>
-
           <div className="border border-border rounded-md">
             <DataTable columns={columns} data={domainsData} />
           </div>

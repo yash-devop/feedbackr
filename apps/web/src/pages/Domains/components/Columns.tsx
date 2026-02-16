@@ -72,7 +72,7 @@ export const columns: ColumnDef<IDomainType>[] = [
         "..." +
         clientId?.substring(clientId?.length - 10, clientId?.length - 1);
       return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-32">
           <div className="flex text-xs font-mono text-muted-foreground bg-muted/50 px-1.5 py-0.5 rounded border border-transparent">
             <span>client_{toShow}</span>
           </div>
@@ -95,7 +95,7 @@ export const columns: ColumnDef<IDomainType>[] = [
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: () => <div className="w-full text-center">Status</div>,
     cell: ({ row }) => {
       const status = row.getValue("status") as ApiDomainStatus;
 
@@ -125,7 +125,7 @@ export const columns: ColumnDef<IDomainType>[] = [
       const { icon: Icon, color, label } = config[status] || config.INACTIVE;
 
       return (
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center justify-center gap-1.5">
           <Icon className={`size-3.5 ${color}`} />
           <span className="text-xs text-muted-foreground capitalize">
             {label}
@@ -137,14 +137,14 @@ export const columns: ColumnDef<IDomainType>[] = [
 
   {
     accessorKey: "updatedAt",
-    header: "Last Activity",
+    header: () => <div className="w-full text-center">Last Activity</div>,
     cell: ({ row }) => {
       const dateStr = row.getValue("updatedAt") as string;
       if (!dateStr)
         return <span className="text-xs text-muted-foreground">-</span>;
 
       return (
-        <div className="flex items-center gap-1.5 text-muted-foreground">
+        <div className="flex items-center justify-center gap-1.5 text-muted-foreground">
           <Clock className="size-3" />
           <span className="text-xs">
             {formatDistanceToNow(new Date(dateStr), { addSuffix: true })}
