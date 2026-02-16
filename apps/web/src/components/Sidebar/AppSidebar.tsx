@@ -34,7 +34,7 @@ import {
   Plus,
   Settings2,
 } from "lucide-react";
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 
 export function AppSidebar() {
   const { signOut, userSession } = useAuth();
@@ -120,7 +120,7 @@ export function AppSidebar() {
               {domains.map((itemUnit, idx) => {
                 const isActive = params.domainId === itemUnit.id;
                 return (
-                  <>
+                  <div key={itemUnit.id}>
                     <DropdownMenuItem
                       asChild
                       className={cn(
@@ -141,7 +141,7 @@ export function AppSidebar() {
                       </div>
                     </DropdownMenuItem>
                     {idx !== domains.length - 1 && <DropdownMenuSeparator />}
-                  </>
+                  </div>
                 );
               })}
             </DropdownMenuGroup>
@@ -175,16 +175,14 @@ export function AppSidebar() {
               {ROUTES.map((route) => {
                 const Icon = route.icon;
                 return (
-                  <>
-                    <SidebarMenuItem key={route.href}>
-                      <SidebarMenuButton asChild>
-                        <a href={route.href}>
-                          <Icon className="size-4" />
-                          <span>{route.name}</span>
-                        </a>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  </>
+                  <SidebarMenuItem key={route.href}>
+                    <SidebarMenuButton asChild>
+                      <Link to={route.href}>
+                        <Icon className="size-4" />
+                        <span>{route.name}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
                 );
               })}
             </SidebarMenu>
