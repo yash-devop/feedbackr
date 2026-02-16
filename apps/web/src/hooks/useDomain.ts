@@ -1,3 +1,4 @@
+import useGetDomainService from "@/services/getDomainService/useGetDomainService.ts";
 import { IDomainResponse } from "@/services/getDomainService/useGetDomainService.types.ts";
 import { handleGlobalPostRequest } from "@/utils/httpFuntions.ts";
 import { TDomainPayload } from "@repo/common/schemas";
@@ -8,6 +9,11 @@ import { toast } from "sonner";
 
 export const useDomain = () => {
   const navigate = useNavigate();
+
+  const {
+    services: { getDomainService },
+  } = useGetDomainService();
+
   const createDomainMutation = useMutation<
     IDomainResponse,
     AxiosError<{
@@ -40,6 +46,8 @@ export const useDomain = () => {
     },
   });
 
+  const domains = getDomainService.data?.data || [];
+
   const createDomainHandler = (data: TDomainPayload) => {
     createDomainMutation.mutate(data);
   };
@@ -50,6 +58,9 @@ export const useDomain = () => {
     },
     handler: {
       createDomainHandler,
+    },
+    data: {
+      domains,
     },
   };
 };

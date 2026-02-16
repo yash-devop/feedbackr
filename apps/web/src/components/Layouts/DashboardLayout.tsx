@@ -4,7 +4,7 @@ import { AppSidebar } from "../Sidebar/AppSidebar.tsx";
 
 const DashboardLayout = () => {
   return (
-    <SidebarProvider className="w-full h-screen flex bg-muted">
+    <SidebarProvider className="w-full h-screen flex bg-muted/80">
       <AppSidebar />
       <main className="flex-1 p-2 overflow-hidden w-full">
         <Outlet />
