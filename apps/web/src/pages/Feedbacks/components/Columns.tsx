@@ -86,7 +86,7 @@ export const columns: ColumnDef<IFeedback>[] = [
             rel="noreferrer"
             className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
           >
-            {new URL(url).hostname}
+            {url}
             <ExternalLink className="size-3" />
           </a>
           <CopyButton value={url} />
@@ -153,7 +153,6 @@ export const columns: ColumnDef<IFeedback>[] = [
     cell: ({ row }) => {
       const feedbackId = row.original.id;
       const { domainId } = useParams<{ domainId: string }>();
-      console.log("feedbackId", feedbackId);
       return (
         <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <Button
