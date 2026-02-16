@@ -8,6 +8,7 @@ import { ProtectedRoute } from "./ProtectedRoute.tsx";
 import { AuthCallbackPage } from "@/pages/AuthCallbackPage.tsx";
 import { OnboardingCreateDomainPage } from "@/pages/OnboardingCreateDomainPage.tsx";
 import Domains from "@/pages/Domains/Domains.tsx";
+import Settings from "@/pages/Settings/Settings.tsx";
 export const Router = createBrowserRouter([
   {
     path: "/",
@@ -44,6 +45,10 @@ export const Router = createBrowserRouter([
           {
             path: "/dashboard/:domainId/feedbacks/:feedbackId",
             element: <IndividualFeedbackPage />,
+          },
+          {
+            path: "/dashboard/:domainId/settings/",
+            element: <Settings />,
           },
         ],
       },

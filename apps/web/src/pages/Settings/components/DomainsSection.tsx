@@ -1,0 +1,201 @@
+import { cn } from "@/lib/utils.ts";
+import { IDomainType } from "@/services/getDomainService/useGetDomainService.types.ts";
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  Input,
+  Label,
+  Switch,
+} from "@repo/ui";
+import { Check, ChevronDown, Copy, Globe, Plus } from "lucide-react";
+import { toast } from "sonner";
+
+interface DomainsSectionProps {
+  domains: IDomainType[];
+  selectedDomain: IDomainType | undefined;
+  setSelectedDomainId: (id: string) => void;
+  onStatusChange: (id: string, checked: boolean) => void;
+  copyToClipboard: (text: string, label: string) => void;
+}
+
+export const DomainsSection = ({
+  domains,
+  selectedDomain,
+  setSelectedDomainId,
+  onStatusChange,
+  copyToClipboard,
+}: DomainsSectionProps) => {
+  const clientId = selectedDomain?.clientId || "";
+  const embedSnippet = selectedDomain
+    ? `<script src="https://cdn.feedbackwidget.io/v1/widget.js" data-client-id="${selectedDomain.clientId}"></script>`
+    : "";
+
+  const isActive = selectedDomain?.status === "ACTIVE";
+
+  return (
+    <section className="space-y-6">
+      <div>
+        <h2 className="text-sm font-medium text-foreground">Domains</h2>
+        <p className="text-xs text-muted-foreground mt-1">
+          Manage domains and view installation credentials
+        </p>
+      </div>
+
+      <div className="space-y-5">
+        <div className="space-y-2">
+          <Label className="text-xs text-foreground">Select domain</Label>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant={"outline"}
+                className="flex items-center justify-between gap-x-3 w-full hover:text-foreground/80 cursor-pointer h-10 px-3 bg-background"
+                disabled={domains.length === 0}
+              >
+                <div className="flex items-center justify-between w-full">
+                  <div className="flex items-center gap-2">
+                    {selectedDomain ? (
+                      <>
+                        <p className="text-sm text-foreground/80 font-medium">
+                          {selectedDomain.name || selectedDomain.url}
+                        </p>
+                      </>
+                    ) : (
+                      <span className="text-muted-foreground text-sm">
+                        Select a domain
+                      </span>
+                    )}
+                  </div>
+                  <ChevronDown className="h-4 w-4 opacity-50" />
+                </div>
+              </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent
+              align="start"
+              className="w-(--radix-dropdown-menu-trigger-width) min-w-[300px] border-border p-1"
+            >
+              <DropdownMenuGroup>
+                {domains.map((domain, idx) => {
+                  const isSelected = selectedDomain?.id === domain.id;
+                  return (
+                    <div key={domain.id}>
+                      <DropdownMenuItem
+                        className={cn(
+                          `focus:bg-neutral-200 text-neutral-700! hover:bg-muted! hover:text-neutral-700! font-medium group cursor-pointer py-2`,
+                          isSelected &&
+                            "bg-secondary! text-primary! [&_svg]:text-primary!",
+                        )}
+                        onClick={() => setSelectedDomainId(domain.id)}
+                      >
+                        <div className="flex justify-between w-full items-center">
+                          <div className="flex items-center gap-x-2">
+                            <Globe className="size-[13px]" />
+                            <p className="text-xs font-medium">{domain.name}</p>
+                          </div>
+                          <p className="font-normal text-xs text-muted-foreground group-hover:text-neutral-700">
+                            {domain.url}
+                          </p>
+                        </div>
+                      </DropdownMenuItem>
+                      {idx !== domains.length - 1 && <DropdownMenuSeparator />}
+                    </div>
+                  );
+                })}
+              </DropdownMenuGroup>
+
+              <DropdownMenuSeparator className="my-1" />
+
+              <DropdownMenuItem
+                className={cn(
+                  `focus:bg-neutral-200 text-neutral-700! hover:bg-muted! hover:text-neutral-700! font-medium group cursor-pointer py-2`,
+                )}
+                onClick={() => toast.info("Add domain modal would open here")}
+              >
+                <div
+                  data-section="domain"
+                  className="flex items-center justify-center gap-x-1 w-full text-neutral-400 font-normal"
+                >
+                  <Plus size={14} className="mb-px" />
+                  <p className="text-xs">Create a domain</p>
+                </div>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        {selectedDomain ? (
+          <>
+            <div className="flex items-center justify-between py-1 my-2">
+              <div>
+                <Label className="text-xs text-foreground">Enable domain</Label>
+                <p className="text-[11px] text-muted-foreground mt-0.5">
+                  Allow this domain to collect feedback
+                </p>
+              </div>
+              <Switch
+                checked={isActive}
+                onCheckedChange={(checked) =>
+                  onStatusChange(selectedDomain.id, checked)
+                }
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-xs text-foreground">Client ID</Label>
+              <div className="flex gap-2">
+                <Input
+                  value={clientId}
+                  readOnly
+                  className="h-9 text-sm font-mono bg-muted/50 text-muted-foreground"
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-9 text-xs gap-1.5 min-w-20"
+                  onClick={() => copyToClipboard(clientId, "Client ID")}
+                >
+                  <Copy className="h-3.5 w-3.5" />
+                  Copy
+                </Button>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-xs text-foreground">
+                Installation snippet
+              </Label>
+              <div className="relative group">
+                <pre className="text-[11px] font-mono bg-neutral-950 text-neutral-300 p-4 rounded-md border border-neutral-800 overflow-x-auto">
+                  {embedSnippet}
+                </pre>
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  className="absolute top-2 right-2 h-7 text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"
+                  onClick={() => copyToClipboard(embedSnippet, "Snippet")}
+                >
+                  <Copy className="h-3 w-3 mr-1" />
+                  Copy
+                </Button>
+              </div>
+              <p className="text-[11px] text-muted-foreground">
+                Add this script before the closing <code>&lt;/body&gt;</code>{" "}
+                tag
+              </p>
+            </div>
+          </>
+        ) : (
+          <div className="flex flex-col items-center justify-center h-32 border border-dashed rounded-md bg-muted/10 text-muted-foreground text-sm">
+            <p>No domain selected</p>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
