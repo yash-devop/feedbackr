@@ -20,7 +20,7 @@ export const AuthCallbackPage = () => {
     } else {
       navigate("/onboarding/create-domain");
     }
-  }, [getDomainExistService, navigate]);
+  }, [getDomainExistService?.isLoading, navigate]);
 
   return (
     <>
