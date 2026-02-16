@@ -2,18 +2,19 @@ import { ApiResponse } from "@repo/common/types";
 
 export type ApiDomainStatus = "ACTIVE" | "INACTIVE" | "PAUSED";
 
-export interface Domain {
+export interface IDomainType {
   id: string;
   clientId: string;
   name: string;
   url: string;
   userId: string;
   status: ApiDomainStatus;
+  feedbacksCount: number;
   createdAt: string;
   updatedAt: string;
 }
 
-export type IGetDomainsResponse = ApiResponse<Domain[]>;
+export type IGetDomainsResponse = ApiResponse<IDomainType[]>;
 
 interface IDomainResponse {
   data: {
