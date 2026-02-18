@@ -22,7 +22,7 @@ export const CreateDomainForm = () => {
 
   return (
     <form
-      onSubmit={handleSubmit(createDomainHandler)}
+      onSubmit={handleSubmit((data) => createDomainHandler({ data }))}
       className="flex flex-col gap-7 w-full"
     >
       <div className="flex flex-col gap-y-1.5">

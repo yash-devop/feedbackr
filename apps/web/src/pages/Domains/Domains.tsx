@@ -10,6 +10,7 @@ import {
 } from "@/components/Layouts/TopbarLayout.tsx";
 import { Button } from "@repo/ui";
 import { columns } from "./components/Columns.tsx";
+import CreateDomainModal from "./components/CreateDomainModal.tsx";
 
 const Domains = () => {
   const {
@@ -24,9 +25,7 @@ const Domains = () => {
     <MainPagesLayout>
       <TopbarContainer title="Domains">
         <TopbarGroup>
-          <Button variant="default" size="sm">
-            <Plus className="size-4" /> Add Domain
-          </Button>
+          <CreateDomainModal />
         </TopbarGroup>
       </TopbarContainer>
       <SectionLayout>
