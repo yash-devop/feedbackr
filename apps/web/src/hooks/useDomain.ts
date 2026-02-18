@@ -48,8 +48,14 @@ export const useDomain = () => {
 
   const domains = getDomainService.data?.data || [];
 
-  const createDomainHandler = (data: TDomainPayload) => {
-    createDomainMutation.mutate(data);
+  const createDomainHandler = ({
+    data,
+    callback,
+  }: {
+    data: TDomainPayload;
+    callback?: (data: IDomainResponse) => void;
+  }) => {
+    createDomainMutation.mutateAsync(data)?.then((data) => callback?.(data));
   };
 
   return {
