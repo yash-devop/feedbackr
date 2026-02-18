@@ -1,6 +1,7 @@
 import { useAuth } from "@/features/auth/hooks.ts";
 import { useDomain } from "@/hooks/useDomain.ts";
 import { cn } from "@/lib/utils.ts";
+import CreateDomainModal from "@/pages/Domains/components/CreateDomainModal.tsx";
 import {
   Avatar,
   AvatarFallback,
@@ -152,23 +153,26 @@ export function AppSidebar() {
               })}
             </DropdownMenuGroup>
             <DropdownMenuSeparator className="p-0" />
-            <DropdownMenuItem
-              asChild
-              className={cn(
-                `focus:bg-neutral-200 text-neutral-700! hover:bg-muted! hover:text-neutral-700! font-medium group  cursor-pointer`,
-              )}
-              onClick={() => {
-                alert("yes");
-              }}
-            >
-              <div
-                data-section="domain"
-                className="flex items-center justify-center gap-x-1  text-neutral-400 font-normal"
-              >
-                <Plus size={18} className="mb-px" />
-                <p className="text-xs">Create a domain</p>
-              </div>
-            </DropdownMenuItem>
+
+            <CreateDomainModal
+              trigger={
+                <DropdownMenuItem
+                  asChild
+                  onSelect={(e) => e.preventDefault()}
+                  className={cn(
+                    `focus:bg-neutral-200 text-neutral-700! hover:bg-muted! hover:text-neutral-700! font-medium group  cursor-pointer`,
+                  )}
+                >
+                  <div
+                    data-section="domain"
+                    className="flex items-center justify-center gap-x-1  text-neutral-400 font-normal"
+                  >
+                    <Plus size={18} className="mb-px" />
+                    <p className="text-xs">Create a domain</p>
+                  </div>
+                </DropdownMenuItem>
+              }
+            />
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarHeader>
