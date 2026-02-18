@@ -20,7 +20,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 
-export default function CreateDomainModal() {
+interface CreateDomainModalProps {
+  trigger?: React.ReactNode;
+}
+
+export default function CreateDomainModal({ trigger }: CreateDomainModalProps) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const {
@@ -34,7 +38,6 @@ export default function CreateDomainModal() {
   });
 
   const {
-    mutations: { createDomainMutation },
     handler: { createDomainHandler },
   } = useDomain();
 
@@ -68,9 +71,13 @@ export default function CreateDomainModal() {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="default" size="sm">
-          <Plus className="size-4 mr-2" /> Add Domain
-        </Button>
+        {trigger ? (
+          trigger
+        ) : (
+          <Button variant="default" size="sm">
+            <Plus className="size-4 mr-2" /> Add Domain
+          </Button>
+        )}
       </DialogTrigger>
 
       <DialogOverlay className="bg-transparent backdrop-blur-[2px]" />
