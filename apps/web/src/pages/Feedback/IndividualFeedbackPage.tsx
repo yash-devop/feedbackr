@@ -6,13 +6,11 @@ import {
 import MainPagesLayout from "@/components/MainPagesLayout.tsx";
 import { cn } from "@/lib/utils.ts";
 import useGetIndividualFeedbackService from "@/services/getIndividualFeedbackService/useGetIndividualFeedbackService.ts";
-import { Button } from "@repo/ui";
-import { Trash } from "lucide-react";
 import { useParams } from "react-router";
+import { CommentSection } from "./components/CommentSection.tsx";
+import { FeedbackDeleteSection } from "./components/FeedbackDeleteSection.tsx";
 import { PriorityFilter } from "./components/PriorityFilter.tsx";
 import { StatusFilter } from "./components/StatusFilter.tsx";
-import { CommentSection } from "./components/CommentSection.tsx";
-import { useDeleteFeedback } from "@/hooks/useDeleteFeedback.ts";
 
 export const IndividualFeedbackPage = () => {
   const { domainId, feedbackId } = useParams<{
@@ -26,10 +24,6 @@ export const IndividualFeedbackPage = () => {
     feedbackId: feedbackId ?? "",
   });
 
-  const {
-    mutations: { deleteFeedbackMutation },
-  } = useDeleteFeedback();
-
   return (
     <>
       <MainPagesLayout>
@@ -37,17 +31,8 @@ export const IndividualFeedbackPage = () => {
           <TopbarGroup>
             <StatusFilter />
             <PriorityFilter />
-            <Button
-              variant={"destructive"}
-              size={"sm"}
-              className="cursor-pointer"
-              onClick={() => {
-                deleteFeedbackMutation.mutate();
-              }}
-            >
-              <Trash />
-              Delete Permanently
-            </Button>
+
+            <FeedbackDeleteSection />
           </TopbarGroup>
         </TopbarContainer>
         <SectionLayout>
