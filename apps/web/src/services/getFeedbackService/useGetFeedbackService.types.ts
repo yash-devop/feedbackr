@@ -12,7 +12,8 @@ interface IDomain {
   status: string;
 }
 
-type TFeedbackStatus = "PENDING" | "RESOLVED" | "REJECTED" | "INVALID";
+type TFeedbackStatus = "PENDING" | "RESOLVED" | "REJECTED" | "INVALID" | "NIL";
+type TPriorityStatus = "URGENT" | "LOW" | "MEDIUM" | "HIGH" | "NIL";
 
 interface IFeedback {
   id: string;
@@ -20,6 +21,8 @@ interface IFeedback {
   message: string;
   email: string;
   status: TFeedbackStatus;
+  priority: TPriorityStatus;
+  comment: string;
   createdAt: string;
   updatedAt: string;
   clientContext: IClientContext;
@@ -41,4 +44,5 @@ export type {
   IFeedback,
   IFeedbacksResponse,
   TFeedbackStatus,
+  TPriorityStatus,
 };

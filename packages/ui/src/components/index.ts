@@ -17,3 +17,4 @@ export * from "./ui/data-table";
 export * from "./ui/copy-button";
 export * from "./ui/switch";
 export * from "./ui/dialog";
+export * from "./ui/textarea";

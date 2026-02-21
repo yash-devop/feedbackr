@@ -9,7 +9,7 @@ const useGetFeedbackService = ({ domainId }: { domainId: string }) => {
     queryKey: [CACHE_KEYS?.GET_FEEDBACKS, domainId],
     queryFn: () =>
       handleGlobalGetRequestQuery({
-        url: API_URLS?.GET_FEEDBACKS,
+        url: API_URLS?.FEEDBACK,
         searchParams: { domainId: domainId },
       }),
     enabled: !!domainId,

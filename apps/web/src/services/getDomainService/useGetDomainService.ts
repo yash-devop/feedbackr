@@ -7,7 +7,7 @@ import { IGetDomainsResponse } from "./useGetDomainService.types.ts";
 const useGetDomainService = () => {
   const getDomainService = useQuery<IGetDomainsResponse>({
     queryKey: [CACHE_KEYS?.GET_DOMAINS],
-    queryFn: () => handleGlobalGetRequestQuery({ url: API_URLS?.GET_DOMAINS }),
+    queryFn: () => handleGlobalGetRequestQuery({ url: API_URLS?.DOMAIN }),
   });
 
   return {

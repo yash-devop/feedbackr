@@ -15,7 +15,7 @@ const useGetIndividualFeedbackService = ({
     queryKey: [CACHE_KEYS?.GET_FEEDBACK, domainId, feedbackId],
     queryFn: () =>
       handleGlobalGetRequestQuery({
-        url: `${API_URLS?.GET_FEEDBACKS}/${feedbackId}`,
+        url: `${API_URLS?.FEEDBACK}/${feedbackId}`,
         searchParams: { domainId: domainId },
       }),
     enabled: !!domainId,

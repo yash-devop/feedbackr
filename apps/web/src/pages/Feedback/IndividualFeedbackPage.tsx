@@ -7,35 +7,14 @@ import MainPagesLayout from "@/components/MainPagesLayout.tsx";
 import { cn } from "@/lib/utils.ts";
 import useGetIndividualFeedbackService from "@/services/getIndividualFeedbackService/useGetIndividualFeedbackService.ts";
 import { Button } from "@repo/ui";
+import { Trash } from "lucide-react";
 import { useParams } from "react-router";
+import { PriorityFilter } from "./components/PriorityFilter.tsx";
+import { StatusFilter } from "./components/StatusFilter.tsx";
+import { CommentSection } from "./components/CommentSection.tsx";
+import { useDeleteFeedback } from "@/hooks/useDeleteFeedback.ts";
 
 export const IndividualFeedbackPage = () => {
-  //   {
-  //     "data": {
-  //         "id": "cml6m7ip40003eo8sjmodbtnf",
-  //         "url": "eraser.io",
-  //         "message": "the premium is wrong",
-  //         "email": "yashstack@gmail.com",
-  //         "status": "PENDING",
-  //         "createdAt": "2026-02-03T13:08:58.598Z",
-  //         "updatedAt": "2026-02-03T13:08:58.598Z",
-  //         "clientContext": {
-  //             "os": "Mac",
-  //             "browser": "Chrome"
-  //         },
-  //         "debugContext": {
-  //             "logs": []
-  //         },
-  //         "domainId": "cml6lze120001eo8s0wl3byfa",
-  //         "images": [],
-  //         "domain": {
-  //             "name": "Eraser",
-  //             "status": "ACTIVE"
-  //         }
-  //     },
-  //     "message": "Feedbacks fetched successfully"
-  // }
-
   const { domainId, feedbackId } = useParams<{
     domainId: string;
     feedbackId: string;
@@ -46,13 +25,28 @@ export const IndividualFeedbackPage = () => {
     domainId: domainId ?? "",
     feedbackId: feedbackId ?? "",
   });
+
+  const {
+    mutations: { deleteFeedbackMutation },
+  } = useDeleteFeedback();
+
   return (
     <>
       <MainPagesLayout>
         <TopbarContainer title="Feedback">
           <TopbarGroup>
-            <Button variant={"destructive"} size={"sm"}>
-              Delete Feedback
+            <StatusFilter />
+            <PriorityFilter />
+            <Button
+              variant={"destructive"}
+              size={"sm"}
+              className="cursor-pointer"
+              onClick={() => {
+                deleteFeedbackMutation.mutate();
+              }}
+            >
+              <Trash />
+              Delete Permanently
             </Button>
           </TopbarGroup>
         </TopbarContainer>
@@ -209,6 +203,12 @@ export const IndividualFeedbackPage = () => {
             </div>
           </div>
         </SectionLayout>
+
+        {/* Comments */}
+        <div className="p-6 space-y-3">
+          <h1 className="font-medium tracking-tight text-xl pl-1">Activity</h1>
+          <CommentSection />
+        </div>
       </MainPagesLayout>
     </>
   );

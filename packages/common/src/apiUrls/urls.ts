@@ -12,7 +12,7 @@
  * GET_USER_PROFILE: "/user/profile"
  */
 export const API_URLS = {
-  GET_FEEDBACKS: "/feedback",
-  GET_DOMAINS: "/domain",
+  FEEDBACK: "/feedback",
+  DOMAIN: "/domain",
   GET_DOMAIN_EXIST: "/domain/exists",
 } as const;

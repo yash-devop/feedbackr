@@ -1,6 +1,7 @@
 import useGetDomainService from "@/services/getDomainService/useGetDomainService.ts";
 import { IDomainResponse } from "@/services/getDomainService/useGetDomainService.types.ts";
 import { handleGlobalPostRequest } from "@/utils/httpFuntions.ts";
+import { API_URLS } from "@repo/common/apiUrls";
 import { TDomainPayload } from "@repo/common/schemas";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -26,7 +27,7 @@ export const useDomain = () => {
   >({
     mutationFn: async (data) => {
       return handleGlobalPostRequest<Promise<IDomainResponse>>({
-        url: "/domain",
+        url: API_URLS.DOMAIN,
         data,
       });
     },
