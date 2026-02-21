@@ -1,10 +1,11 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
 import { Globe, Terminal } from "lucide-react";
 import {
+  CodeSnippet,
   DebugContent,
   DebugDescription,
-  DebugLeftInfoSide,
-  DebugRightCodeSide,
+  DebugLeftSide,
+  DebugRightSide,
   DebugTitle,
 } from "./DebugContent.tsx";
 
@@ -15,7 +16,7 @@ export const DebugSection = () => {
         <div className="">
           <div className="p-6">
             <h2 className="font-semibold ">Debug Diagnostics</h2>
-            <span className="text-sm">
+            <span className="text-sm text-neutral-500">
               Technical context and runtime diagnostics captured at the time of
               feedback
             </span>
@@ -39,35 +40,36 @@ export const DebugSection = () => {
             </TabsList>
             <div className="border border-border rounded-lg mt-2 mb-6">
               <TabsContent value="console">
-                <DebugContent>
-                  <DebugLeftInfoSide>
+                <DebugContent className="">
+                  <DebugLeftSide>
                     <DebugTitle>Type errors</DebugTitle>
                     <DebugDescription>
                       These are caused by invalid value types passed
                     </DebugDescription>
-                  </DebugLeftInfoSide>
-                  <DebugRightCodeSide>
-                    Uncaught TypeError: Cannot read properties of undefined
-                    (reading 'map') at FeedbackList.tsx:42:18 at renderWithHooks
-                    (react-dom.development.js:16305:18) at
-                    mountIndeterminateComponent
-                    (react-dom.development.js:20074:13)
-                  </DebugRightCodeSide>
+                  </DebugLeftSide>
+                  <DebugRightSide className="min-w-0">
+                    <CodeSnippet theme={"min-light"}>
+                      Uncaught TypeError: Cannot read properties of undefined
+                      (reading 'map') at FeedbackList.tsx:42:18 at
+                      renderWithHooks (react-dom.development.js:16305:18) at
+                      mountIndeterminateComponent
+                      (react-dom.development.js:20074:13)
+                    </CodeSnippet>
+                  </DebugRightSide>
                 </DebugContent>
-                <DebugContent>
-                  <DebugLeftInfoSide>
+                <DebugContent className="">
+                  <DebugLeftSide>
                     <DebugTitle>API Errors</DebugTitle>
                     <DebugDescription>
                       These are the server returned response errors
                     </DebugDescription>
-                  </DebugLeftInfoSide>
-                  <DebugRightCodeSide>
-                    Uncaught TypeError: Cannot read properties of undefined
-                    (reading 'map') at FeedbackList.tsx:42:18 at renderWithHooks
-                    (react-dom.development.js:16305:18) at
-                    mountIndeterminateComponent
-                    (react-dom.development.js:20074:13)
-                  </DebugRightCodeSide>
+                  </DebugLeftSide>
+                  <DebugRightSide className="w-full min-w-0">
+                    <CodeSnippet variant="dark" theme={"slack-dark"}>
+                      POST https://api.feedbackr.dev/v1/feedback 500 (Internal
+                      Server Error)
+                    </CodeSnippet>
+                  </DebugRightSide>
                 </DebugContent>
               </TabsContent>
               <TabsContent value="network">

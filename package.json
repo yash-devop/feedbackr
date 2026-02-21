@@ -37,6 +37,7 @@
   ],
   "dependencies": {
     "multer": "^2.0.2",
+    "shiki": "^3.22.0",
     "uploadthing": "^7.7.4"
   }
 }
