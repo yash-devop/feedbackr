@@ -12,6 +12,7 @@ import { CommentSection } from "./components/CommentSection.tsx";
 import { FeedbackDeleteSection } from "./components/FeedbackDeleteSection.tsx";
 import { PriorityFilter } from "./components/PriorityFilter.tsx";
 import { StatusFilter } from "./components/StatusFilter.tsx";
+import { DebugSection } from "./components/diagnostic/DebugSection.tsx";
 
 export const IndividualFeedbackPage = () => {
   const { domainId, feedbackId } = useParams<{
@@ -149,58 +150,7 @@ export const IndividualFeedbackPage = () => {
                 className=""
                 variant="alert"
               />
-              <div className="relative flex-1 w-full rounded-xl bg-[#0b0b0b] border border-white/5 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.02)] overflow-hidden">
-                <div className="h-full overflow-y-auto px-4 py-3 font-mono text-xs leading-relaxed space-y-3 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-neutral-400">
-                      <span>{">_"}</span>
-                      <span>Console Output</span>
-                    </div>
-
-                    <div className="space-y-1">
-                      <p className="text-red-500">
-                        ▶ Uncaught TypeError: Cannot read property 'submit' of
-                        null
-                      </p>
-                      <p className="text-red-500">
-                        ▶ Failed to load resource: net::ERR_CONNECTION_REFUSED
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="h-px bg-white/5 my-2" />
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-neutral-400">
-                      <span>{"</>"}</span>
-                      <span>Network Interaction</span>
-                    </div>
-
-                    <p className="text-emerald-400">
-                      POST /api/v1/auth/login 200 OK
-                    </p>
-
-                    <p className="text-sky-400 underline underline-offset-2 cursor-pointer">
-                      Request Payload:
-                    </p>
-                    <pre className="text-neutral-200 pl-3">
-                      {`{
-  "email": "user@example.com",
-  "password": "****"
-}`}
-                    </pre>
-
-                    <p className="text-sky-400 underline underline-offset-2 cursor-pointer">
-                      Response Payload:
-                    </p>
-                    <pre className="text-neutral-200 pl-3">
-                      {`{
-  "error": "Authentication failed"
-}`}
-                    </pre>
-                  </div>
-                </div>
-              </div>
+              <DebugSection />
             </div>
           </div>
         </SectionLayout>
