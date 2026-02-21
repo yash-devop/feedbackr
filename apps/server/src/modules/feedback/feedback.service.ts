@@ -1,4 +1,9 @@
 import { prisma } from "@/lib/prisma-orm/prisma.js";
+import { AppError } from "@/middlewares/error.middleware.js";
+import {
+  FeedbackStatus,
+  FeedbackPriority,
+} from "@prismaGenerated/src/generatedClient/prisma/client.js";
 import { TcreateFeedbackPayload } from "@repo/common/schemas";
 
 const FeedbackService = {
@@ -49,7 +54,7 @@ const FeedbackService = {
     feedbackId: string;
     domainId: string;
   }) => {
-    return await prisma?.feedback?.findFirst({
+    return await prisma.feedback.findFirst({
       where: {
         domainId: domainId,
         id: feedbackId,
@@ -59,6 +64,65 @@ const FeedbackService = {
         domain: { select: { name: true, status: true } },
       },
     });
+  },
+  editFeedback: async ({
+    feedbackId,
+    domainId,
+    comment,
+    status,
+    priority,
+  }: {
+    feedbackId: string;
+    domainId: string;
+    status?: FeedbackStatus;
+    priority?: FeedbackPriority;
+    comment?: string;
+  }) => {
+    try {
+      return await prisma.feedback.update({
+        data: {
+          comment,
+          status,
+          priority,
+        },
+        where: {
+          id: feedbackId,
+          domainId: domainId,
+        },
+      });
+    } catch (error: any) {
+      if (error.code === "P2025") {
+        throw new AppError(
+          "Feedback not found for this domain",
+          404,
+          "NOT_FOUND",
+        );
+      }
+    }
+  },
+  deleteFeedback: async ({
+    feedbackId,
+    domainId,
+  }: {
+    feedbackId: string;
+    domainId: string;
+  }) => {
+    try {
+      return await prisma.feedback.delete({
+        where: {
+          id: feedbackId,
+          domainId: domainId,
+        },
+      });
+    } catch (error: any) {
+      if (error.code === "P2025") {
+        throw new AppError(
+          "Feedback not found for this domain",
+          404,
+          "NOT_FOUND",
+        );
+      }
+    }
   },
 };
 

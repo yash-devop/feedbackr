@@ -13,4 +13,18 @@ FeedbackRouter.post(
   FeedBackController.createFeedback,
 );
 FeedbackRouter.get("/", authMiddleware, FeedBackController.getFeedbacks);
-FeedbackRouter.get("/:feedbackId", authMiddleware, FeedBackController.getFeedback);
+FeedbackRouter.get(
+  "/:feedbackId",
+  authMiddleware,
+  FeedBackController.getFeedback,
+);
+FeedbackRouter.patch(
+  "/:feedbackId",
+  authMiddleware,
+  FeedBackController.editFeedback,
+);
+FeedbackRouter.delete(
+  "/:feedbackId",
+  authMiddleware,
+  FeedBackController.deleteFeedback,
+);

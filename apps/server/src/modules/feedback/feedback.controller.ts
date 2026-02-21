@@ -1,8 +1,15 @@
-import { createFeedbackSchema } from "@repo/common/schemas";
+import {
+  createFeedbackSchema,
+  TcreateFeedbackPayload,
+} from "@repo/common/schemas";
 import { Request, Response } from "express";
 import { FeedbackService } from "./feedback.service.js";
 import MediaService from "../media/media.service.js";
 import { AppError } from "@/middlewares/error.middleware.js";
+import {
+  FeedbackPriority,
+  FeedbackStatus,
+} from "@prismaGenerated/src/generatedClient/prisma/client.js";
 
 const FeedBackController = {
   createFeedback: async (req: Request, res: Response) => {
@@ -79,6 +86,58 @@ const FeedBackController = {
       data: feedbackResponse,
       status: 200,
       message: "Feedbacks fetched successfully",
+    });
+  },
+
+  editFeedback: async (req: Request, res: Response) => {
+    const { feedbackId } = req?.params as { feedbackId: string };
+    const { domainId } = req?.query as { domainId: string };
+
+    if (!domainId || !feedbackId) {
+      throw new AppError("domainId or feedbackId not found", 404, "NOT_FOUND");
+    }
+
+    const { status, comment, priority } = req.body as {
+      status: FeedbackStatus;
+      comment?: string;
+      priority?: FeedbackPriority;
+    };
+
+    if (!status && !comment && !priority) {
+      throw new AppError("Update data not found in payload", 404, "NOT_FOUND");
+    }
+
+    const editFeedbackResponse = await FeedbackService.editFeedback({
+      comment,
+      feedbackId,
+      status,
+      domainId,
+      priority,
+    });
+
+    res.jsonSuccess({
+      data: editFeedbackResponse,
+      status: 200,
+      message: "Feedback edited successfully !",
+    });
+  },
+  deleteFeedback: async (req: Request, res: Response) => {
+    const { feedbackId } = req?.params as { feedbackId: string };
+    const { domainId } = req?.query as { domainId: string };
+
+    if (!domainId || !feedbackId) {
+      throw new AppError("domainId or feedbackId not found", 404, "NOT_FOUND");
+    }
+
+    const deleteFeedbackResponse = await FeedbackService.deleteFeedback({
+      feedbackId,
+      domainId,
+    });
+
+    res.jsonSuccess({
+      data: deleteFeedbackResponse,
+      status: 200,
+      message: "Feedback Deleted !",
     });
   },
 };
