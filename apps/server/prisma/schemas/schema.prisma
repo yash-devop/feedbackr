@@ -80,16 +80,26 @@ enum FeedbackStatus {
   RESOLVED
   REJECTED
   INVALID
+  NIL
+}
+
+enum FeedbackPriority {
+  NIL
+  URGENT
+  LOW
+  MEDIUM
+  HIGH
 }
 
 model Feedback {
-  id        String         @id @default(cuid())
+  id        String           @id @default(cuid())
   url       String
   message   String?
   email     String
-  status    FeedbackStatus @default(PENDING)
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
+  status    FeedbackStatus   @default(PENDING)
+  priority  FeedbackPriority @default(NIL)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
 
   clientContext Json
   debugContext  Json
@@ -97,6 +107,8 @@ model Feedback {
   domainId String
   domain   Domain  @relation(fields: [domainId], references: [id])
   images   Media[]
+
+  comment String?
 
   @@map("feedback")
 }
