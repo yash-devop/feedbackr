@@ -6,6 +6,7 @@ import {
 import MainPagesLayout from "@/components/MainPagesLayout.tsx";
 import { cn } from "@/lib/utils.ts";
 import useGetIndividualFeedbackService from "@/services/getIndividualFeedbackService/useGetIndividualFeedbackService.ts";
+import { Image } from "lucide-react";
 import { useParams } from "react-router";
 import { CommentSection } from "./components/CommentSection.tsx";
 import { FeedbackDeleteSection } from "./components/FeedbackDeleteSection.tsx";
@@ -53,16 +54,31 @@ export const IndividualFeedbackPage = () => {
                 <div className="h-full flex flex-col">
                   <Section
                     section="Screenshot"
-                    className="flex"
+                    className="flex pb-2"
                     variant="info"
                   />
                   <div className="relative flex-1 rounded-xl bg-muted/30 overflow-hidden">
-                    <img
-                      src={getIndividualFeedbackService?.data?.data?.images[0]} // TODO !!!!!!!!!!!
-                      // src="https://images.unsplash.com/photo-1761839256547-0a1cd11b6dfb?q=80&w=1169&auto=format&fit=crop"
-                      alt="Feedback Screenshot"
-                      className="w-full h-full object-cover rounded-xl"
-                    />
+                    {getIndividualFeedbackService?.data?.data?.images &&
+                    getIndividualFeedbackService?.data?.data?.images?.length >
+                      0 ? (
+                      <>
+                        <img
+                          src={
+                            getIndividualFeedbackService?.data?.data?.images[0]
+                          }
+                          // src="https://images.unsplash.com/photo-1761839256547-0a1cd11b6dfb?q=80&w=1169&auto=format&fit=crop"
+                          alt="Feedback Screenshot"
+                          className="w-full h-full object-cover rounded-xl"
+                        />
+                      </>
+                    ) : (
+                      <div className="flex flex-col  items-center justify-center gap-2 min-h-[420px] select-none">
+                        <Image className="text-neutral-500" />
+                        <span className="text-xs text-neutral-500">
+                          No Feedback Image found
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
                 {/* <Section
