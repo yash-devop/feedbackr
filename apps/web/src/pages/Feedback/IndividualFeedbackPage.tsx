@@ -189,6 +189,8 @@ function Section({
     info: "bg-blue-500/10 text-blue-600 border-blue-500/20",
     warn: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20",
     alert: "bg-red-500/10 text-red-500 border-red-500/20",
+    rejected: "bg-red-500/10 text-red-500 border-red-500/20",
+    nil: "bg-neutral-500/10 text-neutral-500 border-neutral-500/20",
     resolved: "bg-green-500/10 text-green-500 border-green-500/20",
     pending: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20",
     invalid: "bg-red-500/10 text-red-500 border-red-500/20",
