@@ -141,4 +141,30 @@ export const UserDomainService = {
       length: domainsLength,
     };
   },
+
+  regenerateClientId: async ({ domainId }: { domainId: string }) => {
+    if (!domainId) {
+      throw new AppError("Domain ID is required", 400, "REQUIRED");
+    }
+    const clientId = generateApiKey();
+    const hashedClientId = hashFunction(clientId);
+
+    const newUpdatedRecord = await prisma.domain.update({
+      where: {
+        id: domainId,
+      },
+      data: {
+        clientId: hashedClientId,
+      },
+    });
+
+    return {
+      data: {
+        clientId,
+        domainId: newUpdatedRecord.id,
+      },
+      message: "Regenerated Client ID",
+      status: 200,
+    };
+  },
 };

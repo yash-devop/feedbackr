@@ -7,3 +7,7 @@ UserDomainRouter.get("/", UserDomainController.getDomainsList);
 UserDomainRouter.get("/exists", UserDomainController.checkUserHasDomain);
 UserDomainRouter.get("/:domainId", UserDomainController.getDomain);
 UserDomainRouter.patch("/:domainId", UserDomainController.updateDomainStatus);
+UserDomainRouter.post(
+  "/:domainId/regenerateKey",
+  UserDomainController.regenerateClientId,
+);

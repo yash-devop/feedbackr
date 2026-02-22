@@ -4,4 +4,5 @@ export const ErrorCodes = [
   "NOT_FOUND",
   "ALREADY_PRESENT",
   "INVALID",
+  "REQUIRED",
 ] as const;

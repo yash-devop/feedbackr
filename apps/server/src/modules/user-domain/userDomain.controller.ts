@@ -1,6 +1,8 @@
 import { DomainSchema } from "@repo/common/schemas";
 import { Request, Response } from "express";
 import { UserDomainService } from "./userDomain.service.js";
+import { generateApiKey, hashFunction } from "@repo/utils/server";
+import { prisma } from "@/lib/prisma-orm/prisma.js";
 
 export const UserDomainController = {
   createDomain: async (req: Request, res: Response) => {
@@ -82,6 +84,15 @@ export const UserDomainController = {
       data: { domains, hasDomains, length: length },
       message: `${req.user.name} has total ${length} domains`,
       status: 200,
+    });
+  },
+  regenerateClientId: async (req: Request, res: Response) => {
+    const { domainId } = req.params as { domainId: string };
+    const data = await UserDomainService.regenerateClientId({ domainId });
+    return res.jsonSuccess({
+      data: data.data,
+      message: data.message,
+      status: data.status,
     });
   },
 };
