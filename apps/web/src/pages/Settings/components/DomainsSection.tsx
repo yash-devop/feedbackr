@@ -24,25 +24,26 @@ import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import RegenerateClientIdModal from "./RegenerateClientIdModal.tsx";
 import { useState } from "react";
+import { useCopyToClipboard } from "@/hooks/useCopyClipboard.ts";
 
 interface DomainsSectionProps {
   domains: IDomainType[];
   selectedDomain: IDomainType | undefined;
   onStatusChange: (id: string, checked: boolean) => void;
-  copyToClipboard: (text: string, label: string) => void;
 }
 
 export const DomainsSection = ({
   domains,
   selectedDomain,
   onStatusChange,
-  copyToClipboard,
 }: DomainsSectionProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const embedSnippet = selectedDomain
     ? `<script src="https://cdn.feedbackwidget.io/v1/widget.js" data-client-id="${selectedDomain.clientId}"></script>`
     : "";
+
+  const { copyToClipboard } = useCopyToClipboard();
 
   return (
     <section className="space-y-6">
