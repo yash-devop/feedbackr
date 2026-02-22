@@ -12,7 +12,7 @@ const useGetIndividualFeedbackService = ({
   feedbackId: string;
 }) => {
   const getIndividualFeedbackService = useQuery<IIndividualFeedbackResponse>({
-    queryKey: [CACHE_KEYS?.GET_FEEDBACK, domainId, feedbackId],
+    queryKey: [CACHE_KEYS.GET_FEEDBACK, domainId, feedbackId],
     queryFn: () =>
       handleGlobalGetRequestQuery({
         url: `${API_URLS?.FEEDBACK}/${feedbackId}`,

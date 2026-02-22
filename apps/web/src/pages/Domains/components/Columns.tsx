@@ -4,7 +4,6 @@ import {
 } from "@/services/getDomainService/useGetDomainService.types.ts";
 import { Button, CopyButton } from "@repo/ui";
 import { ColumnDef } from "@tanstack/react-table";
-import { formatDistanceToNow } from "date-fns";
 import {
   AlertCircle,
   ArrowRight,
@@ -14,6 +13,7 @@ import {
   ExternalLink,
   XCircle,
 } from "lucide-react";
+import moment from "moment";
 
 export const columns: ColumnDef<IDomainType>[] = [
   {
@@ -143,9 +143,7 @@ export const columns: ColumnDef<IDomainType>[] = [
       return (
         <div className="flex items-center justify-center gap-1.5 text-muted-foreground">
           <Clock className="size-3" />
-          <span className="text-xs">
-            {formatDistanceToNow(new Date(dateStr), { addSuffix: true })}
-          </span>
+          <span className="text-xs">{moment(dateStr).fromNow()}</span>
         </div>
       );
     },

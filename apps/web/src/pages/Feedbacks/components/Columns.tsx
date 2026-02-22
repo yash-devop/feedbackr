@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils.ts";
+import { FeedbackDeleteSection } from "@/pages/Feedback/components/FeedbackDeleteSection.tsx";
 import { IFeedback } from "@/services/getFeedbackService/useGetFeedbackService.types.ts";
 import {
   Button,
@@ -9,7 +10,6 @@ import {
   DropdownMenuTrigger,
 } from "@repo/ui";
 import { ColumnDef } from "@tanstack/react-table";
-import { formatDistanceToNow } from "date-fns";
 import {
   ArrowRight,
   CheckCircle2,
@@ -17,6 +17,7 @@ import {
   Ellipsis,
   ExternalLink,
 } from "lucide-react";
+import moment from "moment";
 import { Link, useParams } from "react-router";
 
 export const columns: ColumnDef<IFeedback>[] = [
@@ -139,9 +140,7 @@ export const columns: ColumnDef<IFeedback>[] = [
       return (
         <div className="flex items-center gap-1.5 text-muted-foreground">
           <Clock className="size-3" />
-          <span className="text-xs">
-            {formatDistanceToNow(new Date(dateStr), { addSuffix: true })}
-          </span>
+          <span className="text-xs">{moment(dateStr).fromNow()}</span>
         </div>
       );
     },
@@ -150,9 +149,10 @@ export const columns: ColumnDef<IFeedback>[] = [
   {
     id: "actions",
     header: "",
-    cell: ({ row }) => {
+    cell: ({ row, table }) => {
       const feedbackId = row.original.id;
       const { domainId } = useParams<{ domainId: string }>();
+      const { onEdit, onDelete } = table.options.meta as any;
       return (
         <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <Button
@@ -181,15 +181,12 @@ export const columns: ColumnDef<IFeedback>[] = [
                 className={cn(
                   `focus:bg-neutral-200 text-neutral-700! hover:bg-muted! hover:text-neutral-700! font-medium group`,
                 )}
-              >
-                Edit
-              </DropdownMenuItem>
-
-              <DropdownMenuItem
-                className={cn(
-                  `focus:bg-neutral-200 text-neutral-700! hover:bg-muted! hover:text-neutral-700! font-medium group`,
-                )}
-                onClick={() => console.log("Mark resolved")}
+                onClick={() => {
+                  onEdit({
+                    status: "RESOLVED",
+                    feedbackId,
+                  });
+                }}
               >
                 Mark as resolved
               </DropdownMenuItem>
@@ -198,7 +195,9 @@ export const columns: ColumnDef<IFeedback>[] = [
                 className={cn(
                   `focus:bg-neutral-200 text-destructive! hover:bg-muted! hover:text-destructive! font-medium group`,
                 )}
-                onClick={() => console.log("Delete", feedbackId)}
+                onClick={() => {
+                  onDelete({ feedbackId });
+                }}
               >
                 Delete
               </DropdownMenuItem>

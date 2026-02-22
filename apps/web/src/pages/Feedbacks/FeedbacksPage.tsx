@@ -1,3 +1,4 @@
+import { ConfirmDialog } from "@/components/ConfirmDialog.tsx";
 import { SectionLayout } from "@/components/Layouts/SectionLayout.tsx";
 import {
   TopbarContainer,
@@ -5,7 +6,12 @@ import {
 } from "@/components/Layouts/TopbarLayout.tsx";
 import PageLoader from "@/components/Loaders/PageLoader.tsx";
 import MainPagesLayout from "@/components/MainPagesLayout.tsx";
+import { useDeleteFeedback } from "@/hooks/useDeleteFeedback.ts";
+import { useEditFeedback } from "@/hooks/useEditFeedback.ts";
+import { queryClientGlobal } from "@/lib/tanstack-query/client.ts";
 import useGetFeedbackService from "@/services/getFeedbackService/useGetFeedbackService.ts";
+import { TFeedbackStatus } from "@/services/getFeedbackService/useGetFeedbackService.types.ts";
+import { CACHE_KEYS } from "@repo/common/queryCacheKeys";
 import {
   DataTable,
   InputGroup,
@@ -13,12 +19,14 @@ import {
   InputGroupInput,
 } from "@repo/ui";
 import { SearchIcon } from "lucide-react";
+import { useCallback, useState } from "react";
 import { useParams } from "react-router";
 import { columns } from "./components/Columns.tsx";
 
 export const FeedbacksPage = () => {
-  // const filterOptions = ["pending", "resolved", "done"] as const;
-
+  const {
+    mutations: { updateFeedbackStatusMutation },
+  } = useEditFeedback();
   const params = useParams<{ domainId: string }>();
   const {
     services: { getFeedbackService },
@@ -26,29 +34,39 @@ export const FeedbacksPage = () => {
     domainId: params.domainId ?? "",
   });
 
+  const {
+    mutations: { deleteFeedbackMutation },
+  } = useDeleteFeedback();
+
+  const [open, setOpen] = useState(false);
+  const [selectedFeedbackId, setSelectedFeedbackId] = useState<
+    string | undefined
+  >();
+
   const feedbackData = getFeedbackService?.data?.data || [];
 
-  if (getFeedbackService?.isLoading) return <PageLoader />;
-
-  const dummyData = [
-    {
-      id: "1",
-      email: "yashkamble.dev@gmail.com",
-      message:
-        "Sir, This window is throwing unexpected error message everytime i visit it. How can you guys never ever checked this page ? This is soo frustrating man !",
-      clientContext: { os: "windows", browser: "chrome" },
-      createdAt: "2026-02-05T09:23:41.321Z",
-      updatedAt: "2026-02-14T17:52:10.874Z",
-      debugContext: { logs: [] },
-      images: [
-        "https://unsplash.com/photos/athletes-resting-on-a-track-after-training-D43JYb0yTKU",
-      ],
-      status: "PENDING",
-      domainId: "",
-      url: "https://unsplash.com/",
-      domain: { name: "", status: "" },
+  const handleEdit = useCallback(
+    ({
+      status,
+      feedbackId,
+    }: {
+      status: TFeedbackStatus;
+      feedbackId: string;
+    }) => {
+      updateFeedbackStatusMutation.mutate({ status, feedbackId });
+      queryClientGlobal.removeQueries({
+        queryKey: [CACHE_KEYS.GET_FEEDBACKS, params.domainId],
+      });
     },
-  ];
+    [updateFeedbackStatusMutation.isPending],
+  );
+
+  const handleDelete = ({ feedbackId }: { feedbackId: string }) => {
+    setOpen(true);
+    setSelectedFeedbackId(feedbackId);
+  };
+
+  if (getFeedbackService?.isLoading) return <PageLoader />;
   return (
     <>
       <MainPagesLayout>
@@ -101,11 +119,35 @@ export const FeedbacksPage = () => {
               <DataTable
                 columns={columns}
                 data={feedbackData}
-                // data={feedbackData}
+                meta={{
+                  onEdit: handleEdit,
+                  onDelete: handleDelete,
+                }}
               />
             </div>
           </div>
         </SectionLayout>
+        <ConfirmDialog
+          open={open}
+          onOpenChange={() => setOpen((prev) => !prev)}
+          title="Delete feedback permanently?"
+          description="This action will permanently delete the feedback and cannot be undone."
+          confirmLabel="Delete"
+          cancelLabel="Cancel"
+          variant="ghost"
+          onConfirm={() => {
+            deleteFeedbackMutation.mutate(
+              { feedbackId: selectedFeedbackId },
+              {
+                onSuccess: () => {
+                  queryClientGlobal.invalidateQueries({
+                    queryKey: [CACHE_KEYS.GET_FEEDBACKS, params.domainId],
+                  });
+                },
+              },
+            );
+          }}
+        />
       </MainPagesLayout>
     </>
   );

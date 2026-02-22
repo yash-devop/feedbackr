@@ -16,6 +16,7 @@ type EditFeedbackPayload = {
   status?: TFeedbackStatus;
   priority?: TPriorityStatus;
   comment?: string;
+  feedbackId?: string;
 };
 export const useEditFeedback = () => {
   const { feedbackId, domainId } = useParams();
@@ -25,6 +26,7 @@ export const useEditFeedback = () => {
         status?: TFeedbackStatus;
         priority?: TPriorityStatus;
         comment?: string;
+        feedbackId?: string;
       };
       message: string;
       status: number;
@@ -40,7 +42,7 @@ export const useEditFeedback = () => {
     mutationFn: async (data) => {
       console.log("payload in mutation", data);
       return handleGlobalPatchRequest({
-        url: `${API_URLS.FEEDBACK}/${feedbackId}?domainId=${domainId}`,
+        url: `${API_URLS.FEEDBACK}/${feedbackId || data?.feedbackId}?domainId=${domainId}`,
         data,
       });
     },

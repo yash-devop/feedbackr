@@ -17,12 +17,13 @@ export const useDeleteFeedback = () => {
         message: string;
         code: string;
       };
-    }>
+    }>,
+    { feedbackId?: string }
   >({
     mutationFn: async (data) => {
       console.log("payload in mutation", data);
       return handleGlobalDeleteRequest({
-        url: `${API_URLS.FEEDBACK}/${feedbackId}?domainId=${domainId}`,
+        url: `${API_URLS.FEEDBACK}/${feedbackId || data?.feedbackId}?domainId=${domainId}`,
       });
     },
     onError: (err) => {

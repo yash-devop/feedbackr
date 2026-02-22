@@ -1,6 +1,8 @@
 import { useEditFeedback } from "@/hooks/useEditFeedback.ts";
+import { queryClientGlobal } from "@/lib/tanstack-query/client.ts";
 import { cn } from "@/lib/utils.ts";
 import useGetIndividualFeedbackService from "@/services/getIndividualFeedbackService/useGetIndividualFeedbackService.ts";
+import { CACHE_KEYS } from "@repo/common/queryCacheKeys";
 import {
   Button,
   DropdownMenu,
@@ -52,7 +54,6 @@ export const StatusFilter = () => {
 
   const {
     mutations: { updateFeedbackStatusMutation },
-    handler: { updateFeedbackStatusHandler },
   } = useEditFeedback();
 
   const STATUS_TO_ICONS: Record<
@@ -90,7 +91,6 @@ export const StatusFilter = () => {
       displayText: "Select Status",
       icon: Ellipsis,
       color: "",
-      // icon: ChartNoAxesColumnIncreasing,
     },
   };
 
@@ -139,6 +139,13 @@ export const StatusFilter = () => {
                     },
                     onSuccess: (data) => {
                       setSelectedStatusFilter(data.data.status ?? "NIL");
+                      queryClientGlobal.removeQueries({
+                        queryKey: [
+                          CACHE_KEYS.GET_FEEDBACK,
+                          domainId,
+                          feedbackId,
+                        ],
+                      });
                     },
                   },
                 );

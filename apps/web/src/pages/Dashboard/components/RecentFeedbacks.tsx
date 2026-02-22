@@ -1,21 +1,21 @@
-import { useMemo } from "react";
-import { Link } from "react-router-dom";
-import { formatDistanceToNow } from "date-fns";
-import {
-  ArrowUpRight,
-  ChevronRight,
-  Globe,
-  Monitor,
-  Smartphone,
-  Loader2,
-  Inbox,
-} from "lucide-react";
-import { Button, Card, Badge } from "@repo/ui";
+import useGetFeedbacks from "@/hooks/useGetFeedbacks.ts";
 import {
   IFeedback,
   TFeedbackStatus,
 } from "@/services/getFeedbackService/useGetFeedbackService.types.ts";
-import useGetFeedbacks from "@/hooks/useGetFeedbacks.ts";
+import { Badge, Button, Card } from "@repo/ui";
+import {
+  ArrowUpRight,
+  ChevronRight,
+  Globe,
+  Inbox,
+  Loader2,
+  Monitor,
+  Smartphone,
+} from "lucide-react";
+import moment from "moment";
+import { useMemo } from "react";
+import { Link } from "react-router-dom";
 
 interface ActivityItem {
   id: string;
@@ -23,7 +23,7 @@ interface ActivityItem {
   domainName: string;
   browserName: string;
   deviceType: "mobile" | "desktop";
-  status: "pending" | "in-progress" | "done" | "rejected";
+  status: "pending" | "in-progress" | "done" | "rejected" | "nil";
   timeAgo: string;
   screenshot: string;
 }
@@ -46,6 +46,7 @@ const mapStatus = (status: TFeedbackStatus): ActivityItem["status"] => {
     RESOLVED: "done",
     REJECTED: "rejected",
     INVALID: "rejected",
+    NIL: "nil",
   };
   return statusMap[status] || "pending";
 };
@@ -72,9 +73,7 @@ export function RecentFeedbacks() {
       browserName: item.clientContext?.browser || "Unknown Browser",
       deviceType: getDeviceType(item?.clientContext?.os),
       status: mapStatus(item?.status),
-      timeAgo: formatDistanceToNow(new Date(item?.createdAt), {
-        addSuffix: true,
-      }),
+      timeAgo: moment(item?.createdAt).fromNow(),
       screenshot:
         item.images?.[0] ||
         "https://placehold.co/140x100/2a2a2a/FFF?text=No+Image",
@@ -134,6 +133,10 @@ function ActivityRow({ item }: { item: ActivityItem }) {
     },
     rejected: {
       label: "Closed",
+      style: "bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100",
+    },
+    nil: {
+      label: "Nil",
       style: "bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100",
     },
   };
