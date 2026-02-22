@@ -18,16 +18,6 @@ const Settings = () => {
     functions: { handleDomainStatusChange },
   } = useSettings();
 
-  const copyToClipboard = (text: string, label: string) => {
-    if (!text) return;
-    try {
-      navigator.clipboard.writeText(text);
-      toast.success(`${label} copied to clipboard`);
-    } catch (error) {
-      toast.error("Clipboard access denied");
-    }
-  };
-
   const handleDeleteAccount = () => {
     toast.error("Account deletion feature not implemented yet");
   };
@@ -50,7 +40,6 @@ const Settings = () => {
             domains={domains}
             selectedDomain={selectedDomain}
             onStatusChange={handleDomainStatusChange}
-            copyToClipboard={copyToClipboard}
           />
 
           <Separator />

@@ -1,6 +1,9 @@
+import { useCopyToClipboard } from "@/hooks/useCopyClipboard.ts";
 import { highlight } from "@/lib/shiki-highlight/index.ts";
 import { cn } from "@/lib/utils.ts";
+import { Button } from "@repo/ui";
 import { cva } from "class-variance-authority";
+import { Check, Copy } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { BundledTheme, StringLiteralUnion } from "shiki";
 
@@ -77,6 +80,7 @@ export const CodeSnippet = ({
   variant?: "light" | "dark";
   theme?: StringLiteralUnion<BundledTheme, string>;
 }) => {
+  const { copyToClipboard, isCopied } = useCopyToClipboard();
   const variants = cva(
     "text-sm rounded-lg border border-border flex flex-col flex-wrap max-h-[330px] overflow-auto p-4",
     {
@@ -107,11 +111,26 @@ export const CodeSnippet = ({
 
   return (
     <>
-      {/* <div dangerouslySetInnerHTML={{ __html: code }}></div> */}
-      <code
-        className={cn(variants({ variant, className }))}
-        dangerouslySetInnerHTML={{ __html: code }}
-      />
+      <div className="relative group">
+        <code
+          className={cn(variants({ variant, className }))}
+          dangerouslySetInnerHTML={{ __html: code }}
+        />
+        <Button
+          size="icon-xs"
+          variant="outline"
+          className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity"
+          onClick={() =>
+            !isCopied &&
+            copyToClipboard(
+              children?.toString() ?? "Something went wrong ",
+              "Snippet",
+            )
+          }
+        >
+          {isCopied ? <Check className="text-green-500" /> : <Copy />}
+        </Button>
+      </div>
     </>
   );
 };
