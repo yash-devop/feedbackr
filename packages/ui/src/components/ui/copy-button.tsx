@@ -1,9 +1,16 @@
+import { cn } from "@repo/utils/client";
 import { Button } from "./button";
 import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export const CopyButton = ({ value }: { value: string }) => {
+export const CopyButton = ({
+  value,
+  text,
+}: {
+  value: string;
+  text?: string;
+}) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -15,9 +22,12 @@ export const CopyButton = ({ value }: { value: string }) => {
 
   return (
     <Button
-      variant="ghost"
-      size="icon-sm"
-      className="h-6 w-6 ml-1 text-muted-foreground hover:text-foreground cursor-pointer"
+      variant={text ? "outline" : "ghost"}
+      size={text ? "default" : "icon-sm"}
+      className={cn(
+        "ml-1 text-muted-foreground hover:text-foreground cursor-pointer",
+        text ? "h-10" : "h-6 w-6",
+      )}
       onClick={handleCopy}
     >
       {copied ? (
@@ -25,6 +35,7 @@ export const CopyButton = ({ value }: { value: string }) => {
       ) : (
         <Copy className="h-3 w-3" />
       )}
+      {text}
     </Button>
   );
 };
