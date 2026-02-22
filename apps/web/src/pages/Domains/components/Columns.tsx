@@ -2,7 +2,7 @@ import {
   ApiDomainStatus,
   IDomainType,
 } from "@/services/getDomainService/useGetDomainService.types.ts";
-import { Button, CopyButton } from "@repo/ui";
+import { Button } from "@repo/ui";
 import { ColumnDef } from "@tanstack/react-table";
 import {
   AlertCircle,
