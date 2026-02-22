@@ -28,10 +28,10 @@ import {
 } from "@repo/ui";
 import { FeedbackrLogo } from "@repo/ui/icons";
 import {
+  Box,
   ChevronDown,
   Flag,
   Globe,
-  LayoutDashboard,
   LogOut,
   Plus,
   Settings2,
@@ -59,7 +59,7 @@ export function AppSidebar() {
     {
       name: "Dashboard",
       href: DASHBOARD_ROUTE,
-      icon: LayoutDashboard,
+      icon: Box,
     },
     {
       name: "Feedbacks",
@@ -181,7 +181,7 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel className="">Manage</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-1.5">
+            <SidebarMenu className="space-y-1">
               {ROUTES.map((route) => {
                 const Icon = route.icon;
                 const isActive = location.pathname === route.href;
@@ -191,12 +191,12 @@ export function AppSidebar() {
                       asChild
                       className={
                         isActive
-                          ? "bg-neutral-200 rounded-md text-neutral-700 hover:bg-neutral-300/70 hover:text-neutral-700 font-medium"
-                          : "hover:bg-neutral-300/50"
+                          ? "bg-neutral-200 rounded-md text-neutral-600 hover:bg-neutral-300/70 hover:text-neutral-700 font-medium gap-1.5"
+                          : "hover:bg-neutral-300/50 text-sm gap-1.5 text-neutral-500"
                       }
                     >
                       <Link to={route.href}>
-                        <Icon className="size-4" />
+                        <Icon className="size-4! mt-px" />
                         <span>{route.name}</span>
                       </Link>
                     </SidebarMenuButton>
