@@ -82,11 +82,6 @@ export const useDomain = () => {
         richColors: true,
       });
     },
-    onSuccess: (data) => {
-      toast.success(data?.message, {
-        richColors: true,
-      });
-    },
   });
 
   //FUNCION/s
