@@ -2,6 +2,7 @@ import useGetDomainService from "@/services/getDomainService/useGetDomainService
 import {
   ApiDomainStatus,
   IDomainResponse,
+  TDomainClientIdGenerateResponse,
   TDomainStatusUpdateResponse,
 } from "@/services/getDomainService/useGetDomainService.types.ts";
 import {
@@ -84,6 +85,30 @@ export const useDomain = () => {
     },
   });
 
+  const regenerateClientIdMutation = useMutation<
+    TDomainClientIdGenerateResponse,
+    AxiosError<{
+      error: {
+        message: string;
+        code: string;
+      };
+    }>,
+    { domainId: string }
+  >({
+    mutationFn: async (data) => {
+      return handleGlobalPostRequest({
+        url: `${API_URLS.DOMAIN}/${data?.domainId}/regenerateKey`,
+      });
+    },
+    onError: (err) => {
+      const apiError = err?.response?.data?.error.message;
+      toast.error(err?.message, {
+        description: apiError,
+        richColors: true,
+      });
+    },
+  });
+
   //FUNCION/s
   const createDomainHandler = ({
     data,
@@ -106,15 +131,28 @@ export const useDomain = () => {
       ?.mutateAsync(data)
       ?.then((data) => callback?.(data));
   };
+  const regenerateClientIdHandler = ({
+    data,
+    callback,
+  }: {
+    data: { domainId: string };
+    callback?: (data: TDomainClientIdGenerateResponse) => void;
+  }) => {
+    regenerateClientIdMutation
+      ?.mutateAsync(data)
+      ?.then((data) => callback?.(data));
+  };
 
   return {
     mutations: {
       createDomainMutation,
       updateDomainStatusMutation,
+      regenerateClientIdMutation,
     },
     handler: {
       createDomainHandler,
       updateDomainStatusHandler,
+      regenerateClientIdHandler,
     },
     data: {
       domains,
