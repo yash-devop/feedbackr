@@ -31,31 +31,36 @@ export default function RegenerateClientIdModal({
   const [newlyGeneratedKey, setNewlyGeneratedKey] = useState<string | null>(
     null,
   );
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const {
-    handler: { regenerateClientIdHandler },
     mutations: { regenerateClientIdMutation },
   } = useDomain();
 
-  const isGenerating = regenerateClientIdMutation?.isPending;
-
-  const handleRegenerate = () => {
+  const handleRegenerate = async () => {
     if (!domainId) {
       toast.error("Domain ID is missing.");
       return;
     }
 
-    regenerateClientIdHandler({
-      data: { domainId },
-      callback: (response) => {
-        queryClientGlobal?.invalidateQueries({
-          queryKey: [CACHE_KEYS?.GET_DOMAINS],
-        });
-        if (response?.data?.clientId) {
-          setNewlyGeneratedKey(response.data.clientId);
-        }
-      },
-    });
+    setIsGenerating(true);
+
+    try {
+      const [response] = await Promise.all([
+        regenerateClientIdMutation.mutateAsync({ domainId }),
+        new Promise((resolve) => setTimeout(resolve, 1000)),
+      ]);
+
+      queryClientGlobal?.invalidateQueries({
+        queryKey: [CACHE_KEYS?.GET_DOMAINS],
+      });
+
+      if (response?.data?.clientId) {
+        setNewlyGeneratedKey(response.data.clientId);
+      }
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleModalClose = (openState: boolean) => {
@@ -63,6 +68,7 @@ export default function RegenerateClientIdModal({
     if (!openState) {
       setTimeout(() => {
         setNewlyGeneratedKey(null);
+        setIsGenerating(false);
         regenerateClientIdMutation.reset();
       }, 300);
     }
