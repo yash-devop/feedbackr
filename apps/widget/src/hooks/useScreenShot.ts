@@ -1,45 +1,56 @@
-import { useState } from "react";
-import { domToBlob } from "modern-screenshot";
-
-const getHostBackgroundColor = () => {
-  const bodyBg = window.getComputedStyle(document.body).backgroundColor;
-  if (bodyBg !== "rgba(0, 0, 0, 0)" && bodyBg !== "transparent") return bodyBg;
-  const htmlBg = window.getComputedStyle(
-    document.documentElement,
-  ).backgroundColor;
-  if (htmlBg !== "rgba(0, 0, 0, 0)" && htmlBg !== "transparent") return htmlBg;
-  return "#ffffff";
-};
+import { handlePostMessage } from "@/utils/postMessage.utils.ts";
+import { useState, useCallback } from "react";
 
 export function useScreenshot() {
   const [isCapturing, setIsCapturing] = useState(false);
 
-  const captureScreen = async () => {
+  const captureScreen = useCallback(async (): Promise<File | null> => {
     setIsCapturing(true);
-    try {
-      await document.fonts.ready;
 
-      const dpr = window.devicePixelRatio || 1;
+    return new Promise((resolve) => {
+      const timeoutId = setTimeout(() => {
+        window.removeEventListener("message", handleMessage);
+        setIsCapturing(false);
+        console.error("Feedback Widget: Screenshot request timed out.");
+        resolve(null);
+      }, 10000);
 
-      const fullPageBlob = await domToBlob(document.documentElement, {
-        filter: (node) => (node as HTMLElement)?.id !== "widget-root",
-        backgroundColor: getHostBackgroundColor(),
-        scale: dpr,
-        fetch: { bypassingCache: true },
-      });
+      const handleMessage = async (event: MessageEvent) => {
+        const { type, data } = event.data || {};
 
-      if (!fullPageBlob) return null;
+        if (type === "SCREENSHOT_SUCCESS") {
+          clearTimeout(timeoutId);
+          window.removeEventListener("message", handleMessage);
 
-      return new File([fullPageBlob], "feedback-fullpage.png", {
-        type: "image/png",
-      });
-    } catch (error) {
-      console.error("Failed to capture full page:", error);
-      return null;
-    } finally {
-      setIsCapturing(false);
-    }
-  };
+          try {
+            const blob = await (await fetch(data)).blob();
+            const file = new File([blob], "feedback-screenshot.png", {
+              type: "image/png",
+            });
+
+            setIsCapturing(false);
+            resolve(file);
+          } catch (error) {
+            console.error("Failed to parse screenshot data:", error);
+            setIsCapturing(false);
+            resolve(null);
+          }
+        } else if (type === "SCREENSHOT_ERROR") {
+          clearTimeout(timeoutId);
+          window.removeEventListener("message", handleMessage);
+          console.error(
+            "Feedback Widget: Parent SDK failed to take screenshot.",
+          );
+          setIsCapturing(false);
+          resolve(null);
+        }
+      };
+
+      window.addEventListener("message", handleMessage);
+
+      handlePostMessage("TAKE_SCREENSHOT");
+    });
+  }, []);
 
   return { captureScreen, isCapturing };
 }
