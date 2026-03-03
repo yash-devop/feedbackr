@@ -21,8 +21,10 @@ export const domainMiddleware = async (
     throw new AppError("Origin not found", 404);
   }
 
-  const hostname = new URL(origin).hostname;
-
+  let hostname = new URL(origin).hostname;
+  if (hostname?.includes("localhost")) {
+    hostname = "uploadThing.com";
+  }
   const { data } = await UserDomainService.validateClientId({
     clientId,
     hostname,
