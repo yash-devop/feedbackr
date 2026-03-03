@@ -11,17 +11,37 @@ import {
 } from "./DebugContent.tsx";
 
 const TYPE_MAPPER: Record<string, { name: string; description: string }> = {
-  type_error: {
+  TypeError: {
     name: "Type Errors",
     description: "These are caused by invalid value types passed",
   },
-  reference_error: {
+  ReferenceError: {
     name: "Reference Errors",
     description: "These are reference errors ",
+  },
+  Error: {
+    name: "Normal Errors",
+    description: "These are user defined errors",
   },
   promise: {
     name: "Promise Errors",
     description: "There are promise failed errors",
+  },
+  AbortError: {
+    name: "Abort Controller Errors",
+    description: "There are abort controller errors",
+  },
+  RangeError: {
+    name: "Invalid Range Errors",
+    description: "There are invalid range errors",
+  },
+  URIError: {
+    name: "Invalid URI Errors",
+    description: "There are invalid range errors",
+  },
+  SyntaxError: {
+    name: "Syntax Errors",
+    description: "There are invalid syntax errors",
   },
 };
 
@@ -110,6 +130,7 @@ export const DebugSection = ({
               <TabsContent value="console">
                 {debugContext && debugContext?.errors?.length > 0 ? (
                   debugContext?.errors?.map((error, idx) => {
+                    console.log("error", error);
                     return (
                       <DebugContent key={idx} className="">
                         <DebugLeftSide>
@@ -123,7 +144,15 @@ export const DebugSection = ({
                         </DebugLeftSide>
                         <DebugRightSide className="min-w-0">
                           <CodeSnippet variant="dark" theme={"slack-dark"}>
-                            {error.error}
+                            {error.message}
+                          </CodeSnippet>
+                          <CodeSnippet variant="dark" theme={"slack-dark"}>
+                            {error?.stackTrace &&
+                              error?.stackTrace.length > 0 &&
+                              error.stackTrace.map((trace) => {
+                                console.log("trace", trace);
+                                return JSON.stringify(trace);
+                              })}
                           </CodeSnippet>
                         </DebugRightSide>
                       </DebugContent>

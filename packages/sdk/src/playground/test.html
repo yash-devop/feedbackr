@@ -9,6 +9,10 @@
     <button onclick="unhandledRejection()">unhandledRejection</button>
     <button onclick="genReferenceError()">genReferenceError</button>
     <button onclick="promiseReject()">promise rejected error</button>
+    <button onclick="rangeErr()">range error</button>
+    <button onclick="syntaxError()">syntaxError error</button>
+    <button onclick="uriError()">uriError error</button>
+    <button onclick="AbortControllerEror()">AbortControllerEror error</button>
 
     <script src="http://localhost:3001/index.global.js"></script>
     <script>
@@ -32,6 +36,26 @@
       function genReferenceError() {
         console.log("refVar", refVar);
         let refVar = 4;
+      }
+
+      function rangeErr() {
+        new Array(-1);
+      }
+
+      function syntaxError() {
+        JSON.parse("{ bad json }");
+      }
+
+      function uriError() {
+        decodeURIComponent("%");
+      }
+
+      function AbortControllerEror() {
+        const controller = new AbortController();
+
+        fetch("/api", { signal: controller.signal });
+
+        controller.abort();
       }
     </script>
   </body>

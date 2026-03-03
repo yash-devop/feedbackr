@@ -2,13 +2,36 @@ interface IClientContext {
   os: string;
   browser: string;
 }
+type ErrorType =
+  | "TypeError"
+  | "ReferenceError"
+  | "Error"
+  | "SyntaxError"
+  | "AbortError"
+  | "RangeError"
+  | "UriError";
 
+type StackFrame = {
+  type: ErrorType;
+  message: string;
+  stackTrace: {
+    file: string | null;
+    methodName: any;
+    arguments: string[];
+    lineNumber: number | null;
+    column: number | null;
+  }[];
+};
 interface IDebugContext {
   errors: [
     {
-      type: string;
-      error: string;
-      stackTrace: string;
+      type: ErrorType;
+      message: string;
+      stackTrace: StackFrame[];
+      occuredAt: string;
+      pageTimeMs: number;
+
+      meta: { networkStatus: boolean };
     },
   ];
   network: [
