@@ -1,3 +1,4 @@
+import { errorCapture } from "../tracking/errors";
 import { destroyListener, registerListener } from "./events";
 import { handleTakeScreenshot } from "./handlers";
 import { createWidgetIframe } from "./iframe";
@@ -23,6 +24,8 @@ export function injectWidget(clientId: string) {
     iframe.classList.add("closeWidgetFrame");
   });
   registerListener("TAKE_SCREENSHOT", handleTakeScreenshot);
+
+  errorCapture();
 }
 
 export function destroyWidget() {

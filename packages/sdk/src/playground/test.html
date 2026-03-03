@@ -3,13 +3,36 @@
   <body>
     <h1>SDK Test Page</h1>
 
-    <button onclick="throw new Error('Test crash')">Crash App</button>
+    <button onclick="throw new Error('Test crash')">Simple Crash App</button>
+
+    <button onclick="makeCalls()">2 Api failed simulation</button>
+    <button onclick="unhandledRejection()">unhandledRejection</button>
+    <button onclick="genReferenceError()">genReferenceError</button>
+    <button onclick="promiseReject()">promise rejected error</button>
 
     <script src="http://localhost:3001/index.global.js"></script>
     <script>
       // working.mail.com as host
       window.feedback.init({ clientId: "pk_ohw54A1sI3zCifIcqS-lzw" });
       console.log("Loaded", window.feedback);
+    </script>
+    <script>
+      async function makeCalls() {
+        await fetch("https://api.example.com/order");
+        await fetch("https://api.example.com/payment");
+      }
+      async function unhandledRejection() {
+        await fetch("https://djasudna");
+      }
+
+      async function promiseReject(params) {
+        Promise.reject(new Error("expressjs api error"));
+      }
+
+      function genReferenceError() {
+        console.log("refVar", refVar);
+        let refVar = 4;
+      }
     </script>
   </body>
 </html>

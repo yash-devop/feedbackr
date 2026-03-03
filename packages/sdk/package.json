@@ -16,6 +16,7 @@
     "tsup": "^8.5.0"
   },
   "dependencies": {
-    "modern-screenshot": "^4.6.8"
+    "modern-screenshot": "^4.6.8",
+    "stacktrace-parser": "^0.1.11"
   }
 }
