@@ -1,22 +1,23 @@
 import { parse, StackFrame } from "stacktrace-parser";
 
+/* ================================
+   Types
+================================ */
+
 type ClientContext = {
   networkStatus: boolean;
-  // userAgent: string;
-  // url: string;
-  // language: string;
-  // screenWidth: number;
-  // screenHeight: number;
+};
+
+type ErrorEntry = {
+  type: string;
+  message: string;
+  stackTrace: StackFrame[];
+  occuredAt: string;
+  pageTimeMs: number;
 };
 
 type DebugContext = {
-  errors: {
-    type: string;
-    message: string;
-    stackTrace: StackFrame[];
-    occuredAt: string;
-    pageTimeMs: number;
-  };
+  errors: ErrorEntry[];
 };
 
 export type ErrorBuffer = {
@@ -24,34 +25,41 @@ export type ErrorBuffer = {
   clientContext: ClientContext;
 };
 
-export const errorsBuffer: ErrorBuffer[] = [];
+/* ================================
+   Session Buffer (Single Object)
+================================ */
+
 const MAX_ERRORS_LIMIT = 60;
+
+export const errorsBuffer: ErrorBuffer = {
+  debugContext: {
+    errors: [],
+  },
+  clientContext: getClientContext(),
+};
+
+/* ================================
+   Context Builders
+================================ */
 
 function getClientContext(): ClientContext {
   return {
     networkStatus: navigator.onLine,
-    // userAgent: navigator.userAgent,
-    // url: location.href,
-    // language: navigator.language,
-    // screenWidth: window.screen.width,
-    // screenHeight: window.screen.height,
   };
 }
 
-function buildDebugContext(
+function buildErrorEntry(
   error: Error,
   meta: { timeStamp: number },
-): DebugContext {
+): ErrorEntry {
   return {
-    errors: {
-      type: error.name,
-      message: error.message,
-      stackTrace: parse(error.stack ?? "")
-        .filter((frame) => frame.file)
-        .slice(0, 5), // limit stack depth
-      occuredAt: new Date().toISOString(),
-      pageTimeMs: Math.round(meta.timeStamp),
-    },
+    type: error.name,
+    message: error.message,
+    stackTrace: parse(error.stack ?? "")
+      .filter((frame) => frame.file)
+      .slice(0, 5),
+    occuredAt: new Date().toISOString(),
+    pageTimeMs: Math.round(meta.timeStamp),
   };
 }
 
@@ -69,22 +77,21 @@ function normalizeReason(reason: unknown): Error {
   }
 }
 
+/* ================================
+   Main Error Capture
+================================ */
+
 export function errorCapture() {
   window.addEventListener("error", (event) => {
-    // Ignore useless cross-origin script errors
     if (event.message === "Script error.") return;
 
     const errorObj =
       event.error instanceof Error ? event.error : new Error(event.message);
 
-    const captured: ErrorBuffer = {
-      debugContext: buildDebugContext(errorObj, event),
-      clientContext: getClientContext(),
-    };
-
-    if (errorsBuffer.length < MAX_ERRORS_LIMIT) {
-      errorsBuffer.push(captured);
+    if (errorsBuffer.debugContext.errors.length < MAX_ERRORS_LIMIT) {
+      errorsBuffer.debugContext.errors.push(buildErrorEntry(errorObj, event));
     }
+    console.log("errorsBuff", errorsBuffer);
   });
 
   window.addEventListener("unhandledrejection", (event) => {
@@ -92,13 +99,9 @@ export function errorCapture() {
 
     if (errorObj.name === "AbortError") return;
 
-    const captured: ErrorBuffer = {
-      debugContext: buildDebugContext(errorObj, event),
-      clientContext: getClientContext(),
-    };
-
-    if (errorsBuffer.length < MAX_ERRORS_LIMIT) {
-      errorsBuffer.push(captured);
+    if (errorsBuffer.debugContext.errors.length < MAX_ERRORS_LIMIT) {
+      errorsBuffer.debugContext.errors.push(buildErrorEntry(errorObj, event));
     }
+    console.log("errorsBuff", errorsBuffer);
   });
 }
