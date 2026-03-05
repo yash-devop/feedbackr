@@ -55,8 +55,6 @@ export const useDomain = () => {
       toast.success(data?.message, {
         richColors: true,
       });
-
-      return navigate(`/dashboard/${data.data.domainId}`);
     },
   });
 

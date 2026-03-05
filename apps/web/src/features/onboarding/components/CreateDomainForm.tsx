@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { DomainSchema, TDomainPayload } from "@repo/common/schemas";
 import { Button, Input, Label } from "@repo/ui";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 export const CreateDomainForm = () => {
   const {
     register,
@@ -14,15 +15,19 @@ export const CreateDomainForm = () => {
     resolver: zodResolver(DomainSchema),
   });
 
-  console.log("errors", errors);
-
+  const navigate = useNavigate();
   const {
     handler: { createDomainHandler },
   } = useDomain();
 
   return (
     <form
-      onSubmit={handleSubmit((data) => createDomainHandler({ data }))}
+      onSubmit={handleSubmit((data) =>
+        createDomainHandler({
+          data,
+          callback: (data) => navigate(`/dashboard/${data.data.domainId}`),
+        }),
+      )}
       className="flex flex-col gap-7 w-full"
     >
       <div className="flex flex-col gap-y-1.5">
