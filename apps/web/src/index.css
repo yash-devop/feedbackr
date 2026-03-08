@@ -107,3 +107,22 @@
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
+
+.zoom {
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+/* this are for the library : react-medium-image-zoom  ( https://www.npmjs.com/package/react-medium-image-zoom) 
+
+when i was passing height full to the <Zoom /> , they only allowing the fullscreen panning only on the image and not its container.. so the data-attributes =>  data-rmiz  and data-rmiz-content  , i found in dom and then attach our styles..
+
+*/
+[data-rmiz] {
+  height: 100%;
+}
+
+[data-rmiz-content] {
+  height: 100%;
+}

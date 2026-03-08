@@ -14,6 +14,8 @@ import { PriorityFilter } from "./components/PriorityFilter.tsx";
 import { StatusFilter } from "./components/StatusFilter.tsx";
 import { DebugSection } from "./components/diagnostic/DebugSection.tsx";
 import { Skeleton } from "@repo/ui";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 
 export const IndividualFeedbackPage = () => {
   const { domainId, feedbackId } = useParams<{
@@ -64,24 +66,26 @@ export const IndividualFeedbackPage = () => {
                     className="flex pb-2"
                     variant="info"
                   />
-                  <div className="relative flex-1 rounded-xl bg-muted/30 overflow-hidden">
+                  <div className="relative flex-1 rounded-xl bg-smuted/30 overflow-hidden border border-neutral-300 cursor-zoom-in group ">
+                    <div className="opacity-0 group-hover:opacity-100 absolute top-3 right-3 text-xs bg-black/60 text-white px-2 py-1 rounded transition-opacity duration-300">
+                      Click to zoom
+                    </div>
                     {getIndividualFeedbackService?.data?.data?.images &&
                     getIndividualFeedbackService?.data?.data?.images?.length >
                       0 ? (
-                      <>
+                      <Zoom classDialog="zoom">
                         <img
                           loading="lazy"
                           src={
                             getIndividualFeedbackService?.data?.data?.images[0]
                               ?.url
                           }
-                          // src="https://images.unsplash.com/photo-1761839256547-0a1cd11b6dfb?q=80&w=1169&auto=format&fit=crop"
                           alt="Feedback Screenshot"
-                          className="w-full h-full object-cover rounded-xl"
+                          className="w-full h-full object-contain "
                         />
-                      </>
+                      </Zoom>
                     ) : (
-                      <div className="flex flex-col  items-center justify-center gap-2 min-h-[420px] select-none">
+                      <div className="flex flex-col items-center justify-center gap-2 min-h-[420px] select-none">
                         <Image className="text-neutral-500" />
                         <span className="text-xs text-neutral-500">
                           No Feedback Image found
@@ -146,11 +150,7 @@ export const IndividualFeedbackPage = () => {
 
                   {/* PAGE CONTEXT */}
                   <div className="space-y-3 w-full">
-                    <Section
-                      section="Page Context"
-                      // className="hidden md:flex"
-                      variant="info"
-                    />
+                    <Section section="Page Context" variant="info" />
 
                     <div className="rounded-xl border border-border bg-card p-4 space-y-2 w-full">
                       <a
@@ -161,8 +161,6 @@ export const IndividualFeedbackPage = () => {
                       >
                         {getIndividualFeedbackService?.data?.data?.url ?? "N/A"}
                       </a>
-
-                      {/* <p className="text-xs text-muted-foreground">1.2.3</p> */}
                     </div>
                   </div>
                 </div>
