@@ -70,49 +70,7 @@ export const FeedbacksPage = () => {
   return (
     <>
       <MainPagesLayout>
-        <TopbarContainer title="Feedbacks">
-          <TopbarGroup>
-            <InputGroup className="h-8">
-              <InputGroupInput
-                placeholder="Search Feedback"
-                className="placeholder:text-neutral-500 text-foreground"
-              />
-              <InputGroupAddon>
-                <SearchIcon />
-              </InputGroupAddon>
-            </InputGroup>
-            {/* <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant={"outline"}
-                  size={"sm"}
-                  className="cursor-pointer text-neutral-500 hover:text-neutral-600"
-                >
-                  <Funnel />
-                  Filters
-                </Button>
-              </DropdownMenuTrigger>
-
-              <DropdownMenuContent align="end" className="border-border">
-                {filterOptions.map((option) => (
-                  <DropdownMenuItem
-                    key={option}
-                    asChild
-                    className={cn(
-                      `focus:bg-neutral-200 text-neutral-700! hover:bg-muted! hover:text-neutral-700! font-medium group`,
-                    )}
-                  >
-                    <div className="flex justify-between w-full cursor-pointer">
-                      <div className="flex items-center gap-x-1">
-                        <p className="text-xs capitalize">{option}</p>
-                      </div>
-                    </div>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu> */}
-          </TopbarGroup>
-        </TopbarContainer>
+        <TopbarContainer title="Feedbacks" />
         <SectionLayout>
           <div className="space-y-8">
             <div className="border border-border rounded-md">

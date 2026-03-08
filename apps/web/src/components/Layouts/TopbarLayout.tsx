@@ -5,7 +5,7 @@ export const TopbarContainer = ({
   children,
   title,
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   title: string;
 }) => {
   const { open, isMobile } = useSidebar();
