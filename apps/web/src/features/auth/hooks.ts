@@ -3,7 +3,7 @@ import { SocialProvider } from "better-auth";
 
 export const useAuth = () => {
   const signIn = async (provider: SocialProvider) => {
-    const URL = `http://localhost:5173`;
+    const URL = import.meta.env.VITE_FRONTEND_URL;
     const data = await authClient.signIn.social({
       provider,
       callbackURL: `${URL}/auth/callback`,

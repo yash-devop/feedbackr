@@ -11,6 +11,8 @@ const envSchema = z.object({
 
   FRONTEND_URL: z.string(),
   BACKEND_URL: z.string(),
+  
+  HASH_SECRET: z.string(),
 
   BETTER_AUTH_SECRET: z.string(),
   BETTER_AUTH_URL: z.url(),
