@@ -20,10 +20,6 @@
     "prisma:dev": "npx prisma db push --config=./apps/server/prisma.config.ts",
     "prisma:reset": "npx prisma migrate reset --config=./apps/server/prisma.config.ts"
   },
-  "peerDependencies": {
-    "@prisma/client": "^6.19.0",
-    "prisma": "^6.19.0"
-  },
   "devDependencies": {
     "@types/multer": "^2.0.0",
     "prettier": "^3.6.2",
@@ -37,11 +33,5 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ],
-  "dependencies": {
-    "multer": "^2.0.2",
-    "react-medium-image-zoom": "^5.4.1",
-    "shiki": "^3.22.0",
-    "uploadthing": "^7.7.4"
-  }
+  ]
 }
