@@ -37,6 +37,7 @@
   ],
   "dependencies": {
     "multer": "^2.0.2",
+    "react-medium-image-zoom": "^5.4.1",
     "shiki": "^3.22.0",
     "uploadthing": "^7.7.4"
   }

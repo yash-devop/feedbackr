@@ -14,6 +14,8 @@ import { PriorityFilter } from "./components/PriorityFilter.tsx";
 import { StatusFilter } from "./components/StatusFilter.tsx";
 import { DebugSection } from "./components/diagnostic/DebugSection.tsx";
 import { Skeleton } from "@repo/ui";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 
 export const IndividualFeedbackPage = () => {
   const { domainId, feedbackId } = useParams<{
@@ -26,6 +28,12 @@ export const IndividualFeedbackPage = () => {
     domainId: domainId ?? "",
     feedbackId: feedbackId ?? "",
   });
+
+  const totalErrorsLength = getIndividualFeedbackService.data?.data
+    ?.debugContext.errors
+    ? Object.keys(getIndividualFeedbackService.data?.data?.debugContext.errors)
+        .length
+    : 0;
 
   return (
     <>
@@ -58,24 +66,26 @@ export const IndividualFeedbackPage = () => {
                     className="flex pb-2"
                     variant="info"
                   />
-                  <div className="relative flex-1 rounded-xl bg-muted/30 overflow-hidden">
+                  <div className="relative flex-1 rounded-xl bg-smuted/30 overflow-hidden border border-neutral-300 cursor-zoom-in group ">
+                    <div className="opacity-0 group-hover:opacity-100 absolute top-3 right-3 text-xs bg-black/60 text-white px-2 py-1 rounded transition-opacity duration-300">
+                      Click to zoom
+                    </div>
                     {getIndividualFeedbackService?.data?.data?.images &&
                     getIndividualFeedbackService?.data?.data?.images?.length >
                       0 ? (
-                      <>
+                      <Zoom classDialog="zoom">
                         <img
                           loading="lazy"
                           src={
                             getIndividualFeedbackService?.data?.data?.images[0]
                               ?.url
                           }
-                          // src="https://images.unsplash.com/photo-1761839256547-0a1cd11b6dfb?q=80&w=1169&auto=format&fit=crop"
                           alt="Feedback Screenshot"
-                          className="w-full h-full object-cover rounded-xl"
+                          className="w-full h-full object-contain "
                         />
-                      </>
+                      </Zoom>
                     ) : (
-                      <div className="flex flex-col  items-center justify-center gap-2 min-h-[420px] select-none">
+                      <div className="flex flex-col items-center justify-center gap-2 min-h-[420px] select-none">
                         <Image className="text-neutral-500" />
                         <span className="text-xs text-neutral-500">
                           No Feedback Image found
@@ -84,49 +94,63 @@ export const IndividualFeedbackPage = () => {
                     )}
                   </div>
                 </div>
-                {/* <Section
-                    context="2 Errors"
-                    section="Debug Data"
-                    className="flex md:hidden"
-                    variant="alert"
-                  /> */}
+
                 <div className="flex flex-col gap-y-6 w-full">
-                  {/* ENVIRONMENT */}
                   <div className="space-y-3 w-full">
-                    <Section
-                      section="Environment"
-                      // className="hidden md:flex"
-                      variant="info"
-                    />
+                    <Section section="Environment" variant="info" />
 
                     <div className="w-full">
                       <div className="rounded-xl border border-border bg-card p-4 space-y-3 w-full">
                         <EnvRow
-                          label="Browser"
+                          label="User Agent"
                           value={
                             getIndividualFeedbackService?.data?.data
-                              ?.clientContext.browser ?? "N/A"
+                              ?.clientContext?.userAgent ?? "N/A"
                           }
                         />
+
                         <EnvRow
-                          label="Operating System"
+                          label="Language"
                           value={
                             getIndividualFeedbackService?.data?.data
-                              ?.clientContext.os ?? "N/A"
+                              ?.clientContext?.language ?? "N/A"
                           }
                         />
-                        {/* <EnvRow label="Viewport" value="1920x1080" /> */}
+
+                        <EnvRow
+                          label="Screen Size"
+                          value={
+                            getIndividualFeedbackService?.data?.data
+                              ?.clientContext
+                              ? `${getIndividualFeedbackService.data.data.clientContext.screenWidth} x ${getIndividualFeedbackService.data.data.clientContext.screenHeight}`
+                              : "N/A"
+                          }
+                        />
+
+                        <EnvRow
+                          label="URL"
+                          value={
+                            getIndividualFeedbackService?.data?.data
+                              ?.clientContext?.url ?? "N/A"
+                          }
+                        />
+
+                        <EnvRow
+                          label="Network Status"
+                          value={
+                            getIndividualFeedbackService?.data?.data
+                              ?.clientContext?.networkStatus
+                              ? "Online"
+                              : "Offline"
+                          }
+                        />
                       </div>
                     </div>
                   </div>
 
                   {/* PAGE CONTEXT */}
                   <div className="space-y-3 w-full">
-                    <Section
-                      section="Page Context"
-                      // className="hidden md:flex"
-                      variant="info"
-                    />
+                    <Section section="Page Context" variant="info" />
 
                     <div className="rounded-xl border border-border bg-card p-4 space-y-2 w-full">
                       <a
@@ -137,8 +161,6 @@ export const IndividualFeedbackPage = () => {
                       >
                         {getIndividualFeedbackService?.data?.data?.url ?? "N/A"}
                       </a>
-
-                      {/* <p className="text-xs text-muted-foreground">1.2.3</p> */}
                     </div>
                   </div>
                 </div>
@@ -147,7 +169,7 @@ export const IndividualFeedbackPage = () => {
 
             <div className="h-full flex flex-col space-y-3">
               <Section
-                context="2 Errors"
+                context={`${totalErrorsLength} Errors`}
                 section="Debug Data"
                 className=""
                 variant="alert"
@@ -174,11 +196,28 @@ export const IndividualFeedbackPage = () => {
   );
 };
 
-function EnvRow({ label, value }: { label: string; value: string }) {
+function EnvRow({
+  label,
+  value,
+  className,
+}: {
+  label: string;
+  value: string;
+  className?: string;
+}) {
   return (
-    <div className="flex items-center justify-between gap-4 text-sm w-full">
-      <span className="text-muted-foreground">{label}</span>
-      <span className="font-medium text-foreground text-right">{value}</span>
+    <div
+      className={cn(
+        `flex items-center justify-between gap-4 text-xs w-full`,
+        className,
+      )}
+    >
+      <span data-label className="text-muted-foreground">
+        {label}
+      </span>
+      <span data-value className="font-medium text-foreground text-right">
+        {value}
+      </span>
     </div>
   );
 }
