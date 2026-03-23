@@ -29,7 +29,7 @@
   }
 
   // src/api/client.ts
-  var BACKEND_URL = "http://localhost:8001";
+  var BACKEND_URL = "https://feedbackr-production.up.railway.app";
   async function validateClientId(clientId) {
     if (!clientId) {
       throw new Error("clientId is required");
@@ -1817,7 +1817,7 @@
   // src/widget/iframe.ts
   var iframeId = "__feedback_iframe";
   function createWidgetIframe(clientId) {
-    const WIDGET_URL = "http://localhost:5174";
+    const WIDGET_URL = "https://feedbackr-widget-gold.vercel.app";
     const iframe = document.createElement("iframe");
     iframe.id = iframeId;
     iframe.src = `${WIDGET_URL}?clientId=${clientId}`;
