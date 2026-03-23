@@ -1,62 +1,112 @@
 <!doctype html>
 <html>
-  <body>
-    <h1>SDK Test Page</h1>
+  <head>
+    <title>Dummy Website - Feedback Widget Test</title>
+  </head>
 
-    <button onclick="throw new Error('Test crash')">Simple Crash App</button>
+  <body style="margin: 0; font-family: Arial, sans-serif; background: #f5f5f5">
+    <!-- Header -->
+    <div
+      style="background: #111; color: white; padding: 20px; text-align: center"
+    >
+      <h1 style="margin: 0">My Dummy Website</h1>
+      <p style="margin: 5px 0 0 0">Testing Feedback Widget Integration</p>
+    </div>
 
-    <button onclick="makeCalls()">2 Api failed simulation</button>
-    <button onclick="unhandledRejection()">unhandledRejection</button>
-    <button onclick="genReferenceError()">genReferenceError</button>
-    <button onclick="promiseReject()">promise rejected error</button>
-    <button onclick="rangeErr()">range error</button>
-    <button onclick="syntaxError()">syntaxError error</button>
-    <button onclick="uriError()">uriError error</button>
-    <button onclick="AbortControllerEror()">AbortControllerEror error</button>
+    <!-- Navigation -->
+    <div
+      style="
+        background: #ffffff;
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+      "
+    >
+      <a href="#" style="margin: 0 15px; text-decoration: none; color: #333"
+        >Home</a
+      >
+      <a href="#" style="margin: 0 15px; text-decoration: none; color: #333"
+        >Products</a
+      >
+      <a href="#" style="margin: 0 15px; text-decoration: none; color: #333"
+        >Pricing</a
+      >
+      <a href="#" style="margin: 0 15px; text-decoration: none; color: #333"
+        >Contact</a
+      >
+    </div>
 
-    <script src="http://localhost:3001/index.global.js"></script>
+    <!-- Hero -->
+    <div style="padding: 60px 20px; text-align: center; background: white">
+      <h2 style="margin-bottom: 10px">Welcome to the Demo Page</h2>
+      <p style="color: #666; max-width: 600px; margin: auto">
+        This page exists purely to test the feedback widget. Try submitting
+        feedback, capturing screenshots, or triggering errors.
+      </p>
+
+      <button
+        style="
+          margin-top: 20px;
+          padding: 12px 24px;
+          border: none;
+          background: #2563eb;
+          color: white;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 16px;
+        "
+      >
+        Test Button
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div style="max-width: 900px; margin: auto; padding: 40px 20px">
+      <h3>Sample Content</h3>
+      <p style="color: #555; line-height: 1.6">
+        This is a dummy paragraph to simulate a real website layout. Your
+        feedback widget should work across different sections of this page.
+      </p>
+
+      <div
+        style="
+          background: white;
+          padding: 20px;
+          border-radius: 10px;
+          border: 1px solid #ddd;
+          margin-top: 20px;
+        "
+      >
+        <h4>Feature Box</h4>
+        <p style="color: #666">
+          Try opening the feedback widget here and attach screenshots.
+        </p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div
+      style="
+        background: #111;
+        color: #aaa;
+        text-align: center;
+        padding: 20px;
+        margin-top: 40px;
+      "
+    >
+      Dummy Test Site © 2026
+    </div>
+
+    <!-- Feedback Widget Script -->
+    <script>
+      console.log("Dummy site loaded for feedback widget testing");
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/jod-dev-kk/feedbackr@main/packages/sdk/build_dist/index.global.js"></script>
+    <!-- <script src="http://localhost:3001/index.global.js"></script> -->
     <script>
       // uploadThing.com as host
-      window.feedback.init({ clientId: "pk_05AcdBPatYLxbXgENw6euw" });
+      window.feedback.init({ clientId: "pk_Sea6MhBuUnmfkIj_p1g2kQ" });
       console.log("Loaded", window.feedback);
-    </script>
-    <script>
-      async function makeCalls() {
-        await fetch("https://api.example.com/order");
-        await fetch("https://api.example.com/payment");
-      }
-      async function unhandledRejection() {
-        await fetch("https://djasudna");
-      }
-
-      async function promiseReject(params) {
-        Promise.reject(new Error("expressjs api error"));
-      }
-
-      function genReferenceError() {
-        console.log("refVar", refVar);
-        let refVar = 4;
-      }
-
-      function rangeErr() {
-        new Array(-1);
-      }
-
-      function syntaxError() {
-        JSON.parse("{ bad json }");
-      }
-
-      function uriError() {
-        decodeURIComponent("%");
-      }
-
-      function AbortControllerEror() {
-        const controller = new AbortController();
-
-        fetch("/api", { signal: controller.signal });
-
-        controller.abort();
-      }
     </script>
   </body>
 </html>
