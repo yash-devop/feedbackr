@@ -1,7 +1,8 @@
 export const iframeId = "__feedback_iframe";
 
 export function createWidgetIframe(clientId: string) {
-  const WIDGET_URL = "http://localhost:5174";
+  const WIDGET_URL = "https://feedbackr-widget-gold.vercel.app";
+  // const WIDGET_URL = "http://localhost:5174";
   const iframe = document.createElement("iframe");
 
   iframe.id = iframeId;
