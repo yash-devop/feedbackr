@@ -29,7 +29,7 @@
   }
 
   // src/api/client.ts
-  var BACKEND_URL = "https://feedbackr-production.up.railway.app";
+  var BACKEND_URL = "https://feedbackr-web-server.up.railway.app";
   async function validateClientId(clientId) {
     if (!clientId) {
       throw new Error("clientId is required");
