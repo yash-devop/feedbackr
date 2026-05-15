@@ -6,8 +6,7 @@ export interface ValidateClientResponse {
   };
   message?: string;
 }
-
-const BACKEND_URL = "https://feedbackr-production.up.railway.app";
+const BACKEND_URL = "https://feedbackr-web-server.up.railway.app";
 // const BACKEND_URL = "http://localhost:8001";
 export async function validateClientId(
   clientId: string,
