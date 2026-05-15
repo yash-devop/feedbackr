@@ -24,7 +24,7 @@ export const domainMiddleware = async (
   let hostname = new URL(origin).hostname;
   if (hostname?.includes("localhost")) {
     // hostname = "uploadThing.com";
-    hostname = "yashstack.com";
+    hostname = "prod.upstash.com";
   }
   const { data } = await UserDomainService.validateClientId({
     clientId,
