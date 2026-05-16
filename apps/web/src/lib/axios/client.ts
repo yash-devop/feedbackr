@@ -1,8 +1,10 @@
 //  Axios api client
 
 import axios from "axios";
+import { clientEnv } from "../env.ts";
+
 export const apiClient = axios.create({
-  baseURL: `${import.meta.env.VITE_BACKEND_URL}/api`,
+  baseURL: `${clientEnv.VITE_BACKEND_URL}/api`,
   withCredentials: true,
   timeout: 15000,
 });
