@@ -1,6 +1,6 @@
 // frontend / backend urls
 
-import { env } from "../schemas/env";
+import { serverEnv } from "../env/env.server";
 
-export const FRONTEND_URL = env.FRONTEND_URL;
-export const BACKEND_URL = env.BACKEND_URL;
+export const FRONTEND_URL = serverEnv.FRONTEND_URL;
+export const BACKEND_URL = serverEnv.BACKEND_URL;

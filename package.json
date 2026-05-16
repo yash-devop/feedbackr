@@ -11,7 +11,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
     "compose:up": "docker compose --env-file .env up -d",
-    "compose:exec": "docker exec -it <yourDatabaseName> bash",
+    "compose:exec": "docker exec -it feedbackr_db bash",
     "compose:down": "docker compose down",
     "compose:erase": "docker compose down -v",
     "prisma:format": "npx prisma format --schema=./apps/server/prisma/schemas/schema.prisma",

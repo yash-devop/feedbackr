@@ -1,28 +1,28 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "../prisma-orm/prisma.js";
-import { env } from "@repo/common/env";
+import { serverEnv } from "@repo/common/env/server";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
 
-  secret: env.BETTER_AUTH_SECRET,
-  baseURL: env.BETTER_AUTH_URL,
+  secret: serverEnv.BETTER_AUTH_SECRET,
+  baseURL: serverEnv.BETTER_AUTH_URL,
 
   socialProviders: {
     google: {
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
+      clientId: serverEnv.GOOGLE_CLIENT_ID,
+      clientSecret: serverEnv.GOOGLE_CLIENT_SECRET,
     },
     github: {
-      clientId: env.GITHUB_CLIENT_ID,
-      clientSecret: env.GITHUB_CLIENT_SECRET,
+      clientId: serverEnv.GITHUB_CLIENT_ID,
+      clientSecret: serverEnv.GITHUB_CLIENT_SECRET,
     },
   },
 
-  trustedOrigins: [env.FRONTEND_URL],
+  trustedOrigins: [serverEnv.FRONTEND_URL],
   account: {
     skipStateCookieCheck: true, // for vercel.app only ( state mismatched error )
   },
