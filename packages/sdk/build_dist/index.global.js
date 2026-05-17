@@ -28,8 +28,11 @@
     }
   }
 
+  // src/api/urls.ts
+  var WIDGET_FRONTEND_URL = true ? "http://localhost:5174" : "";
+  var WIDGET_BACKEND_URL = true ? "http://localhost:8001" : "https://feedbackr-web-server.up.railway.app";
+
   // src/api/client.ts
-  var BACKEND_URL = "https://feedbackr-web-server.up.railway.app";
   async function validateClientId(clientId) {
     if (!clientId) {
       throw new Error("clientId is required");
@@ -43,7 +46,7 @@
     }
     try {
       const url = new URL(
-        `${BACKEND_URL}/api/domain/validateClientId`,
+        `${WIDGET_BACKEND_URL}/api/domain/validateClientId`,
         window.location.origin
       );
       url.searchParams.append("clientId", clientId);
@@ -257,7 +260,7 @@
   function registerListener(event, onMessage) {
     if (registeredEvents.has(event)) return;
     const handler = (e) => {
-      if (e.origin !== "http://localhost:5174") return;
+      if (e.origin !== WIDGET_FRONTEND_URL) return;
       if (e.data?.type === event) {
         onMessage(e.data);
         return;
@@ -1817,7 +1820,7 @@
   // src/widget/iframe.ts
   var iframeId = "__feedback_iframe";
   function createWidgetIframe(clientId) {
-    const WIDGET_URL = "https://feedbackr-widget-gold.vercel.app";
+    const WIDGET_URL = WIDGET_FRONTEND_URL;
     const iframe = document.createElement("iframe");
     iframe.id = iframeId;
     iframe.src = `${WIDGET_URL}?clientId=${clientId}`;
@@ -1865,7 +1868,7 @@
       console.warn("Feedback SDK: Iframe not found or not ready.");
       return;
     }
-    iframe.contentWindow.postMessage({ type, data }, "http://localhost:5174");
+    iframe.contentWindow.postMessage({ type, data }, WIDGET_FRONTEND_URL);
   };
   var handleTakeScreenshot = async () => {
     try {

@@ -8,8 +8,8 @@
       CACHE_KEY,
       JSON.stringify({
         clientId,
-        expiresAt: Date.now() + CACHE_TTL,
-      }),
+        expiresAt: Date.now() + CACHE_TTL
+      })
     );
   }
   function getCache(clientId) {
@@ -28,8 +28,11 @@
     }
   }
 
+  // src/api/urls.ts
+  var WIDGET_FRONTEND_URL = true ? "http://localhost:5174" : "";
+  var WIDGET_BACKEND_URL = true ? "http://localhost:8001" : "https://feedbackr-web-server.up.railway.app";
+
   // src/api/client.ts
-  var BACKEND_URL = "https://feedbackr-web-server.up.railway.app";
   async function validateClientId(clientId) {
     if (!clientId) {
       throw new Error("clientId is required");
@@ -38,20 +41,20 @@
     if (cached) {
       return {
         data: { valid: true },
-        message: "validated",
+        message: "validated"
       };
     }
     try {
       const url = new URL(
-        `${BACKEND_URL}/api/domain/validateClientId`,
-        window.location.origin,
+        `${WIDGET_BACKEND_URL}/api/domain/validateClientId`,
+        window.location.origin
       );
       url.searchParams.append("clientId", clientId);
       const response = await fetch(url.toString(), {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-        },
+          "Content-Type": "application/json"
+        }
       });
       if (!response.ok) {
         throw new Error(`Validation failed with status ${response.status}`);
@@ -69,21 +72,15 @@
   var UNKNOWN_FUNCTION = "<unknown>";
   function parse(stackString) {
     var lines = stackString.split("\n");
-    return lines.reduce(function (stack, line) {
-      var parseResult =
-        parseChrome(line) ||
-        parseWinjs(line) ||
-        parseGecko(line) ||
-        parseNode(line) ||
-        parseJSC(line);
+    return lines.reduce(function(stack, line) {
+      var parseResult = parseChrome(line) || parseWinjs(line) || parseGecko(line) || parseNode(line) || parseJSC(line);
       if (parseResult) {
         stack.push(parseResult);
       }
       return stack;
     }, []);
   }
-  var chromeRe =
-    /^\s*at (.*?) ?\(((?:file|https?|blob|chrome-extension|native|eval|webpack|rsc|<anonymous>|\/|[a-z]:\\|\\\\).*?)(?::(\d+))?(?::(\d+))?\)?\s*$/i;
+  var chromeRe = /^\s*at (.*?) ?\(((?:file|https?|blob|chrome-extension|native|eval|webpack|rsc|<anonymous>|\/|[a-z]:\\|\\\\).*?)(?::(\d+))?(?::(\d+))?\)?\s*$/i;
   var chromeEvalRe = /\((\S*)(?::(\d+))(?::(\d+))\)/;
   function parseChrome(line) {
     var parts = chromeRe.exec(line);
@@ -103,11 +100,10 @@
       methodName: parts[1] || UNKNOWN_FUNCTION,
       arguments: isNative ? [parts[2]] : [],
       lineNumber: parts[3] ? +parts[3] : null,
-      column: parts[4] ? +parts[4] : null,
+      column: parts[4] ? +parts[4] : null
     };
   }
-  var winjsRe =
-    /^\s*at (?:((?:\[object object\])?.+) )?\(?((?:file|ms-appx|https?|webpack|rsc|blob):.*?):(\d+)(?::(\d+))?\)?\s*$/i;
+  var winjsRe = /^\s*at (?:((?:\[object object\])?.+) )?\(?((?:file|ms-appx|https?|webpack|rsc|blob):.*?):(\d+)(?::(\d+))?\)?\s*$/i;
   function parseWinjs(line) {
     var parts = winjsRe.exec(line);
     if (!parts) {
@@ -118,11 +114,10 @@
       methodName: parts[1] || UNKNOWN_FUNCTION,
       arguments: [],
       lineNumber: +parts[3],
-      column: parts[4] ? +parts[4] : null,
+      column: parts[4] ? +parts[4] : null
     };
   }
-  var geckoRe =
-    /^\s*(.*?)(?:\((.*?)\))?(?:^|@)((?:file|https?|blob|chrome|webpack|rsc|resource|\[native).*?|[^@]*bundle)(?::(\d+))?(?::(\d+))?\s*$/i;
+  var geckoRe = /^\s*(.*?)(?:\((.*?)\))?(?:^|@)((?:file|https?|blob|chrome|webpack|rsc|resource|\[native).*?|[^@]*bundle)(?::(\d+))?(?::(\d+))?\s*$/i;
   var geckoEvalRe = /(\S+) line (\d+)(?: > eval line \d+)* > eval/i;
   function parseGecko(line) {
     var parts = geckoRe.exec(line);
@@ -141,11 +136,10 @@
       methodName: parts[1] || UNKNOWN_FUNCTION,
       arguments: parts[2] ? parts[2].split(",") : [],
       lineNumber: parts[4] ? +parts[4] : null,
-      column: parts[5] ? +parts[5] : null,
+      column: parts[5] ? +parts[5] : null
     };
   }
-  var javaScriptCoreRe =
-    /^\s*(?:([^@]*)(?:\((.*?)\))?@)?(\S.*?):(\d+)(?::(\d+))?\s*$/i;
+  var javaScriptCoreRe = /^\s*(?:([^@]*)(?:\((.*?)\))?@)?(\S.*?):(\d+)(?::(\d+))?\s*$/i;
   function parseJSC(line) {
     var parts = javaScriptCoreRe.exec(line);
     if (!parts) {
@@ -156,11 +150,10 @@
       methodName: parts[1] || UNKNOWN_FUNCTION,
       arguments: [],
       lineNumber: +parts[4],
-      column: parts[5] ? +parts[5] : null,
+      column: parts[5] ? +parts[5] : null
     };
   }
-  var nodeRe =
-    /^\s*at (?:((?:\[object object\])?[^\\/]+(?: \[as \S+\])?) )?\(?(.*?):(\d+)(?::(\d+))?\)?\s*$/i;
+  var nodeRe = /^\s*at (?:((?:\[object object\])?[^\\/]+(?: \[as \S+\])?) )?\(?(.*?):(\d+)(?::(\d+))?\)?\s*$/i;
   function parseNode(line) {
     var parts = nodeRe.exec(line);
     if (!parts) {
@@ -171,7 +164,7 @@
       methodName: parts[1] || UNKNOWN_FUNCTION,
       arguments: [],
       lineNumber: +parts[3],
-      column: parts[4] ? +parts[4] : null,
+      column: parts[4] ? +parts[4] : null
     };
   }
 
@@ -179,9 +172,9 @@
   var MAX_ERRORS_LIMIT = 60;
   var errorsBuffer = {
     debugContext: {
-      errors: {},
+      errors: {}
     },
-    clientContext: getClientContext(),
+    clientContext: getClientContext()
   };
   function getClientContext() {
     return {
@@ -190,18 +183,16 @@
       url: location.href,
       language: navigator.language,
       screenWidth: window.screen.width,
-      screenHeight: window.screen.height,
+      screenHeight: window.screen.height
     };
   }
   function buildErrorEntry(error, meta) {
     return {
       type: error.name,
       message: error.message,
-      stackTrace: parse(error.stack ?? "")
-        .filter((frame) => frame.file)
-        .slice(0, 5),
-      occuredAt: /* @__PURE__ */ new Date().toISOString(),
-      pageTimeMs: Math.round(meta.timeStamp),
+      stackTrace: parse(error.stack ?? "").filter((frame) => frame.file).slice(0, 5),
+      occuredAt: (/* @__PURE__ */ new Date()).toISOString(),
+      pageTimeMs: Math.round(meta.timeStamp)
     };
   }
   function normalizeReason(reason) {
@@ -236,7 +227,7 @@
   function getTotalErrors() {
     return Object.values(errorsBuffer.debugContext.errors).reduce(
       (total, arr) => total + arr.length,
-      0,
+      0
     );
   }
   function pushError(entry) {
@@ -250,8 +241,7 @@
   function errorCapture() {
     window.addEventListener("error", (event) => {
       if (event.message === "Script error.") return;
-      const errorObj =
-        event.error instanceof Error ? event.error : new Error(event.message);
+      const errorObj = event.error instanceof Error ? event.error : new Error(event.message);
       const entry = buildErrorEntry(errorObj, event);
       pushError(entry);
       console.log("errorsBuffer", errorsBuffer);
@@ -270,7 +260,7 @@
   function registerListener(event, onMessage) {
     if (registeredEvents.has(event)) return;
     const handler = (e) => {
-      if (e.origin !== "http://localhost:5174") return;
+      if (e.origin !== WIDGET_FRONTEND_URL) return;
       if (e.data?.type === event) {
         onMessage(e.data);
         return;
@@ -305,7 +295,7 @@
     for (let n = 0; n < 256; n++) {
       let c = n;
       for (let k = 0; k < 8; k++) {
-        c = c & 1 ? 3988292384 ^ (c >>> 1) : c >>> 1;
+        c = c & 1 ? 3988292384 ^ c >>> 1 : c >>> 1;
       }
       crcTable[n] = c;
     }
@@ -313,22 +303,17 @@
   }
   function calcCrc(uint8Array) {
     let c = -1;
-    if (!pngDataTable) pngDataTable = createPngDataTable();
+    if (!pngDataTable)
+      pngDataTable = createPngDataTable();
     for (let n = 0; n < uint8Array.length; n++) {
-      c = pngDataTable[(c ^ uint8Array[n]) & 255] ^ (c >>> 8);
+      c = pngDataTable[(c ^ uint8Array[n]) & 255] ^ c >>> 8;
     }
     return c ^ -1;
   }
   function searchStartOfPhys(uint8Array) {
     const length = uint8Array.length - 1;
     for (let i = length; i >= 4; i--) {
-      if (
-        uint8Array[i - 4] === 9 &&
-        uint8Array[i - 3] === _P &&
-        uint8Array[i - 2] === _H &&
-        uint8Array[i - 1] === _Y &&
-        uint8Array[i] === _S
-      ) {
+      if (uint8Array[i - 4] === 9 && uint8Array[i - 3] === _P && uint8Array[i - 2] === _H && uint8Array[i - 1] === _Y && uint8Array[i] === _S) {
         return i - 3;
       }
     }
@@ -387,16 +372,12 @@
   var isContext = (value) => value && "__CONTEXT__" in value;
   var isCssFontFaceRule = (rule) => rule.constructor.name === "CSSFontFaceRule";
   var isCSSImportRule = (rule) => rule.constructor.name === "CSSImportRule";
-  var isLayerBlockRule = (rule) =>
-    rule.constructor.name === "CSSLayerBlockRule";
+  var isLayerBlockRule = (rule) => rule.constructor.name === "CSSLayerBlockRule";
   var isElementNode = (node) => node.nodeType === 1;
   var isSVGElementNode = (node) => typeof node.className === "object";
   var isSVGImageElementNode = (node) => node.tagName === "image";
   var isSVGUseElementNode = (node) => node.tagName === "use";
-  var isHTMLElementNode = (node) =>
-    isElementNode(node) &&
-    typeof node.style !== "undefined" &&
-    !isSVGElementNode(node);
+  var isHTMLElementNode = (node) => isElementNode(node) && typeof node.style !== "undefined" && !isSVGElementNode(node);
   var isCommentNode = (node) => node.nodeType === 8;
   var isTextNode = (node) => node.nodeType === 3;
   var isImageElement = (node) => node.tagName === "IMG";
@@ -415,32 +396,30 @@
     if (canvas) {
       canvas.height = canvas.width = 1;
     }
-    return (
-      Boolean(canvas) &&
-      "toDataURL" in canvas &&
-      Boolean(canvas.toDataURL("image/webp").includes("image/webp"))
-    );
+    return Boolean(canvas) && "toDataURL" in canvas && Boolean(canvas.toDataURL("image/webp").includes("image/webp"));
   }
   var isDataUrl = (url) => url.startsWith("data:");
   function resolveUrl(url, baseUrl) {
-    if (url.match(/^[a-z]+:\/\//i)) return url;
-    if (IN_BROWSER && url.match(/^\/\//)) return window.location.protocol + url;
-    if (url.match(/^[a-z]+:/i)) return url;
-    if (!IN_BROWSER) return url;
+    if (url.match(/^[a-z]+:\/\//i))
+      return url;
+    if (IN_BROWSER && url.match(/^\/\//))
+      return window.location.protocol + url;
+    if (url.match(/^[a-z]+:/i))
+      return url;
+    if (!IN_BROWSER)
+      return url;
     const doc = getDocument().implementation.createHTMLDocument();
     const base = doc.createElement("base");
     const a = doc.createElement("a");
     doc.head.appendChild(base);
     doc.body.appendChild(a);
-    if (baseUrl) base.href = baseUrl;
+    if (baseUrl)
+      base.href = baseUrl;
     a.href = url;
     return a.href;
   }
   function getDocument(target) {
-    return (
-      (target && isElementNode(target) ? target?.ownerDocument : target) ??
-      window.document
-    );
+    return (target && isElementNode(target) ? target?.ownerDocument : target) ?? window.document;
   }
   var XMLNS = "http://www.w3.org/2000/svg";
   function createSvg(width, height, ownerDocument) {
@@ -453,27 +432,20 @@
   function svgToDataUrl(svg, removeControlCharacter) {
     let xhtml = new XMLSerializer().serializeToString(svg);
     if (removeControlCharacter) {
-      xhtml = xhtml.replace(
-        /[\u0000-\u0008\v\f\u000E-\u001F\uD800-\uDFFF\uFFFE\uFFFF]/gu,
-        "",
-      );
+      xhtml = xhtml.replace(/[\u0000-\u0008\v\f\u000E-\u001F\uD800-\uDFFF\uFFFE\uFFFF]/gu, "");
     }
     return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(xhtml)}`;
   }
   async function canvasToBlob(canvas, type = "image/png", quality = 1) {
     try {
       return await new Promise((resolve, reject) => {
-        canvas.toBlob(
-          (blob) => {
-            if (blob) {
-              resolve(blob);
-            } else {
-              reject(new Error("Blob is null"));
-            }
-          },
-          type,
-          quality,
-        );
+        canvas.toBlob((blob) => {
+          if (blob) {
+            resolve(blob);
+          } else {
+            reject(new Error("Blob is null"));
+          }
+        }, type, quality);
       });
     } catch (error) {
       if (SUPPORT_ATOB) {
@@ -517,16 +489,8 @@
   }
   function loadMedia(media, options) {
     return new Promise((resolve) => {
-      const {
-        timeout,
-        ownerDocument,
-        onError: userOnError,
-        onWarn,
-      } = options ?? {};
-      const node =
-        typeof media === "string"
-          ? createImage(media, getDocument(ownerDocument))
-          : media;
+      const { timeout, ownerDocument, onError: userOnError, onWarn } = options ?? {};
+      const node = typeof media === "string" ? createImage(media, getDocument(ownerDocument)) : media;
       let timer = null;
       let removeEventListeners = null;
       function onResolve() {
@@ -550,7 +514,11 @@
         }
         const onLoadeddata = onResolve;
         const onError = (error) => {
-          onWarn?.("Failed video load", currentSrc, error);
+          onWarn?.(
+            "Failed video load",
+            currentSrc,
+            error
+          );
           userOnError?.(error);
           onResolve();
         };
@@ -561,9 +529,7 @@
         node.addEventListener("loadeddata", onLoadeddata, { once: true });
         node.addEventListener("error", onError, { once: true });
       } else {
-        const currentSrc = isSVGImageElementNode(node)
-          ? node.href.baseVal
-          : node.currentSrc || node.src;
+        const currentSrc = isSVGImageElementNode(node) ? node.href.baseVal : node.currentSrc || node.src;
         if (!currentSrc) {
           return onResolve();
         }
@@ -575,7 +541,7 @@
               onWarn?.(
                 "Failed to decode image, trying to render anyway",
                 node.dataset.originalSrc || currentSrc,
-                error,
+                error
               );
             }
           }
@@ -585,7 +551,7 @@
           onWarn?.(
             "Failed image load",
             node.dataset.originalSrc || currentSrc,
-            error,
+            error
           );
           onResolve();
         };
@@ -608,28 +574,22 @@
       } else {
         await Promise.all(
           ["img", "video"].flatMap((selectors) => {
-            return Array.from(node.querySelectorAll(selectors)).map((el) =>
-              loadMedia(el, options),
-            );
-          }),
+            return Array.from(node.querySelectorAll(selectors)).map((el) => loadMedia(el, options));
+          })
         );
       }
     }
   }
   var uuid = /* @__PURE__ */ (function uuid2() {
     let counter = 0;
-    const random = () =>
-      `0000${((Math.random() * 36 ** 4) << 0).toString(36)}`.slice(-4);
+    const random = () => `0000${(Math.random() * 36 ** 4 << 0).toString(36)}`.slice(-4);
     return () => {
       counter += 1;
       return `u${random()}${counter}`;
     };
   })();
   function splitFontFamily(fontFamily) {
-    return fontFamily
-      ?.split(",")
-      .map((val) => val.trim().replace(/"|'/g, "").toLowerCase())
-      .filter(Boolean);
+    return fontFamily?.split(",").map((val) => val.trim().replace(/"|'/g, "").toLowerCase()).filter(Boolean);
   }
   var uid = 0;
   function createLogger(debug) {
@@ -640,27 +600,23 @@
       time: (label) => debug && console.time(`${prefix} ${label}`),
       // eslint-disable-next-line no-console
       timeEnd: (label) => debug && console.timeEnd(`${prefix} ${label}`),
-      warn: (...args) => debug && consoleWarn(...args),
+      warn: (...args) => debug && consoleWarn(...args)
     };
   }
   function getDefaultRequestInit(bypassingCache) {
     return {
-      cache: bypassingCache ? "no-cache" : "force-cache",
+      cache: bypassingCache ? "no-cache" : "force-cache"
     };
   }
   async function orCreateContext(node, options) {
-    return isContext(node)
-      ? node
-      : createContext(node, { ...options, autoDestruct: true });
+    return isContext(node) ? node : createContext(node, { ...options, autoDestruct: true });
   }
   async function createContext(node, options) {
     const { scale = 1, workerUrl, workerNumber = 1 } = options || {};
     const debug = Boolean(options?.debug);
     const features = options?.features ?? true;
-    const ownerDocument =
-      node.ownerDocument ?? (IN_BROWSER ? window.document : void 0);
-    const ownerWindow =
-      node.ownerDocument?.defaultView ?? (IN_BROWSER ? window : void 0);
+    const ownerDocument = node.ownerDocument ?? (IN_BROWSER ? window.document : void 0);
+    const ownerWindow = node.ownerDocument?.defaultView ?? (IN_BROWSER ? window : void 0);
     const requests = /* @__PURE__ */ new Map();
     const context = {
       // Options
@@ -678,10 +634,9 @@
       debug,
       fetch: {
         requestInit: getDefaultRequestInit(options?.fetch?.bypassingCache),
-        placeholderImage:
-          "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+        placeholderImage: "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
         bypassingCache: false,
-        ...options?.fetch,
+        ...options?.fetch
       },
       fetchFn: null,
       font: {},
@@ -708,72 +663,54 @@
       defaultComputedStyles: /* @__PURE__ */ new Map(),
       workers: [
         ...Array.from({
-          length:
-            SUPPORT_WEB_WORKER && workerUrl && workerNumber ? workerNumber : 0,
-        }),
-      ]
-        .map(() => {
-          try {
-            const worker = new Worker(workerUrl);
-            worker.onmessage = async (event) => {
-              const { url, result } = event.data;
-              if (result) {
-                requests.get(url)?.resolve?.(result);
-              } else {
-                requests
-                  .get(url)
-                  ?.reject?.(
-                    new Error(`Error receiving message from worker: ${url}`),
-                  );
-              }
-            };
-            worker.onmessageerror = (event) => {
-              const { url } = event.data;
-              requests
-                .get(url)
-                ?.reject?.(
-                  new Error(`Error receiving message from worker: ${url}`),
-                );
-            };
-            return worker;
-          } catch (error) {
-            context.log.warn("Failed to new Worker", error);
-            return null;
-          }
+          length: SUPPORT_WEB_WORKER && workerUrl && workerNumber ? workerNumber : 0
         })
-        .filter(Boolean),
+      ].map(() => {
+        try {
+          const worker = new Worker(workerUrl);
+          worker.onmessage = async (event) => {
+            const { url, result } = event.data;
+            if (result) {
+              requests.get(url)?.resolve?.(result);
+            } else {
+              requests.get(url)?.reject?.(new Error(`Error receiving message from worker: ${url}`));
+            }
+          };
+          worker.onmessageerror = (event) => {
+            const { url } = event.data;
+            requests.get(url)?.reject?.(new Error(`Error receiving message from worker: ${url}`));
+          };
+          return worker;
+        } catch (error) {
+          context.log.warn("Failed to new Worker", error);
+          return null;
+        }
+      }).filter(Boolean),
       fontFamilies: /* @__PURE__ */ new Map(),
       fontCssTexts: /* @__PURE__ */ new Map(),
       acceptOfImage: `${[
         supportWebp(ownerDocument) && "image/webp",
         "image/svg+xml",
         "image/*",
-        "*/*",
-      ]
-        .filter(Boolean)
-        .join(",")};q=0.8`,
+        "*/*"
+      ].filter(Boolean).join(",")};q=0.8`,
       requests,
       drawImageCount: 0,
       tasks: [],
       features,
       isEnable: (key) => {
         if (key === "restoreScrollPosition") {
-          return typeof features === "boolean"
-            ? false
-            : (features[key] ?? false);
+          return typeof features === "boolean" ? false : features[key] ?? false;
         }
         if (typeof features === "boolean") {
           return features;
         }
         return features[key] ?? true;
       },
-      shadowRoots: [],
+      shadowRoots: []
     };
     context.log.time("wait until load");
-    await waitUntilLoad(node, {
-      timeout: context.timeout,
-      onWarn: context.log.warn,
-    });
+    await waitUntilLoad(node, { timeout: context.timeout, onWarn: context.log.warn });
     context.log.timeEnd("wait until load");
     const { width, height } = resolveBoundingBox(node, context);
     context.width = width;
@@ -781,7 +718,8 @@
     return context;
   }
   function createStyleElement(ownerDocument) {
-    if (!ownerDocument) return void 0;
+    if (!ownerDocument)
+      return void 0;
     const style = ownerDocument.createElement("style");
     const cssText = style.ownerDocument.createTextNode(`
 .______background-clip--text {
@@ -802,12 +740,14 @@
     return { width, height };
   }
   async function imageToCanvas(image, context) {
-    const { log, timeout, drawImageCount, drawImageInterval } = context;
-    log.time("image to canvas");
-    const loaded = await loadMedia(image, {
+    const {
+      log,
       timeout,
-      onWarn: context.log.warn,
-    });
+      drawImageCount,
+      drawImageInterval
+    } = context;
+    log.time("image to canvas");
+    const loaded = await loadMedia(image, { timeout, onWarn: context.log.warn });
     const { canvas, context2d } = createCanvas(image.ownerDocument, context);
     const drawImage = () => {
       try {
@@ -833,13 +773,7 @@
     return canvas;
   }
   function createCanvas(ownerDocument, context) {
-    const {
-      width,
-      height,
-      scale,
-      backgroundColor,
-      maximumCanvasSize: max,
-    } = context;
+    const { width, height, scale, backgroundColor, maximumCanvasSize: max } = context;
     const canvas = ownerDocument.createElement("canvas");
     canvas.width = Math.floor(width * scale);
     canvas.height = Math.floor(height * scale);
@@ -890,7 +824,7 @@
         clonedCtx.putImageData(
           ctx.getImageData(0, 0, canvas.width, canvas.height),
           0,
-          0,
+          0
         );
       }
       return cloned;
@@ -932,10 +866,7 @@
     const ownerDocument = cloned.ownerDocument;
     if (ownerDocument) {
       let canPlay = true;
-      await loadMedia(cloned, {
-        onError: () => (canPlay = false),
-        onWarn: context.log.warn,
-      });
+      await loadMedia(cloned, { onError: () => canPlay = false, onWarn: context.log.warn });
       if (!canPlay) {
         if (video.poster) {
           return createImage(video.poster, video.ownerDocument);
@@ -951,7 +882,8 @@
       canvas.height = video.offsetHeight;
       try {
         const ctx = canvas.getContext("2d");
-        if (ctx) ctx.drawImage(cloned, 0, 0, canvas.width, canvas.height);
+        if (ctx)
+          ctx.drawImage(cloned, 0, 0, canvas.width, canvas.height);
       } catch (error) {
         context.log.warn("Failed to clone video", error);
         if (video.poster) {
@@ -991,8 +923,7 @@
           sandbox.style.visibility = "hidden";
           sandbox.style.position = "fixed";
           ownerDocument.body.appendChild(sandbox);
-          sandbox.srcdoc =
-            '<!DOCTYPE html><meta charset="UTF-8"><title></title><body>';
+          sandbox.srcdoc = '<!DOCTYPE html><meta charset="UTF-8"><title></title><body>';
           context.sandbox = sandbox;
         }
       } catch (error) {
@@ -1001,29 +932,32 @@
     }
     return sandbox;
   }
-  var ignoredStyles = ["width", "height", "-webkit-text-fill-color"];
-  var includedAttributes = ["stroke", "fill"];
+  var ignoredStyles = [
+    "width",
+    "height",
+    "-webkit-text-fill-color"
+  ];
+  var includedAttributes = [
+    "stroke",
+    "fill"
+  ];
   function getDefaultStyle(node, pseudoElement, context) {
     const { defaultComputedStyles } = context;
     const nodeName = node.nodeName.toLowerCase();
     const isSvgNode = isSVGElementNode(node) && nodeName !== "svg";
-    const attributes = isSvgNode
-      ? includedAttributes
-          .map((name) => [name, node.getAttribute(name)])
-          .filter(([, value]) => value !== null)
-      : [];
+    const attributes = isSvgNode ? includedAttributes.map((name) => [name, node.getAttribute(name)]).filter(([, value]) => value !== null) : [];
     const key = [
       isSvgNode && "svg",
       nodeName,
       attributes.map((name, value) => `${name}=${value}`).join(","),
-      pseudoElement,
-    ]
-      .filter(Boolean)
-      .join(":");
-    if (defaultComputedStyles.has(key)) return defaultComputedStyles.get(key);
+      pseudoElement
+    ].filter(Boolean).join(":");
+    if (defaultComputedStyles.has(key))
+      return defaultComputedStyles.get(key);
     const sandbox = getSandBox(context);
     const sandboxWindow = sandbox?.contentWindow;
-    if (!sandboxWindow) return /* @__PURE__ */ new Map();
+    if (!sandboxWindow)
+      return /* @__PURE__ */ new Map();
     const sandboxDocument = sandboxWindow?.document;
     let root;
     let el;
@@ -1043,7 +977,8 @@
     const styles = /* @__PURE__ */ new Map();
     for (let len = computedStyle.length, i = 0; i < len; i++) {
       const name = computedStyle.item(i);
-      if (ignoredStyles.includes(name)) continue;
+      if (ignoredStyles.includes(name))
+        continue;
       styles.set(name, computedStyle.getPropertyValue(name));
     }
     sandboxDocument.body.removeChild(root);
@@ -1065,9 +1000,7 @@
       }
     }
     for (let len = prefixs.length, i = 0; i < len; i++) {
-      prefixTree
-        .get(prefixs[i])
-        ?.forEach((value, name) => diffStyle.set(name, value));
+      prefixTree.get(prefixs[i])?.forEach((value, name) => diffStyle.set(name, value));
     }
     function applyTo(name) {
       const value = style.getPropertyValue(name);
@@ -1082,7 +1015,8 @@
         }
         map.set(name, [value, priority]);
       }
-      if (defaultStyle.get(name) === value && !priority) return;
+      if (defaultStyle.get(name) === value && !priority)
+        return;
       if (prefix) {
         prefixs.push(prefix);
       } else {
@@ -1092,19 +1026,14 @@
     return diffStyle;
   }
   function copyCssStyles(node, cloned, isRoot, context) {
-    const { ownerWindow, includeStyleProperties, currentParentNodeStyle } =
-      context;
+    const { ownerWindow, includeStyleProperties, currentParentNodeStyle } = context;
     const clonedStyle = cloned.style;
     const computedStyle = ownerWindow.getComputedStyle(node);
     const defaultStyle = getDefaultStyle(node, null, context);
     currentParentNodeStyle?.forEach((_, key) => {
       defaultStyle.delete(key);
     });
-    const style = getDiffStyle(
-      computedStyle,
-      defaultStyle,
-      includeStyleProperties,
-    );
+    const style = getDiffStyle(computedStyle, defaultStyle, includeStyleProperties);
     style.delete("transition-property");
     style.delete("all");
     style.delete("d");
@@ -1124,13 +1053,9 @@
       cloned.classList.add("______background-clip--text");
     }
     if (IN_CHROME) {
-      if (!style.has("font-kerning")) style.set("font-kerning", ["normal", ""]);
-      if (
-        (style.get("overflow-x")?.[0] === "hidden" ||
-          style.get("overflow-y")?.[0] === "hidden") &&
-        style.get("text-overflow")?.[0] === "ellipsis" &&
-        node.scrollWidth === node.clientWidth
-      ) {
+      if (!style.has("font-kerning"))
+        style.set("font-kerning", ["normal", ""]);
+      if ((style.get("overflow-x")?.[0] === "hidden" || style.get("overflow-y")?.[0] === "hidden") && style.get("text-overflow")?.[0] === "ellipsis" && node.scrollWidth === node.clientWidth) {
         style.set("text-overflow", ["clip", ""]);
       }
     }
@@ -1143,17 +1068,13 @@
     return style;
   }
   function copyInputValue(node, cloned) {
-    if (
-      isTextareaElement(node) ||
-      isInputElement(node) ||
-      isSelectElement(node)
-    ) {
+    if (isTextareaElement(node) || isInputElement(node) || isSelectElement(node)) {
       cloned.setAttribute("value", node.value);
     }
   }
   var pseudoClasses = [
     "::before",
-    "::after",
+    "::after"
     // '::placeholder', TODO
   ];
   var scrollbarPseudoClasses = [
@@ -1165,22 +1086,17 @@
     "::-webkit-scrollbar-track-piece",
     // '::-webkit-scrollbar:vertical', TODO
     "::-webkit-scrollbar-corner",
-    "::-webkit-resizer",
+    "::-webkit-resizer"
   ];
-  function copyPseudoClass(
-    node,
-    cloned,
-    copyScrollbar,
-    context,
-    addWordToFontFamilies,
-  ) {
-    const { ownerWindow, svgStyleElement, svgStyles, currentNodeStyle } =
-      context;
-    if (!svgStyleElement || !ownerWindow) return;
+  function copyPseudoClass(node, cloned, copyScrollbar, context, addWordToFontFamilies) {
+    const { ownerWindow, svgStyleElement, svgStyles, currentNodeStyle } = context;
+    if (!svgStyleElement || !ownerWindow)
+      return;
     function copyBy(pseudoClass) {
       const computedStyle = ownerWindow.getComputedStyle(node, pseudoClass);
       let content = computedStyle.getPropertyValue("content");
-      if (!content || content === "none") return;
+      if (!content || content === "none")
+        return;
       addWordToFontFamilies?.(content);
       content = content.replace(/(')|(")|(counter\(.+\))/g, "");
       const klasses = [uuid()];
@@ -1188,21 +1104,20 @@
       currentNodeStyle?.forEach((_, key) => {
         defaultStyle.delete(key);
       });
-      const style = getDiffStyle(
-        computedStyle,
-        defaultStyle,
-        context.includeStyleProperties,
-      );
+      const style = getDiffStyle(computedStyle, defaultStyle, context.includeStyleProperties);
       style.delete("content");
       style.delete("-webkit-locale");
       if (style.get("background-clip")?.[0] === "text") {
         cloned.classList.add("______background-clip--text");
       }
-      const cloneStyle = [`content: '${content}';`];
+      const cloneStyle = [
+        `content: '${content}';`
+      ];
       style.forEach(([value, priority], name) => {
         cloneStyle.push(`${name}: ${value}${priority ? " !important" : ""};`);
       });
-      if (cloneStyle.length === 1) return;
+      if (cloneStyle.length === 1)
+        return;
       try {
         cloned.className = [cloned.className, ...klasses].join(" ");
       } catch (err) {
@@ -1218,39 +1133,24 @@
       allClasses.push(`.${klasses[0]}${pseudoClass}`);
     }
     pseudoClasses.forEach(copyBy);
-    if (copyScrollbar) scrollbarPseudoClasses.forEach(copyBy);
+    if (copyScrollbar)
+      scrollbarPseudoClasses.forEach(copyBy);
   }
   var excludeParentNodes = /* @__PURE__ */ new Set([
-    "symbol",
+    "symbol"
     // test/fixtures/svg.symbol.html
   ]);
-  async function appendChildNode(
-    node,
-    cloned,
-    child,
-    context,
-    addWordToFontFamilies,
-  ) {
-    if (
-      isElementNode(child) &&
-      (isStyleElement(child) || isScriptElement(child))
-    )
+  async function appendChildNode(node, cloned, child, context, addWordToFontFamilies) {
+    if (isElementNode(child) && (isStyleElement(child) || isScriptElement(child)))
       return;
-    if (context.filter && !context.filter(child)) return;
-    if (
-      excludeParentNodes.has(cloned.nodeName) ||
-      excludeParentNodes.has(child.nodeName)
-    ) {
+    if (context.filter && !context.filter(child))
+      return;
+    if (excludeParentNodes.has(cloned.nodeName) || excludeParentNodes.has(child.nodeName)) {
       context.currentParentNodeStyle = void 0;
     } else {
       context.currentParentNodeStyle = context.currentNodeStyle;
     }
-    const childCloned = await cloneNode(
-      child,
-      context,
-      false,
-      addWordToFontFamilies,
-    );
+    const childCloned = await cloneNode(child, context, false, addWordToFontFamilies);
     if (context.isEnable("restoreScrollPosition")) {
       restoreScrollPosition(node, childCloned);
     }
@@ -1265,35 +1165,21 @@
       }
     }
     for (let child = firstChild; child; child = child.nextSibling) {
-      if (isCommentNode(child)) continue;
-      if (
-        isElementNode(child) &&
-        isSlotElement(child) &&
-        typeof child.assignedNodes === "function"
-      ) {
+      if (isCommentNode(child))
+        continue;
+      if (isElementNode(child) && isSlotElement(child) && typeof child.assignedNodes === "function") {
         const nodes = child.assignedNodes();
         for (let i = 0; i < nodes.length; i++) {
-          await appendChildNode(
-            node,
-            cloned,
-            nodes[i],
-            context,
-            addWordToFontFamilies,
-          );
+          await appendChildNode(node, cloned, nodes[i], context, addWordToFontFamilies);
         }
       } else {
-        await appendChildNode(
-          node,
-          cloned,
-          child,
-          context,
-          addWordToFontFamilies,
-        );
+        await appendChildNode(node, cloned, child, context, addWordToFontFamilies);
       }
     }
   }
   function restoreScrollPosition(node, chlidCloned) {
-    if (!isHTMLElementNode(node) || !isHTMLElementNode(chlidCloned)) return;
+    if (!isHTMLElementNode(node) || !isHTMLElementNode(chlidCloned))
+      return;
     const { scrollTop, scrollLeft } = node;
     if (!scrollTop && !scrollLeft) {
       return;
@@ -1317,33 +1203,24 @@
     const clonedStyle = cloned.style;
     if (backgroundColor)
       clonedStyle.setProperty("background-color", backgroundColor, "important");
-    if (width) clonedStyle.setProperty("width", `${width}px`, "important");
-    if (height) clonedStyle.setProperty("height", `${height}px`, "important");
+    if (width)
+      clonedStyle.setProperty("width", `${width}px`, "important");
+    if (height)
+      clonedStyle.setProperty("height", `${height}px`, "important");
     if (styles) {
       for (const name in styles) clonedStyle[name] = styles[name];
     }
   }
   var NORMAL_ATTRIBUTE_RE = /^[\w-:]+$/;
-  async function cloneNode(
-    node,
-    context,
-    isRoot = false,
-    addWordToFontFamilies,
-  ) {
-    const { ownerDocument, ownerWindow, fontFamilies, onCloneEachNode } =
-      context;
+  async function cloneNode(node, context, isRoot = false, addWordToFontFamilies) {
+    const { ownerDocument, ownerWindow, fontFamilies, onCloneEachNode } = context;
     if (ownerDocument && isTextNode(node)) {
       if (addWordToFontFamilies && /\S/.test(node.data)) {
         addWordToFontFamilies(node.data);
       }
       return ownerDocument.createTextNode(node.data);
     }
-    if (
-      ownerDocument &&
-      ownerWindow &&
-      isElementNode(node) &&
-      (isHTMLElementNode(node) || isSVGElementNode(node))
-    ) {
+    if (ownerDocument && ownerWindow && isElementNode(node) && (isHTMLElementNode(node) || isSVGElementNode(node))) {
       const cloned2 = await cloneElement(node, context);
       if (context.isEnable("removeAbnormalAttributes")) {
         const names = cloned2.getAttributeNames();
@@ -1354,58 +1231,50 @@
           }
         }
       }
-      const style = (context.currentNodeStyle = copyCssStyles(
-        node,
-        cloned2,
-        isRoot,
-        context,
-      ));
-      if (isRoot) applyCssStyleWithOptions(cloned2, context);
+      const style = context.currentNodeStyle = copyCssStyles(node, cloned2, isRoot, context);
+      if (isRoot)
+        applyCssStyleWithOptions(cloned2, context);
       let copyScrollbar = false;
       if (context.isEnable("copyScrollbar")) {
         const overflow = [
           style.get("overflow-x")?.[0],
-          style.get("overflow-y")?.[0],
+          style.get("overflow-y")?.[0]
         ];
-        copyScrollbar =
-          overflow.includes("scroll") ||
-          ((overflow.includes("auto") || overflow.includes("overlay")) &&
-            (node.scrollHeight > node.clientHeight ||
-              node.scrollWidth > node.clientWidth));
+        copyScrollbar = overflow.includes("scroll") || (overflow.includes("auto") || overflow.includes("overlay")) && (node.scrollHeight > node.clientHeight || node.scrollWidth > node.clientWidth);
       }
       const textTransform = style.get("text-transform")?.[0];
       const families = splitFontFamily(style.get("font-family")?.[0]);
-      const addWordToFontFamilies2 = families
-        ? (word) => {
-            if (textTransform === "uppercase") {
-              word = word.toUpperCase();
-            } else if (textTransform === "lowercase") {
-              word = word.toLowerCase();
-            } else if (textTransform === "capitalize") {
-              word = word[0].toUpperCase() + word.substring(1);
-            }
-            families.forEach((family) => {
-              let fontFamily = fontFamilies.get(family);
-              if (!fontFamily) {
-                fontFamilies.set(
-                  family,
-                  (fontFamily = /* @__PURE__ */ new Set()),
-                );
-              }
-              word.split("").forEach((text) => fontFamily.add(text));
-            });
+      const addWordToFontFamilies2 = families ? (word) => {
+        if (textTransform === "uppercase") {
+          word = word.toUpperCase();
+        } else if (textTransform === "lowercase") {
+          word = word.toLowerCase();
+        } else if (textTransform === "capitalize") {
+          word = word[0].toUpperCase() + word.substring(1);
+        }
+        families.forEach((family) => {
+          let fontFamily = fontFamilies.get(family);
+          if (!fontFamily) {
+            fontFamilies.set(family, fontFamily = /* @__PURE__ */ new Set());
           }
-        : void 0;
+          word.split("").forEach((text) => fontFamily.add(text));
+        });
+      } : void 0;
       copyPseudoClass(
         node,
         cloned2,
         copyScrollbar,
         context,
-        addWordToFontFamilies2,
+        addWordToFontFamilies2
       );
       copyInputValue(node, cloned2);
       if (!isVideoElement(node)) {
-        await cloneChildNodes(node, cloned2, context, addWordToFontFamilies2);
+        await cloneChildNodes(
+          node,
+          cloned2,
+          context,
+          addWordToFontFamilies2
+        );
       }
       await onCloneEachNode?.(cloned2);
       return cloned2;
@@ -1440,45 +1309,38 @@
   function baseFetch(options) {
     const { url, timeout, responseType, ...requestInit } = options;
     const controller = new AbortController();
-    const timer = timeout
-      ? setTimeout(() => controller.abort(), timeout)
-      : void 0;
-    return fetch(url, { signal: controller.signal, ...requestInit })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed fetch, not 2xx response", {
-            cause: response,
-          });
-        }
-        switch (responseType) {
-          case "arrayBuffer":
-            return response.arrayBuffer();
-          case "dataUrl":
-            return response.blob().then(blobToDataUrl);
-          case "text":
-          default:
-            return response.text();
-        }
-      })
-      .finally(() => clearTimeout(timer));
+    const timer = timeout ? setTimeout(() => controller.abort(), timeout) : void 0;
+    return fetch(url, { signal: controller.signal, ...requestInit }).then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed fetch, not 2xx response", { cause: response });
+      }
+      switch (responseType) {
+        case "arrayBuffer":
+          return response.arrayBuffer();
+        case "dataUrl":
+          return response.blob().then(blobToDataUrl);
+        case "text":
+        default:
+          return response.text();
+      }
+    }).finally(() => clearTimeout(timer));
   }
   function contextFetch(context, options) {
-    const {
-      url: rawUrl,
-      requestType = "text",
-      responseType = "text",
-      imageDom,
-    } = options;
+    const { url: rawUrl, requestType = "text", responseType = "text", imageDom } = options;
     let url = rawUrl;
     const {
       timeout,
       acceptOfImage,
       requests,
       fetchFn,
-      fetch: { requestInit, bypassingCache, placeholderImage },
+      fetch: {
+        requestInit,
+        bypassingCache,
+        placeholderImage
+      },
       font,
       workers,
-      fontFamilies,
+      fontFamilies
     } = context;
     if (requestType === "image" && (IN_SAFARI || IN_FIREFOX)) {
       context.drawImageCount++;
@@ -1487,17 +1349,16 @@
     if (!request) {
       if (bypassingCache) {
         if (bypassingCache instanceof RegExp && bypassingCache.test(url)) {
-          url +=
-            (/\?/.test(url) ? "&" : "?") + /* @__PURE__ */ new Date().getTime();
+          url += (/\?/.test(url) ? "&" : "?") + (/* @__PURE__ */ new Date()).getTime();
         }
       }
-      const canFontMinify =
-        requestType.startsWith("font") && font && font.minify;
+      const canFontMinify = requestType.startsWith("font") && font && font.minify;
       const fontTexts = /* @__PURE__ */ new Set();
       if (canFontMinify) {
         const families = requestType.split(";")[1].split(",");
         families.forEach((family) => {
-          if (!fontFamilies.has(family)) return;
+          if (!fontFamilies.has(family))
+            return;
           fontFamilies.get(family).forEach((text) => fontTexts.add(text));
         });
       }
@@ -1507,22 +1368,23 @@
         timeout,
         responseType: needFontMinify ? "arrayBuffer" : responseType,
         headers: requestType === "image" ? { accept: acceptOfImage } : void 0,
-        ...requestInit,
+        ...requestInit
       };
       request = {
         type: requestType,
         resolve: void 0,
         reject: void 0,
-        response: null,
+        response: null
       };
       request.response = (async () => {
         if (fetchFn && requestType === "image") {
           const result = await fetchFn(rawUrl);
-          if (result) return result;
+          if (result)
+            return result;
         }
         if (!IN_SAFARI && rawUrl.startsWith("http") && workers.length) {
           return new Promise((resolve, reject) => {
-            const worker = workers[requests.size & (workers.length - 1)];
+            const worker = workers[requests.size & workers.length - 1];
             worker.postMessage({ rawUrl, ...baseFetchOptions });
             request.resolve = resolve;
             request.reject = reject;
@@ -1532,13 +1394,8 @@
       })().catch((error) => {
         requests.delete(rawUrl);
         if (requestType === "image" && placeholderImage) {
-          context.log.warn(
-            "Failed to fetch image base64, trying to use placeholder image",
-            url,
-          );
-          return typeof placeholderImage === "string"
-            ? placeholderImage
-            : placeholderImage(imageDom);
+          context.log.warn("Failed to fetch image base64, trying to use placeholder image", url);
+          return typeof placeholderImage === "string" ? placeholderImage : placeholderImage(imageDom);
         }
         throw error;
       });
@@ -1547,14 +1404,18 @@
     return request.response;
   }
   async function replaceCssUrlToDataUrl(cssText, baseUrl, context, isImage) {
-    if (!hasCssUrl(cssText)) return cssText;
+    if (!hasCssUrl(cssText))
+      return cssText;
     for (const [rawUrl, url] of parseCssUrls(cssText, baseUrl)) {
       try {
-        const dataUrl = await contextFetch(context, {
-          url,
-          requestType: isImage ? "image" : "text",
-          responseType: "dataUrl",
-        });
+        const dataUrl = await contextFetch(
+          context,
+          {
+            url,
+            requestType: isImage ? "image" : "text",
+            responseType: "dataUrl"
+          }
+        );
         cssText = cssText.replace(toRE(rawUrl), `$1${dataUrl}$3`);
       } catch (error) {
         context.log.warn("Failed to fetch css data url", rawUrl, error);
@@ -1583,30 +1444,27 @@
     "border-image-source",
     "-webkit-border-image",
     "-webkit-mask-image",
-    "list-style-image",
+    "list-style-image"
   ];
   function embedCssStyleImage(style, context) {
-    return properties
-      .map((property) => {
-        const value = style.getPropertyValue(property);
-        if (!value || value === "none") {
-          return null;
-        }
-        if (IN_SAFARI || IN_FIREFOX) {
-          context.drawImageCount++;
-        }
-        return replaceCssUrlToDataUrl(value, null, context, true).then(
-          (newValue) => {
-            if (!newValue || value === newValue) return;
-            style.setProperty(
-              property,
-              newValue,
-              style.getPropertyPriority(property),
-            );
-          },
+    return properties.map((property) => {
+      const value = style.getPropertyValue(property);
+      if (!value || value === "none") {
+        return null;
+      }
+      if (IN_SAFARI || IN_FIREFOX) {
+        context.drawImageCount++;
+      }
+      return replaceCssUrlToDataUrl(value, null, context, true).then((newValue) => {
+        if (!newValue || value === newValue)
+          return;
+        style.setProperty(
+          property,
+          newValue,
+          style.getPropertyPriority(property)
         );
-      })
-      .filter(Boolean);
+      });
+    }).filter(Boolean);
   }
   function embedImageElement(cloned, context) {
     if (isImageElement(cloned)) {
@@ -1617,13 +1475,14 @@
             url: originalSrc,
             imageDom: cloned,
             requestType: "image",
-            responseType: "dataUrl",
+            responseType: "dataUrl"
           }).then((url) => {
-            if (!url) return;
+            if (!url)
+              return;
             cloned.srcset = "";
             cloned.dataset.originalSrc = originalSrc;
             cloned.src = url || "";
-          }),
+          })
         ];
       }
       if (IN_SAFARI || IN_FIREFOX) {
@@ -1636,21 +1495,22 @@
           url: originalSrc,
           imageDom: cloned,
           requestType: "image",
-          responseType: "dataUrl",
+          responseType: "dataUrl"
         }).then((url) => {
-          if (!url) return;
+          if (!url)
+            return;
           cloned.dataset.originalSrc = originalSrc;
           cloned.href.baseVal = url || "";
-        }),
+        })
       ];
     }
     return [];
   }
   function embedSvgUse(cloned, context) {
     const { ownerDocument, svgDefsElement } = context;
-    const href =
-      cloned.getAttribute("href") ?? cloned.getAttribute("xlink:href");
-    if (!href) return [];
+    const href = cloned.getAttribute("href") ?? cloned.getAttribute("xlink:href");
+    if (!href)
+      return [];
     const [svgUrl, id] = href.split("#");
     if (id) {
       const query = `#${id}`;
@@ -1658,12 +1518,13 @@
         (res, root) => {
           return res ?? root.querySelector(`svg ${query}`);
         },
-        ownerDocument?.querySelector(`svg ${query}`),
+        ownerDocument?.querySelector(`svg ${query}`)
       );
       if (svgUrl) {
         cloned.setAttribute("href", query);
       }
-      if (svgDefsElement?.querySelector(query)) return [];
+      if (svgDefsElement?.querySelector(query))
+        return [];
       if (definition) {
         svgDefsElement?.appendChild(definition.cloneNode(true));
         return [];
@@ -1671,10 +1532,10 @@
         return [
           contextFetch(context, {
             url: svgUrl,
-            responseType: "text",
+            responseType: "text"
           }).then((svgData) => {
             svgDefsElement?.insertAdjacentHTML("beforeend", svgData);
-          }),
+          })
         ];
       }
     }
@@ -1704,33 +1565,24 @@
       fontFamilies,
       fontCssTexts,
       tasks,
-      font,
+      font
     } = context;
     if (!ownerDocument || !svgStyleElement || !fontFamilies.size) {
       return;
     }
     if (font && font.cssText) {
       const cssText = filterPreferredFormat(font.cssText, context);
-      svgStyleElement.appendChild(
-        ownerDocument.createTextNode(`${cssText}
-`),
-      );
+      svgStyleElement.appendChild(ownerDocument.createTextNode(`${cssText}
+`));
     } else {
-      const styleSheets = Array.from(ownerDocument.styleSheets).filter(
-        (styleSheet) => {
-          try {
-            return (
-              "cssRules" in styleSheet && Boolean(styleSheet.cssRules.length)
-            );
-          } catch (error) {
-            context.log.warn(
-              `Error while reading CSS rules from ${styleSheet.href}`,
-              error,
-            );
-            return false;
-          }
-        },
-      );
+      const styleSheets = Array.from(ownerDocument.styleSheets).filter((styleSheet) => {
+        try {
+          return "cssRules" in styleSheet && Boolean(styleSheet.cssRules.length);
+        } catch (error) {
+          context.log.warn(`Error while reading CSS rules from ${styleSheet.href}`, error);
+          return false;
+        }
+      });
       await Promise.all(
         styleSheets.flatMap((styleSheet) => {
           return Array.from(styleSheet.cssRules).map(async (cssRule, index) => {
@@ -1742,87 +1594,67 @@
                 cssText = await contextFetch(context, {
                   url: baseUrl,
                   requestType: "text",
-                  responseType: "text",
+                  responseType: "text"
                 });
               } catch (error) {
-                context.log.warn(
-                  `Error fetch remote css import from ${baseUrl}`,
-                  error,
-                );
+                context.log.warn(`Error fetch remote css import from ${baseUrl}`, error);
               }
               const replacedCssText = cssText.replace(
                 URL_RE,
-                (raw, quotation, url) =>
-                  raw.replace(url, resolveUrl(url, baseUrl)),
+                (raw, quotation, url) => raw.replace(url, resolveUrl(url, baseUrl))
               );
               for (const rule of parseCss(replacedCssText)) {
                 try {
                   styleSheet.insertRule(
                     rule,
-                    rule.startsWith("@import")
-                      ? (importIndex += 1)
-                      : styleSheet.cssRules.length,
+                    rule.startsWith("@import") ? importIndex += 1 : styleSheet.cssRules.length
                   );
                 } catch (error) {
-                  context.log.warn(
-                    "Error inserting rule from remote css import",
-                    { rule, error },
-                  );
+                  context.log.warn("Error inserting rule from remote css import", { rule, error });
                 }
               }
             }
           });
-        }),
+        })
       );
       const cssRules = [];
       styleSheets.forEach((sheet) => {
         unwrapCssLayers(sheet.cssRules, cssRules);
       });
-      cssRules
-        .filter(
-          (cssRule) =>
-            isCssFontFaceRule(cssRule) &&
-            hasCssUrl(cssRule.style.getPropertyValue("src")) &&
-            splitFontFamily(
-              cssRule.style.getPropertyValue("font-family"),
-            )?.some((val) => fontFamilies.has(val)),
-        )
-        .forEach((value) => {
-          const rule = value;
-          const cssText = fontCssTexts.get(rule.cssText);
-          if (cssText) {
-            svgStyleElement.appendChild(
-              ownerDocument.createTextNode(`${cssText}
-`),
-            );
-          } else {
-            tasks.push(
-              replaceCssUrlToDataUrl(
-                rule.cssText,
-                rule.parentStyleSheet ? rule.parentStyleSheet.href : null,
-                context,
-              ).then((cssText2) => {
-                cssText2 = filterPreferredFormat(cssText2, context);
-                fontCssTexts.set(rule.cssText, cssText2);
-                svgStyleElement.appendChild(
-                  ownerDocument.createTextNode(`${cssText2}
-`),
-                );
-              }),
-            );
-          }
-        });
+      cssRules.filter((cssRule) => isCssFontFaceRule(cssRule) && hasCssUrl(cssRule.style.getPropertyValue("src")) && splitFontFamily(cssRule.style.getPropertyValue("font-family"))?.some((val) => fontFamilies.has(val))).forEach((value) => {
+        const rule = value;
+        const cssText = fontCssTexts.get(rule.cssText);
+        if (cssText) {
+          svgStyleElement.appendChild(ownerDocument.createTextNode(`${cssText}
+`));
+        } else {
+          tasks.push(
+            replaceCssUrlToDataUrl(
+              rule.cssText,
+              rule.parentStyleSheet ? rule.parentStyleSheet.href : null,
+              context
+            ).then((cssText2) => {
+              cssText2 = filterPreferredFormat(cssText2, context);
+              fontCssTexts.set(rule.cssText, cssText2);
+              svgStyleElement.appendChild(ownerDocument.createTextNode(`${cssText2}
+`));
+            })
+          );
+        }
+      });
     }
   }
   var COMMENTS_RE = /(\/\*[\s\S]*?\*\/)/g;
   var KEYFRAMES_RE = /((@.*?keyframes [\s\S]*?){([\s\S]*?}\s*?)})/gi;
   function parseCss(source) {
-    if (source == null) return [];
+    if (source == null)
+      return [];
     const result = [];
     let cssText = source.replace(COMMENTS_RE, "");
     while (true) {
       const matches = KEYFRAMES_RE.exec(cssText);
-      if (!matches) break;
+      if (!matches)
+        break;
       result.push(matches[0]);
     }
     cssText = cssText.replace(KEYFRAMES_RE, "");
@@ -1830,7 +1662,7 @@
     const UNIFIED_RE = new RegExp(
       // eslint-disable-next-line
       "((\\s*?(?:\\/\\*[\\s\\S]*?\\*\\/)?\\s*?@media[\\s\\S]*?){([\\s\\S]*?)}\\s*?})|(([\\s\\S]*?){([\\s\\S]*?)})",
-      "gi",
+      "gi"
     );
     while (true) {
       let matches = IMPORT_RE.exec(cssText);
@@ -1853,15 +1685,15 @@
   function filterPreferredFormat(str, context) {
     const { font } = context;
     const preferredFormat = font ? font?.preferredFormat : void 0;
-    return preferredFormat
-      ? str.replace(FONT_SRC_RE, (match) => {
-          while (true) {
-            const [src, , format] = URL_WITH_FORMAT_RE.exec(match) || [];
-            if (!format) return "";
-            if (format === preferredFormat) return `src: ${src};`;
-          }
-        })
-      : str;
+    return preferredFormat ? str.replace(FONT_SRC_RE, (match) => {
+      while (true) {
+        const [src, , format] = URL_WITH_FORMAT_RE.exec(match) || [];
+        if (!format)
+          return "";
+        if (format === preferredFormat)
+          return `src: ${src};`;
+      }
+    }) : str;
   }
   function unwrapCssLayers(rules, out = []) {
     for (const rule of Array.from(rules)) {
@@ -1891,7 +1723,7 @@
       autoDestruct,
       onCloneNode,
       onEmbedNode,
-      onCreateForeignObjectSvg,
+      onCreateForeignObjectSvg
     } = context;
     log.time("clone node");
     const clone = await cloneNode(context.node, context, true);
@@ -1919,7 +1751,8 @@
     const runTask = async () => {
       while (true) {
         const task = tasks.pop();
-        if (!task) break;
+        if (!task)
+          break;
         try {
           await task;
         } catch (error) {
@@ -1942,10 +1775,7 @@
   function createForeignObjectSvg(clone, context) {
     const { width, height } = context;
     const svg = createSvg(width, height, clone.ownerDocument);
-    const foreignObject = svg.ownerDocument.createElementNS(
-      svg.namespaceURI,
-      "foreignObject",
-    );
+    const foreignObject = svg.ownerDocument.createElementNS(svg.namespaceURI, "foreignObject");
     foreignObject.setAttributeNS(null, "x", "0%");
     foreignObject.setAttributeNS(null, "y", "0%");
     foreignObject.setAttributeNS(null, "width", "100%");
@@ -1957,16 +1787,10 @@
   async function domToCanvas(node, options) {
     const context = await orCreateContext(node, options);
     const svg = await domToForeignObjectSvg(context);
-    const dataUrl = svgToDataUrl(
-      svg,
-      context.isEnable("removeControlCharacter"),
-    );
+    const dataUrl = svgToDataUrl(svg, context.isEnable("removeControlCharacter"));
     if (!context.autoDestruct) {
       context.svgStyleElement = createStyleElement(context.ownerDocument);
-      context.svgDefsElement = context.ownerDocument?.createElementNS(
-        XMLNS,
-        "defs",
-      );
+      context.svgDefsElement = context.ownerDocument?.createElementNS(XMLNS, "defs");
       context.svgStyles.clear();
     }
     const image = createImage(dataUrl, svg.ownerDocument);
@@ -1996,7 +1820,7 @@
   // src/widget/iframe.ts
   var iframeId = "__feedback_iframe";
   function createWidgetIframe(clientId) {
-    const WIDGET_URL = "https://feedbackr-widget-gold.vercel.app";
+    const WIDGET_URL = WIDGET_FRONTEND_URL;
     const iframe = document.createElement("iframe");
     iframe.id = iframeId;
     iframe.src = `${WIDGET_URL}?clientId=${clientId}`;
@@ -2033,7 +1857,7 @@
     iframe.classList.add("defaultWidgetFrame");
     return {
       iframe,
-      styles,
+      styles
     };
   }
 
@@ -2044,14 +1868,14 @@
       console.warn("Feedback SDK: Iframe not found or not ready.");
       return;
     }
-    iframe.contentWindow.postMessage({ type, data }, "http://localhost:5174");
+    iframe.contentWindow.postMessage({ type, data }, WIDGET_FRONTEND_URL);
   };
   var handleTakeScreenshot = async () => {
     try {
       const blob = await domToBlob(document.documentElement, {
         filter: (node) => node?.id !== iframeId,
         scale: window.devicePixelRatio || 1,
-        fetch: { bypassingCache: true },
+        fetch: { bypassingCache: true }
       });
       if (!blob) throw new Error("Capture failed");
       const reader = new FileReader();
@@ -2113,13 +1937,13 @@
   }
 
   // src/index.ts
-  (function () {
+  (function() {
     if (typeof window === "undefined") return;
     if (window.feedback) return;
     window.feedback = {
       // appending methods.
       init,
-      destroyWidget,
+      destroyWidget
     };
     console.log("[Feedback SDK] Loaded", window.feedback);
   })();
