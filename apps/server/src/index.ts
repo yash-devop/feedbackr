@@ -1,4 +1,4 @@
-import { serverEnv } from "@repo/common/env/server";
+import { serverEnv } from "@repo/common/env.server";
 import { toNodeHandler } from "better-auth/node";
 import cors from "cors";
 import express from "express";

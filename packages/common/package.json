@@ -4,8 +4,8 @@
   "exports": {
     "./types": "./src/types/types.ts",
     "./schemas": "./src/schemas/schema.ts",
-    "./env/client": "./src/env/env.client.ts",
-    "./env/server": "./src/env/env.server.ts",
+    "./env.client": "./src/env/env.client.ts",
+    "./env.server": "./src/env/env.server.ts",
     "./config": "./src/configs/configs.ts",
     "./queryCacheKeys": "./src/cacheKeys/keys.ts",
     "./apiUrls": "./src/apiUrls/urls.ts"

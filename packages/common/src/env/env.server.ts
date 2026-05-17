@@ -18,6 +18,7 @@ const serverEnvSchema = z.object({
   DATABASE_URL: z.string(),
 
   FRONTEND_URL: z.string(),
+  WIDGET_FRONTEND_URL: z.string(),
   BACKEND_URL: z.string(),
 
   HASH_SECRET: z.string(),
