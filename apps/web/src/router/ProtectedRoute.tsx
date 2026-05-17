@@ -51,7 +51,7 @@ export const ProtectedRoute = () => {
   }
 
   // No domains
-  if (domains && domains.length === 0) {
+  if (!getDomainService.isPending && domains?.length === 0) {
     return <Navigate to="/onboarding/create-domain" replace />;
   }
 
