@@ -1,4 +1,4 @@
-import { env } from "@repo/common/env";
+import { serverEnv } from "@repo/common/env.server";
 import { toNodeHandler } from "better-auth/node";
 import cors from "cors";
 import express from "express";
@@ -25,5 +25,5 @@ app.use("/api/domain", UserDomainRouter);
 
 app.use(errorMiddleware);
 app.listen(process.env.PORT, async () => {
-  console.log(`Server started successfully on PORT ${env.PORT}`);
+  console.log(`Server started successfully on PORT ${serverEnv.PORT}`);
 });

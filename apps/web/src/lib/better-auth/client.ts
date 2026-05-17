@@ -1,7 +1,11 @@
 import { createAuthClient } from "better-auth/react";
+import { clientEnv } from "../env.ts";
 
 export const authClient: ReturnType<typeof createAuthClient> = createAuthClient(
   {
-    baseURL: import.meta.env.VITE_BACKEND_URL,
+    baseURL: clientEnv.VITE_BACKEND_URL,
+    fetchOptions: {
+      credentials: "include",
+    },
   },
 );

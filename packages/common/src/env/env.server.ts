@@ -1,17 +1,26 @@
+/// <reference types="vite/client" />
+
 import { config } from "dotenv";
 import { findUpSync } from "find-up";
 import z from "zod";
+
+const envFilePath =
+  process.env.NODE_ENV === "development"
+    ? findUpSync(".env.local")
+    : findUpSync(".env.production");
+
 config({
-  path: findUpSync(".env"),
+  path: envFilePath,
 });
 
-const envSchema = z.object({
+const serverEnvSchema = z.object({
   PORT: z.string(),
   DATABASE_URL: z.string(),
 
   FRONTEND_URL: z.string(),
+  WIDGET_FRONTEND_URL: z.string(),
   BACKEND_URL: z.string(),
-  
+
   HASH_SECRET: z.string(),
 
   BETTER_AUTH_SECRET: z.string(),
@@ -27,4 +36,4 @@ const envSchema = z.object({
   // ... more
 });
 
-export const env = envSchema.parse(process.env);
+export const serverEnv = serverEnvSchema.parse(process.env);

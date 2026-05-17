@@ -50,7 +50,10 @@ export const AccountSection = ({ user }: AccountSectionProps) => {
           <Label className="text-xs text-foreground">Avatar</Label>
           <div className="flex items-center gap-4">
             <Avatar className="h-12 w-12 border border-border">
-              <AvatarImage src={user?.image as string} />
+              <AvatarImage
+                src={user?.image as string}
+                referrerPolicy="no-referrer"
+              />
               <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="flex gap-2">

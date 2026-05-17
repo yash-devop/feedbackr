@@ -2,7 +2,7 @@
  * Prisma ORM config
  */
 
-import "@repo/common/env";
+import "@repo/common/env.server";
 import { defineConfig, env } from "prisma/config";
 export default defineConfig({
   schema: "./prisma/schemas/schema.prisma",

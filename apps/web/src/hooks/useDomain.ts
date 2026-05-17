@@ -1,3 +1,4 @@
+import { queryClientGlobal } from "@/lib/tanstack-query/client.ts";
 import useGetDomainService from "@/services/getDomainService/useGetDomainService.ts";
 import {
   ApiDomainStatus,
@@ -10,6 +11,7 @@ import {
   handleGlobalPostRequest,
 } from "@/utils/httpFuntions.ts";
 import { API_URLS } from "@repo/common/apiUrls";
+import { CACHE_KEYS } from "@repo/common/queryCacheKeys";
 import { TDomainPayload } from "@repo/common/schemas";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -51,7 +53,10 @@ export const useDomain = () => {
         richColors: true,
       });
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
+      await queryClientGlobal.invalidateQueries({
+        queryKey: [CACHE_KEYS.GET_DOMAINS],
+      });
       toast.success(data?.message, {
         richColors: true,
       });

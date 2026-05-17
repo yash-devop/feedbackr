@@ -1,8 +1,6 @@
-import { prisma } from "@/lib/prisma-orm/prisma.js";
+import { UserDomainService } from "@/modules/user-domain/userDomain.service.js";
 import { NextFunction, Request, Response } from "express";
 import { AppError } from "./error.middleware.js";
-import { hashFunction } from "@repo/utils/server";
-import { UserDomainService } from "@/modules/user-domain/userDomain.service.js";
 export const domainMiddleware = async (
   req: Request,
   res: Response,
@@ -22,10 +20,7 @@ export const domainMiddleware = async (
   }
 
   let hostname = new URL(origin).hostname;
-  if (hostname?.includes("localhost")) {
-    // hostname = "uploadThing.com";
-    hostname = "prod.upstash.com";
-  }
+
   const { data } = await UserDomainService.validateClientId({
     clientId,
     hostname,
@@ -34,8 +29,6 @@ export const domainMiddleware = async (
   if (!data.domain) {
     throw new AppError("Invalid Client ID", 400);
   }
-
-  console.log("DOMAIN DATA", data?.domain);
 
   req.domain = data.domain;
 

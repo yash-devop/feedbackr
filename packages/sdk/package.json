@@ -4,9 +4,9 @@
   "main": "index.js",
   "scripts": {
     "build": "tsup --watch",
-    "dev": "tsup --watch",
+    "dev": "tsup && npm run playground",
     "serve": "cd ./src/playground && npx serve dist -l 3001",
-    "playground": "cp dist/index.global.js src/playground/index.global.js && npx serve ./src/playground -l 3001"
+    "playground": "cp build_dist/index.global.js src/playground/index.global.js && npx serve ./src/playground -l 3001"
   },
   "keywords": [],
   "author": "",

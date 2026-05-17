@@ -8,7 +8,10 @@ export const MESSAGE_EVENT = [
 type TMessageType = (typeof MESSAGE_EVENT)[number];
 
 export const handlePostMessage = (type: TMessageType, data?: any) => {
-  const targetOrigin = "http://localhost:3001";
+  const targetOrigin = document.referrer
+    ? new URL(document.referrer).origin
+    : "*";
+
   window.parent.postMessage(
     { type, ...(data !== undefined && { data }) },
     targetOrigin,

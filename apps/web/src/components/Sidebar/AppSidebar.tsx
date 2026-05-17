@@ -218,8 +218,8 @@ export function AppSidebar() {
         <div className="pt-3 pb-1 flex flex-col gap-3">
           <div className="flex items-center gap-2 select-none">
             <Avatar>
-              <AvatarImage src={user?.image as string} />
-              <AvatarFallback>{user?.name}</AvatarFallback>
+              <AvatarImage src={user?.image!} referrerPolicy="no-referrer" />
+              <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col text-xs">
               <p className="font-semibold">{user?.name}</p>

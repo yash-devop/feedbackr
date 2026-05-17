@@ -1,4 +1,6 @@
 import { getCache, setCache } from "../core/cache";
+import { serverEnv } from "@repo/common/env.server";
+import { WIDGET_BACKEND_URL } from "./urls";
 
 export interface ValidateClientResponse {
   data: {
@@ -6,8 +8,6 @@ export interface ValidateClientResponse {
   };
   message?: string;
 }
-const BACKEND_URL = "https://feedbackr-web-server.up.railway.app";
-// const BACKEND_URL = "http://localhost:8001";
 export async function validateClientId(
   clientId: string,
 ): Promise<ValidateClientResponse> {
@@ -25,7 +25,7 @@ export async function validateClientId(
 
   try {
     const url = new URL(
-      `${BACKEND_URL}/api/domain/validateClientId`,
+      `${WIDGET_BACKEND_URL}/api/domain/validateClientId`,
       window.location.origin,
     ); // adjust backend URL
     url.searchParams.append("clientId", clientId);
