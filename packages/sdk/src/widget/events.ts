@@ -1,3 +1,5 @@
+import { WIDGET_FRONTEND_URL } from "../api/urls";
+
 export const FEEDBACK_EVENT = [
   "FEEDBACK_WIDGET_OPEN",
   "FEEDBACK_WIDGET_CLOSE",
@@ -26,7 +28,7 @@ export function registerListener(
   if (registeredEvents.has(event)) return;
 
   const handler = (e: MessageEvent) => {
-    if (e.origin !== "http://localhost:5174") return;
+    if (e.origin !== WIDGET_FRONTEND_URL) return;
     if (e.data?.type === event) {
       onMessage(e.data);
       return;

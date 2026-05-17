@@ -1,4 +1,4 @@
-import { serverEnv } from "@repo/common/env/server";
+import { serverEnv } from "@repo/common/env.server";
 
 import { createHmac } from "crypto";
 

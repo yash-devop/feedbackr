@@ -2,6 +2,7 @@ import { domToBlob } from "modern-screenshot";
 import { TSdkEvent } from "./events";
 import { iframeId } from "./iframe";
 import { errorsBuffer } from "../tracking/errors";
+import { WIDGET_FRONTEND_URL } from "../api/urls";
 
 export const sendToWidget = (type: TSdkEvent, data?: any) => {
   const iframe = document.getElementById(iframeId) as HTMLIFrameElement;
@@ -9,7 +10,7 @@ export const sendToWidget = (type: TSdkEvent, data?: any) => {
     console.warn("Feedback SDK: Iframe not found or not ready.");
     return;
   }
-  iframe.contentWindow.postMessage({ type, data }, "http://localhost:5174");
+  iframe.contentWindow.postMessage({ type, data }, WIDGET_FRONTEND_URL);
 };
 
 export const handleTakeScreenshot = async () => {
