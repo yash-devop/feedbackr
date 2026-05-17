@@ -107,19 +107,6 @@ export const UserDomainController = {
 
     let hostname = new URL(origin).hostname;
 
-    if (hostname.includes("localhost")) {
-      // hostname = "uploadThing.com";
-      hostname = "yashstack.com";
-
-      /**
-       * why i did this bcoz in our database , there is no record for localhost in domains table.. so our database checks will get failed.
-       *
-       * we can't change origin by passing origin in header coz browser restricts it and we have added checks on "origin" only in our express...
-       *
-       * that's why we have to do this ( workaround )
-       * later , add multiple dummy origins.
-       */
-    }
     const { data } = await UserDomainService.validateClientId({
       clientId: clientId || "",
       hostname,
