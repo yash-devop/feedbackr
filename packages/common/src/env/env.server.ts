@@ -7,7 +7,7 @@ import z from "zod";
 const envFilePath =
   process.env.NODE_ENV === "development"
     ? findUpSync(".env.local")
-    : findUpSync(".env.prod");
+    : findUpSync(".env.production");
 
 config({
   path: envFilePath,

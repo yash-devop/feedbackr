@@ -7,6 +7,7 @@
     "build:widget": "npx turbo run build --filter=widget",
     "start:widget": "cd apps/widget && npm run preview",
     "dev": "turbo run dev",
+    "prod": "turbo run prod",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
